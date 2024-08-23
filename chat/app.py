@@ -10,8 +10,11 @@ GROQ_API_KEY = "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"
 # Initialize Groq client with the direct API key
 groq_client = Groq(api_key=GROQ_API_KEY)
 
-def get_groq_response(prompt):
-    """Use Groq API to get a response based on the prompt."""
+# Set the page config to change the favicon and title
+st.set_page_config(page_title="nullPointers", page_icon="🧠")
+
+def get_groq_response(prompt, model):
+    """Use Groq API to get a response based on the prompt and selected model."""
     try:
         chat_completion = groq_client.chat.completions.create(
             messages=[
@@ -20,14 +23,14 @@ def get_groq_response(prompt):
                     "content": prompt,
                 }
             ],
-            model="llama3-8b-8192",
+            model=model,
         )
         return chat_completion.choices[0].message.content
     except Exception as e:
         st.error(f"Error getting response from Groq API: {e}")
         return "Error getting response from Groq API."
 
-def process_answer(instruction):
+def process_answer(instruction, model):
     """Process the user query and return an answer."""
     
     # Load all the text chunks from the documents.txt file
@@ -45,8 +48,8 @@ def process_answer(instruction):
     # Create a prompt for the LLM with the full context
     prompt = f"Based on the following context, answer the question no answering outside it nothing at all:\n{full_context}\n\nQuestion: {instruction['query']}"
     
-    # Get a response from Groq API
-    response = get_groq_response(prompt)
+    # Get a response from Groq API using the selected model
+    response = get_groq_response(prompt, model)
     
     # Generate related questions (this is a simple example)
     related_questions = [
@@ -77,10 +80,27 @@ def main():
     """Main function to run the Streamlit app."""
     st.sidebar.markdown("<h3 style='color: #007BFF;'>Settings</h3>", unsafe_allow_html=True)
     st.sidebar.write("Adjust your preferences:")
-    model_choice = st.sidebar.selectbox("Choose the model:", ["llama3-8b-8192", "other-model"])
+
+    # Add the model list to the sidebar
+    model_choice = st.sidebar.selectbox(
+        "Choose the model:", 
+        [
+            "gemma-7b", 
+            "gemma2-96-it", 
+            "llama3-70b-versatile", 
+            "llama3-8b-instant", 
+            "llama-guard-3-8b", 
+            "llama3-70b-8192", 
+            "llama3-8b-8192", 
+            "llama3-groq-70b-8192-tool-use-preview", 
+            "llama3-groq-86-8192-tool-use-preview", 
+            "mixtral-8x7b-32768"
+        ]
+    )
+
     theme_choice = st.sidebar.radio("Choose a theme:", ["Light", "Dark"])
     
-    st.markdown(f"<h2 style='text-align: center; color:#007BFF;'>Chat Here</h2>", unsafe_allow_html=True)
+    st.markdown(f"<h2 style='text-align: center; color:#007BFF;'>nullPointers</h2>", unsafe_allow_html=True)
     st.markdown("<h4 style color:black;'>Chat with the bot</h4>", unsafe_allow_html=True)
     
     st.write("Click the button below and speak into your microphone.")
@@ -95,7 +115,7 @@ def main():
         st.session_state["past"] = ["Hey there!"]
 
     if user_input:
-        answer, related_questions = process_answer({'query': user_input})
+        answer, related_questions = process_answer({'query': user_input}, model_choice)
         st.session_state["past"].append(user_input)
         st.session_state["generated"].append(answer)
         st.session_state["related_questions"] = related_questions
@@ -111,7 +131,7 @@ def main():
             for question in st.session_state["related_questions"]:
                 if st.button(question):
                     st.session_state["past"].append(question)
-                    st.session_state["generated"].append(process_answer({'query': question})[0])
+                    st.session_state["generated"].append(process_answer({'query': question}, model_choice)[0])
                     st.experimental_rerun()
 
 if __name__ == "__main__":
