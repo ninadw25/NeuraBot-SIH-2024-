@@ -1,4 +1,3 @@
-# This is the latest code
 import os
 import numpy as np
 from groq import Groq
@@ -32,7 +31,7 @@ def process_answer(instruction):
     """Process the user query and return an answer."""
     
     # Load all the text chunks from the documents.txt file
-    documents_file = os.path.join(os.path.dirname(__file__), '..', 'documents.txt')
+    documents_file = os.path.join(os.path.dirname(__file__), 'documents.txt')
     try:
         with open(documents_file, 'r', encoding='utf-8') as f:
             texts = f.readlines()
