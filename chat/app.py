@@ -1,9 +1,7 @@
 import os
 import numpy as np
-import streamlit as st
-from gtts import gTTS
-from io import BytesIO
 from groq import Groq
+import streamlit as st
 import speech_recognition as sr
 
 # Define the API key directly in the script
@@ -29,27 +27,11 @@ def get_groq_response(prompt):
         st.error(f"Error getting response from Groq API: {e}")
         return "Error getting response from Groq API."
 
-def generate_related_questions(prompt):
-    """Generate related questions based on the given prompt."""
-    related_prompt = f"Generate 2 related questions to the following prompt:\n'{prompt}'"
-    try:
-        related_completion = groq_client.chat.completions.create(
-            messages=[
-                {
-                    "role": "user",
-                    "content": related_prompt,
-                }
-            ],
-            model="llama3-8b-8192",
-        )
-        return related_completion.choices[0].message.content.strip().split("\n")
-    except Exception as e:
-        st.error(f"Error generating related questions: {e}")
-        return ["Could not generate related questions due to an error."]
-
 def process_answer(instruction):
     """Process the user query and return an answer."""
-    documents_file = os.path.join(os.path.dirname(__file__), 'documents.txt')
+    
+    # Load all the text chunks from the documents.txt file
+    documents_file = os.path.join(os.path.dirname(__file__), '..', 'documents.txt')
     try:
         with open(documents_file, 'r', encoding='utf-8') as f:
             texts = f.readlines()
@@ -57,91 +39,80 @@ def process_answer(instruction):
         with open(documents_file, 'r', encoding='windows-1252', errors='ignore') as f:
             texts = f.readlines()
 
+    # Combine all texts into one large context
     full_context = " ".join([text.strip() for text in texts])
-    prompt = f"Based on the following context, answer the question:\n{full_context}\n\nQuestion: {instruction['query']}"
+    
+    # Create a prompt for the LLM with the full context
+    prompt = f"Based on the following context, answer the question no answering outside it nothing at all:\n{full_context}\n\nQuestion: {instruction['query']}"
+    
+    # Get a response from Groq API
     response = get_groq_response(prompt)
-    related_questions = generate_related_questions(instruction['query'])
+    
+    # Generate related questions (this is a simple example)
+    related_questions = [
+        f"What else can you tell me about {instruction['query']}?",
+        f"How does {instruction['query']} relate to the broader topic?",
+        f"Are there any examples of {instruction['query']}?"
+    ]
+    
     return response, related_questions
 
-def text_to_speech(text):
-    """Convert text to speech using gTTS and return the audio data."""
-    tts = gTTS(text)
-    audio_data = BytesIO()
-    tts.write_to_fp(audio_data)
-    audio_data.seek(0)
-    return audio_data
-
-def speech_to_text():
-    """Capture voice input from the user and convert it to text."""
+def recognize_speech():
+    """Recognize speech from the microphone and return the text."""
     recognizer = sr.Recognizer()
     with sr.Microphone() as source:
-        # Adjust for ambient noise and start listening
-        recognizer.adjust_for_ambient_noise(source, duration=0.5)
-        st.info("Listening... Please speak.")
+        st.info("Listening...")
+        audio = recognizer.listen(source)
         try:
-            audio = recognizer.listen(source, timeout=5, phrase_time_limit=10)
-            user_input = recognizer.recognize_google(audio)
-            return user_input
+            return recognizer.recognize_google(audio)
         except sr.UnknownValueError:
-            st.warning("Sorry, I could not understand your speech.")
-        except sr.RequestError:
-            st.error("Could not request results from Google Speech Recognition service.")
-        except sr.WaitTimeoutError:
-            st.warning("Listening timed out. Please try again.")
-    return None
+            st.error("Could not understand the audio.")
+            return ""
+        except sr.RequestError as e:
+            st.error(f"Could not request results from Google Speech Recognition service; {e}")
+            return ""
 
+# Example Streamlit integration (adapt as needed)
 def main():
     """Main function to run the Streamlit app."""
-    st.markdown("<h2 style='text-align: center; color:red;'>Chat Here</h2>", unsafe_allow_html=True)
-    st.markdown("<h4 style='color:black;'>Chat with the bot</h4>", unsafe_allow_html=True)
-
-    # Initialize user_input to avoid UnboundLocalError
-    user_input = None
-
-    # Choose between text input and voice input
-    input_mode = st.radio("Select input mode:", ("Text", "Voice"))
-
-    if input_mode == "Text":
-        user_input = st.text_input("", key="input")
+    st.sidebar.markdown("<h3 style='color: #007BFF;'>Settings</h3>", unsafe_allow_html=True)
+    st.sidebar.write("Adjust your preferences:")
+    model_choice = st.sidebar.selectbox("Choose the model:", ["llama3-8b-8192", "other-model"])
+    theme_choice = st.sidebar.radio("Choose a theme:", ["Light", "Dark"])
+    
+    st.markdown(f"<h2 style='text-align: center; color:#007BFF;'>Chat Here</h2>", unsafe_allow_html=True)
+    st.markdown("<h4 style color:black;'>Chat with the bot</h4>", unsafe_allow_html=True)
+    
+    st.write("Click the button below and speak into your microphone.")
+    if st.button("🎤 Record"):
+        user_input = recognize_speech()
     else:
-        if st.button("Press to Speak"):
-            user_input = speech_to_text()
-            if user_input:
-                st.write(f"**You said:** {user_input}")
-            else:
-                user_input = ""  # Set to an empty string if nothing is captured
-
+        user_input = st.text_input("", key="input", placeholder="Type your question here...")
+    
     if "generated" not in st.session_state:
-        st.session_state["generated"] = []
+        st.session_state["generated"] = ["I am ready to help you"]
     if "past" not in st.session_state:
-        st.session_state["past"] = []
-    if "audio_data" not in st.session_state:
-        st.session_state["audio_data"] = []
-    if "related_questions" not in st.session_state:
-        st.session_state["related_questions"] = []
+        st.session_state["past"] = ["Hey there!"]
 
     if user_input:
-        # Ensure the recognized speech is passed for chatbot response
         answer, related_questions = process_answer({'query': user_input})
-
-        # Convert the response to speech
-        audio_data = text_to_speech(answer)
-
-        # Store the conversation history, audio data, and related questions
         st.session_state["past"].append(user_input)
         st.session_state["generated"].append(answer)
-        st.session_state["audio_data"].append(audio_data)
-        st.session_state["related_questions"].append(related_questions)
+        st.session_state["related_questions"] = related_questions
 
-    # Display the entire conversation history with corresponding audio and related questions
     if st.session_state["generated"]:
+        st.write("<hr>", unsafe_allow_html=True)
         for i in range(len(st.session_state["generated"])):
-            st.write(f"**User:** {st.session_state['past'][i]}")
-            st.write(f"**Bot:** {st.session_state['generated'][i]}")
-            st.audio(st.session_state["audio_data"][i], format="audio/mp3")
-            st.write(f"**Related Questions:**")
-            for question in st.session_state["related_questions"][i]:
-                st.write(f"- {question}")
+            st.markdown(f"<div style='background-color: #F1F1F1; padding: 10px; border-radius: 10px;'><strong>User:</strong> {st.session_state['past'][i]}</div>", unsafe_allow_html=True)
+            st.markdown(f"<div style='background-color: #007BFF; color: white; padding: 10px; border-radius: 10px; margin-top: 10px;'><strong>Bot:</strong> {st.session_state['generated'][i]}</div>", unsafe_allow_html=True)
+        
+        if "related_questions" in st.session_state:
+            st.write("<h4>Related Questions:</h4>", unsafe_allow_html=True)
+            for question in st.session_state["related_questions"]:
+                if st.button(question):
+                    st.session_state["past"].append(question)
+                    st.session_state["generated"].append(process_answer({'query': question})[0])
+                    st.experimental_rerun()
 
 if __name__ == "__main__":
     main()
