@@ -85,15 +85,14 @@ def main():
     model_choice = st.sidebar.selectbox(
         "Choose the model:", 
         [
-            "gemma-7b", 
-            "gemma2-96-it", 
-            "llama3-70b-versatile", 
-            "llama3-8b-instant", 
+            "llama3-8b-8192", 
+            "gemma2-9b-it", 
+            "llama3.1-70b-versatile", 
+            "llama3.1-8b-instant", 
             "llama-guard-3-8b", 
             "llama3-70b-8192", 
-            "llama3-8b-8192", 
             "llama3-groq-70b-8192-tool-use-preview", 
-            "llama3-groq-86-8192-tool-use-preview", 
+            "llama3-groq-8b-8192-tool-use-preview", 
             "mixtral-8x7b-32768"
         ]
     )
@@ -104,35 +103,52 @@ def main():
     st.markdown("<h4 style color:black;'>Chat with the bot</h4>", unsafe_allow_html=True)
     
     st.write("Click the button below and speak into your microphone.")
+    
+    # Initialize session state variables if not present
+    if "generated" not in st.session_state:
+        st.session_state["generated"] = []
+    if "past" not in st.session_state:
+        st.session_state["past"] = []
+    if "related_questions" not in st.session_state:
+        st.session_state["related_questions"] = []
+    
+    # Handle microphone recording and text input
     if st.button("🎤 Record"):
         user_input = recognize_speech()
+        st.session_state["last_input"] = user_input
     else:
         user_input = st.text_input("", key="input", placeholder="Type your question here...")
+        st.session_state["last_input"] = user_input
     
-    if "generated" not in st.session_state:
-        st.session_state["generated"] = ["I am ready to help you"]
-    if "past" not in st.session_state:
-        st.session_state["past"] = ["Hey there!"]
+    # Process user input if it is not empty
+    if st.session_state.get("last_input"):
+        # Check if this input is already processed
+        if st.session_state["last_input"] not in st.session_state["past"]:
+            answer, related_questions = process_answer({'query': st.session_state["last_input"]}, model_choice)
+            st.session_state["past"].append(st.session_state["last_input"])
+            st.session_state["generated"].append(answer)
+            st.session_state["related_questions"] = related_questions
 
-    if user_input:
-        answer, related_questions = process_answer({'query': user_input}, model_choice)
-        st.session_state["past"].append(user_input)
-        st.session_state["generated"].append(answer)
-        st.session_state["related_questions"] = related_questions
-
+    # Display past queries and responses
     if st.session_state["generated"]:
         st.write("<hr>", unsafe_allow_html=True)
         for i in range(len(st.session_state["generated"])):
             st.markdown(f"<div style='background-color: #F1F1F1; padding: 10px; border-radius: 10px;'><strong>User:</strong> {st.session_state['past'][i]}</div>", unsafe_allow_html=True)
             st.markdown(f"<div style='background-color: #007BFF; color: white; padding: 10px; border-radius: 10px; margin-top: 10px;'><strong>Bot:</strong> {st.session_state['generated'][i]}</div>", unsafe_allow_html=True)
         
-        if "related_questions" in st.session_state:
+        # Display related questions
+        if st.session_state["related_questions"]:
             st.write("<h4>Related Questions:</h4>", unsafe_allow_html=True)
             for question in st.session_state["related_questions"]:
-                if st.button(question):
-                    st.session_state["past"].append(question)
-                    st.session_state["generated"].append(process_answer({'query': question}, model_choice)[0])
-                    st.experimental_rerun()
+                if st.button(question, key=question):
+                    # Avoid duplicate processing of the same related question
+                    if question not in st.session_state["past"]:
+                        st.session_state["past"].append(question)
+                        answer = process_answer({'query': question}, model_choice)[0]
+                        st.session_state["generated"].append(answer)
+                        # Optionally clear related questions if they should not be reused
+                        st.session_state["related_questions"] = [q for q in st.session_state["related_questions"] if q != question]
+                        st.experimental_rerun()
 
 if __name__ == "__main__":
     main()
