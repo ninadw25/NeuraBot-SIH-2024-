@@ -1,0 +1,9 @@
+langchain==0.0.127  # Replace with the latest version if needed
+streamlit==1.25.0   # Replace with the latest version if needed
+groq==0.1.2         # Replace with the actual version of Groq
+numpy==1.25.0       # Replace with the latest version if needed
+streamlit
+numpy
+gtts
+speechrecognition
+pydub  # Needed for audio processing
