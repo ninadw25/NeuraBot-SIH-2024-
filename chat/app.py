@@ -85,14 +85,14 @@ def main():
     model_choice = st.sidebar.selectbox(
         "Choose the model:", 
         [
-            "llama3-8b-8192", 
-            "gemma2-9b-it", 
-            "llama3.1-70b-versatile", 
-            "llama3.1-8b-instant", 
-            "llama-guard-3-8b", 
-            "llama3-70b-8192", 
-            "llama3-groq-70b-8192-tool-use-preview", 
-            "llama3-groq-8b-8192-tool-use-preview", 
+            "llama3-8b-8192",
+            "gemma2-9b-it",
+            "llama3.1-70b-versatile",
+            "llama3.1-8b-instant",
+            "llama-guard-3-8b",
+            "llama3-70b-8192",
+            "llama3-groq-70b-8192-tool-use-preview",
+            "llama3-groq-8b-8192-tool-use-preview",
             "mixtral-8x7b-32768"
         ]
     )
@@ -111,14 +111,18 @@ def main():
         st.session_state["past"] = []
     if "related_questions" not in st.session_state:
         st.session_state["related_questions"] = []
+
+    # Create an empty container at the bottom of the page for the input field
+    input_container = st.empty()
     
     # Handle microphone recording and text input
-    if st.button("🎤 Record"):
-        user_input = recognize_speech()
-        st.session_state["last_input"] = user_input
-    else:
-        user_input = st.text_input("", key="input", placeholder="Type your question here...")
-        st.session_state["last_input"] = user_input
+    with input_container:
+        if st.button("🎤 Record"):
+            user_input = recognize_speech()
+            st.session_state["last_input"] = user_input
+        else:
+            user_input = st.text_input("", key="input", placeholder="Type your question here...")
+            st.session_state["last_input"] = user_input
     
     # Process user input if it is not empty
     if st.session_state.get("last_input"):
@@ -148,7 +152,6 @@ def main():
                         st.session_state["generated"].append(answer)
                         # Optionally clear related questions if they should not be reused
                         st.session_state["related_questions"] = [q for q in st.session_state["related_questions"] if q != question]
-                        st.experimental_rerun()
 
 if __name__ == "__main__":
     main()
