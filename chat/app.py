@@ -77,32 +77,43 @@ def recognize_speech():
 
 # Example Streamlit integration (adapt as needed)
 def main():
-    """Main function to run the Streamlit app."""
-    st.sidebar.markdown("<h3 style='color: #007BFF;'>Settings</h3>", unsafe_allow_html=True)
-    st.sidebar.write("Adjust your preferences:")
-
-    # Add the model list to the sidebar
-    model_choice = st.sidebar.selectbox(
-        "Choose the model:", 
-        [
-            "llama3-8b-8192",
-            "gemma2-9b-it",
-            "llama3.1-70b-versatile",
-            "llama3.1-8b-instant",
-            "llama-guard-3-8b",
-            "llama3-70b-8192",
-            "llama3-groq-70b-8192-tool-use-preview",
-            "llama3-groq-8b-8192-tool-use-preview",
-            "mixtral-8x7b-32768"
-        ]
-    )
-
+    
+    st.sidebar.header("Settings")
+    st.sidebar.subheader("Model Selection")
+    model_choice = st.sidebar.selectbox("Choose the model:", [
+        "llama3-8b-8192", "gemma2-9b-it", "llama3.1-70b-versatile",
+        "llama3.1-8b-instant", "llama-guard-3-8b", "llama3-70b-8192",
+        "llama3-groq-70b-8192-tool-use-preview", "llama3-groq-8b-8192-tool-use-preview",
+        "mixtral-8x7b-32768"
+    ])
+    st.sidebar.subheader("Theme")
     theme_choice = st.sidebar.radio("Choose a theme:", ["Light", "Dark"])
-    
+
+    st.markdown("""
+        <style>
+        .main {
+            background: linear-gradient(65deg,#3c4c5b, #97a0b8 );;
+            padding: 20px;
+            border-radius: 10px;
+        }
+        .stButton button {
+            background-color: #007BFF;
+            color: white;
+            border-radius: 10px;
+            padding: 10px;
+        }
+        .stTextInput input {
+            border-radius: 10px;
+            padding: 10px;
+        }
+        </style>
+        """, unsafe_allow_html=True)
+
+    st.markdown('<div class="main">', unsafe_allow_html=True)
     st.markdown(f"<h2 style='text-align: center; color:#007BFF;'>nullPointers</h2>", unsafe_allow_html=True)
-    st.markdown("<h4 style color:black;'>Chat with the bot</h4>", unsafe_allow_html=True)
+    st.markdown("</div>", unsafe_allow_html=True)
     
-    st.write("Click the button below and speak into your microphone.")
+    # Rest of your code remains unchanged
     
     # Initialize session state variables if not present
     if "generated" not in st.session_state:
@@ -112,10 +123,32 @@ def main():
     if "related_questions" not in st.session_state:
         st.session_state["related_questions"] = []
 
-    # Create an empty container at the bottom of the page for the input field
-    input_container = st.empty()
-    
-    # Handle microphone recording and text input
+    # Create a container for the chat history
+    chat_container = st.container()
+    input_container = st.container()
+
+    # Display past queries and responses
+    with chat_container:
+        if st.session_state["generated"]:
+            st.write("<hr>", unsafe_allow_html=True)
+            for i in range(len(st.session_state["generated"])):
+                st.markdown(f"<div style='background-color: #F1F1F1; padding: 10px; border-radius: 10px;'><strong>User:</strong> {st.session_state['past'][i]}</div>", unsafe_allow_html=True)
+                st.markdown(f"<div style='background-color: #007BFF; color: white; padding: 10px; border-radius: 10px; margin-top: 10px;'><strong>Bot:</strong> {st.session_state['generated'][i]}</div>", unsafe_allow_html=True)
+            
+            # Display related questions
+            if st.session_state["related_questions"]:
+                st.write("<h4>Related Questions:</h4>", unsafe_allow_html=True)
+                for question in st.session_state["related_questions"]:
+                    if st.button(question, key=question):
+                        # Avoid duplicate processing of the same related question
+                        if question not in st.session_state["past"]:
+                            st.session_state["past"].append(question)
+                            answer = process_answer({'query': question}, model_choice)[0]
+                            st.session_state["generated"].append(answer)
+                            # Optionally clear related questions if they should not be reused
+                            st.session_state["related_questions"] = [q for q in st.session_state["related_questions"] if q != question]
+
+    # Handle microphone recording and text input at the bottom
     with input_container:
         if st.button("🎤 Record"):
             user_input = recognize_speech()
@@ -132,26 +165,6 @@ def main():
             st.session_state["past"].append(st.session_state["last_input"])
             st.session_state["generated"].append(answer)
             st.session_state["related_questions"] = related_questions
-
-    # Display past queries and responses
-    if st.session_state["generated"]:
-        st.write("<hr>", unsafe_allow_html=True)
-        for i in range(len(st.session_state["generated"])):
-            st.markdown(f"<div style='background-color: #F1F1F1; padding: 10px; border-radius: 10px;'><strong>User:</strong> {st.session_state['past'][i]}</div>", unsafe_allow_html=True)
-            st.markdown(f"<div style='background-color: #007BFF; color: white; padding: 10px; border-radius: 10px; margin-top: 10px;'><strong>Bot:</strong> {st.session_state['generated'][i]}</div>", unsafe_allow_html=True)
-        
-        # Display related questions
-        if st.session_state["related_questions"]:
-            st.write("<h4>Related Questions:</h4>", unsafe_allow_html=True)
-            for question in st.session_state["related_questions"]:
-                if st.button(question, key=question):
-                    # Avoid duplicate processing of the same related question
-                    if question not in st.session_state["past"]:
-                        st.session_state["past"].append(question)
-                        answer = process_answer({'query': question}, model_choice)[0]
-                        st.session_state["generated"].append(answer)
-                        # Optionally clear related questions if they should not be reused
-                        st.session_state["related_questions"] = [q for q in st.session_state["related_questions"] if q != question]
 
 if __name__ == "__main__":
     main()
