@@ -5,7 +5,7 @@ import pdfplumber
 import speech_recognition as sr
 from groq import Groq
 from transformers import AutoTokenizer, AutoModelForSeq2SeqLM, pipeline
-from streamlit_router import StreamlitRouter, Page
+from streamlit_router import StreamlitRouter
 
 # Define the API key directly in the script
 GROQ_API_KEY = "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"
@@ -309,8 +309,8 @@ def test():
 
 # List of objects
 pages = [
-    Page(name="Home", path="/", func=home),
-    Page(name="Test", path="test", func=test)
+    st.Page(name="Home", path="/", func=home),
+    st.Page(name="Test", path="test", func=test)
 ]
 
 router = StreamlitRouter(pages)
