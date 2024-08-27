@@ -243,7 +243,7 @@ def summarizer_ui():
                 mime="text/plain"
             )
 
-def home():
+def main():
     """Main function to run the Streamlit app."""
     st.sidebar.image("https://i.imgur.com/6Iej2cL.png", use_column_width=True)
     st.sidebar.markdown("<h2 style='color: #007BFF;'>Navigation</h2>", unsafe_allow_html=True)
@@ -304,14 +304,15 @@ def home():
     elif option == "Summarizer":
         summarizer_ui()
     
-def test():
-    st.success("Test Successfull")
+main()
+# def test():
+#     st.success("Test Successfull")
 
-# List of objects
-pages = [
-    st.Page(name="Home", path="/", func=home),
-    st.Page(name="Test", path="test", func=test)
-]
+# # List of objects
+# pages = [
+#     st.Page(name="Home", path="/", func=home),
+#     st.Page(name="Test", path="test", func=test)
+# ]
 
-router = StreamlitRouter(pages)
-router.route()
+# router = StreamlitRouter(pages)
+# router.route()
