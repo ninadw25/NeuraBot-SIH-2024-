@@ -10,7 +10,7 @@ const PORT = 6969;
 
 // this is for connection
 const { MongoClient, ServerApiVersion } = require('mongodb');
-const uri = "mongodb+srv://<db_username>:<db_password>@null-ptrs.2idnn.mongodb.net/?retryWrites=true&w=majority&appName=null-ptrs";
+const uri = "mongodb+srv://saksham:1AGrEtT2wLj272T5@null-ptrs.2idnn.mongodb.net/?retryWrites=true&w=majority&appName=null-ptrs";
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
 const client = new MongoClient(uri, {
