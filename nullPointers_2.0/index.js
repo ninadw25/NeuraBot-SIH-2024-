@@ -16,7 +16,7 @@ const uri = "mongodb+srv://saksham:1AGrEtT2wLj272T5@null-ptrs.2idnn.mongodb.net/
 const client = new MongoClient(uri, {
   serverApi: {
     version: ServerApiVersion.v1,
-    strict: true,
+    strict: true
     deprecationErrors: true,
   }
 });
