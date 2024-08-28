@@ -5,6 +5,7 @@ import pdfplumber
 import speech_recognition as sr
 from groq import Groq
 from transformers import AutoTokenizer, AutoModelForSeq2SeqLM, pipeline
+from streamlit_router import StreamlitRouter
 
 # Define the API key directly in the script
 GROQ_API_KEY = "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"
@@ -302,6 +303,16 @@ def main():
         chatbot_ui(model_choice)
     elif option == "Summarizer":
         summarizer_ui()
+    
+main()
+# def test():
+#     st.success("Test Successfull")
 
-if __name__ == "__main__":
-    main()
+# # List of objects
+# pages = [
+#     st.Page(name="Home", path="/", func=home),
+#     st.Page(name="Test", path="test", func=test)
+# ]
+
+# router = StreamlitRouter(pages)
+# router.route()
