@@ -1,11 +1,11 @@
 const express = require('express');
 const path = require('path');
-const mongoose = require('mongoose');
+// const mongoose = require('mongoose');
 
 const { logReqRes } = require('./middlewares/log');
 
 const app = express();
-const PORT = 6969;
+const PORT = 7000;
 
 // Connection
 const { MongoClient, ServerApiVersion } = require('mongodb');
