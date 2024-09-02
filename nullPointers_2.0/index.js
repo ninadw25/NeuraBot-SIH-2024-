@@ -3,12 +3,11 @@ const path = require('path');
 const mongoose = require('mongoose');
 
 const { logReqRes } = require('./middlewares/log');
-const { error } = require('console');
 
 const app = express();
 const PORT = 6969;
 
-// this is for connection
+// Connection
 const { MongoClient, ServerApiVersion } = require('mongodb');
 const uri = "mongodb+srv://saksham:1AGrEtT2wLj272T5@null-ptrs.2idnn.mongodb.net/?retryWrites=true&w=majority&appName=null-ptrs";
 
