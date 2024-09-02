@@ -1,5 +1,6 @@
 const express = require('express');
 const path = require('path');
+const { MongoClient, ServerApiVersion } = require('mongodb');
 // const mongoose = require('mongoose');
 
 const { logReqRes } = require('./middlewares/log');
@@ -8,8 +9,8 @@ const app = express();
 const PORT = 7000;
 
 // Connection
-const { MongoClient, ServerApiVersion } = require('mongodb');
-const uri = "mongodb+srv://saksham:1AGrEtT2wLj272T5@null-ptrs.2idnn.mongodb.net/?retryWrites=true&w=majority&appName=null-ptrs";
+
+const uri = "mongodb+srv://suhas:IsMX4CdqtOsktnG6@null-ptrs.2idnn.mongodb.net/?retryWrites=true&w=majority&appName=null-ptrs";
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
 const client = new MongoClient(uri, {
