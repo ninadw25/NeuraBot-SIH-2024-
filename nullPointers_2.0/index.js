@@ -10,24 +10,20 @@ const PORT = 7000;
 // MongoDB Connection
 const uri = "mongodb+srv://Suhas:XK5z55hBUJqahszP@null-pointers.vdsmm.mongodb.net/?retryWrites=true&w=majority";
 
-const client = new MongoClient(uri, {
-  serverApi: {
-    version: ServerApiVersion.v1,
-    strict: true,
-    deprecationErrors: true,
-  }
-});
-
 async function run() {
   try {
-    await client.connect();
-    await client.db("admin").command({ ping: 1 });
-    console.log("Pinged your deployment. You successfully connected to MongoDB!");
-  } finally {
-    await client.close();
+    await mongoose.connect(uri, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+
+    console.log("Mongoose connected to MongoDB Atlas!");
+  } catch (error) {
+    console.error("Error connecting to MongoDB Atlas:", error);
   }
 }
-run().catch(console.dir);
+
+run();
 
 app.set("view engine", "ejs");
 app.set("views", path.resolve('./views'));
