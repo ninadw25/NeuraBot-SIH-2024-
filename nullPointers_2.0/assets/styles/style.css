@@ -9,10 +9,11 @@
 
 body {
     margin: 0;
-    background-color: #070734; /* Dark blue background */
-    color: #9cb1f8;
+    background-color: #070734; 
+    color: #070734;
     display: flex;
     height: 100vh;
+    /* text-align: center; */
 }
 
 .container {
@@ -24,12 +25,13 @@ body {
 .sidebar {
     width: 20%;
     background-color: #070734;
+    /* background-image: linear-gradient(to right top,#070734,#15157a); */
     color: #fff;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     padding: 20px;
-    font-size: 20px;
+    font-size: 17px;
 }
 
 .logo {
@@ -52,7 +54,7 @@ body {
 }
 
 .logout {
-    background-color: #9cb1f8;
+    background-color: #212f5b;
     border: none;
     padding: 10px;
     color: #fff;
@@ -88,23 +90,30 @@ body {
 }
 
 .editor {
+    border-color: #a1a1af;
+    border-width: 2px;
     display: flex;
     flex-direction: column;
-    flex-grow: 1; /* Allow the editor to grow and fill available space */
+    flex-grow: 1; 
     background-color: #f4f4f4;
+    border-style: solid; 
     border-radius: 8px;
     padding: 20px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+     /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); */
+    /* box-shadow: 2px 2px 2px 2px #8686f4; */
+    
 }
 
 .chatbot {
-    flex-grow: 1; /* Make the chat area flexible to take available space */
-    background-color: #9cb1f8;
-    color: #000;
-    padding: 20px;
+    flex-grow: 1; /* Makes the chat area flexible to take available space */
+    /* background-color: #010f34e7;#180f3a */
+    /* background-image: linear-gradient(to right,#070734, ); */
+    color: #FFF;
+    padding: 10px;
     border-radius: 8px;
     overflow-y: auto;
-    height: 100%; /* Ensures the chatbot area takes full height */
+    height: 100%; 
+
 }
 
 .input-box {
@@ -124,10 +133,42 @@ body {
 
 .input-box button {
     padding: 10px 20px;
-    background-color: #7177e3;
     color: #fff;
     border: none;
     border-radius: 5px;
     cursor: pointer;
     font-size: 18px;
+    background-color: #212f5b;
+}
+
+.NeuraBot{
+    text-align: center;
+}
+
+.user-chat {
+    box-shadow: 0px 0px 1px 1px #000000 ;
+    /* display: inline-block; */
+    padding: 10px;
+    background-color: #010a26; 
+    border-radius: 14px; 
+    max-width: 50%;
+    word-wrap: break-word; 
+    margin: 5px 0; 
+    float: right; 
+    clear: both;
+    font-size: 15px;
+}
+
+.response-chat{
+    box-shadow: 0px 0px 1px 1px #222121 ;
+    /* display: inline-block; */
+    padding: 10px;
+    background-color: #434855 ; /*#30343d*/
+    border-radius: 14px; 
+    max-width: 70%;
+    word-wrap: break-word; 
+    margin: 5px 0; 
+    float: left; 
+    clear: both;
+    font-size: 15px;
 }

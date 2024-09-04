@@ -1,5 +1,3 @@
-import { readTxt } from "./file_reader.js";
-
 const submitBtn = document.querySelector(".submit-btn");
 const promptInput = document.querySelector(".prompt-input");
 const chatArea = document.querySelector(".chat-area");
@@ -14,7 +12,7 @@ function createUserChatBox(prompt) {
 async function createResponseChatBox(prompt) {
   let responseChatBox = document.createElement("div");
   try {
-    let response = await fetch('http://127.0.0.1:5000/chat', {
+    let response = await fetch('/chat', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -24,7 +22,7 @@ async function createResponseChatBox(prompt) {
 
     let result = await response.json();
     if (response.ok) {
-      responseChatBox.textContent = result.response;
+      responseChatBox.innerHTML = result.response;
     } else {
       responseChatBox.textContent = result.error || "Sorry, something went wrong.";
     }
@@ -36,13 +34,21 @@ async function createResponseChatBox(prompt) {
   chatArea.appendChild(responseChatBox);
 }
 
-submitBtn.addEventListener("click", async (event) => {
+async function submitPrompt() {
   const question = promptInput.value;
+  promptInput.value = "";
   createUserChatBox(question);
-  const context = readTxt();
-  const prompt = `Based on the following context, answer the question without providing information outside of it:\n${context}\n\nQuestion: ${question}`;
-  if(prompt.trim() === "") {
+
+  if (question.trim() === "") {
     return;
   }
-  await createResponseChatBox(prompt);
+  await createResponseChatBox(question);
+}
+
+submitBtn.addEventListener("click", submitPrompt);
+
+promptInput.addEventListener("keypress", (event) => {
+  if (event.key === "Enter") {
+    submitPrompt();
+  }
 });

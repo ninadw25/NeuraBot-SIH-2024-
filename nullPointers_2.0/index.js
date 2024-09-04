@@ -1,17 +1,15 @@
 const express = require('express');
 const path = require('path');
 const { MongoClient, ServerApiVersion } = require('mongodb');
-// const mongoose = require('mongoose');
-
 const { logReqRes } = require('./middlewares/log');
+const routes = require('./routes');
 
 const app = express();
 const PORT = 7000;
 
-// Connection
+// MongoDB Connection
 const uri = "mongodb+srv://Suhas:XK5z55hBUJqahszP@null-pointers.vdsmm.mongodb.net/?retryWrites=true&w=majority";
 
-// Create a MongoClient with a MongoClientOptions object to set the Stable API version
 const client = new MongoClient(uri, {
   serverApi: {
     version: ServerApiVersion.v1,
@@ -22,13 +20,10 @@ const client = new MongoClient(uri, {
 
 async function run() {
   try {
-    // Connect the client to the server	(optional starting in v4.7)
     await client.connect();
-    // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
     console.log("Pinged your deployment. You successfully connected to MongoDB!");
   } finally {
-    // Ensures that the client will close when you finish/error
     await client.close();
   }
 }
@@ -41,20 +36,16 @@ app.use(express.static('./scripts'));
 
 // Middlewares
 app.use(express.json());
-app.use(express.urlencoded({extended: false}));
-
+app.use(express.urlencoded({ extended: false }));
 app.use(logReqRes("log.txt"));
 
-app.get('/', (req, res) => {
-    res.render('index')
-})
+app.use('/', routes);
 
 app.listen(PORT, (error) => {
-    if(error){
-        console.log("Error connecting with server", error);
-    }
-    else{
-        console.log(`Server is listening on port -> ${PORT}`);
-        console.log(`http://localhost:${PORT}`);
-    }
-})
+  if (error) {
+    console.log("Error connecting with server", error);
+  } else {
+    console.log(`Server is listening on port -> ${PORT}`);
+    console.log(`http://localhost:${PORT}`);
+  }
+});
