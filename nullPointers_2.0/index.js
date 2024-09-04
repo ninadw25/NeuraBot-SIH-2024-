@@ -9,8 +9,7 @@ const app = express();
 const PORT = 7000;
 
 // Connection
-
-const uri = "mongodb+srv://suhas:IsMX4CdqtOsktnG6@null-ptrs.2idnn.mongodb.net/?retryWrites=true&w=majority&appName=null-ptrs&tls=true";
+const uri = "mongodb+srv://Suhas:XK5z55hBUJqahszP@null-pointers.vdsmm.mongodb.net/?retryWrites=true&w=majority";
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
 const client = new MongoClient(uri, {

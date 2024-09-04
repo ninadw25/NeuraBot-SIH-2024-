@@ -4,7 +4,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon index.js"
+    "start": "cross-env NODE_DEBUG=tls MONGODB_DEBUG=true nodemon index.js"
   },
   "author": "nullPointers",
   "license": "ISC",
@@ -16,5 +16,8 @@
     "mongoose": "^8.5.4",
     "nodemon": "^3.1.4",
     "pdf-parse": "^1.1.1"
+  },
+  "devDependencies": {
+    "cross-env": "^7.0.3"
   }
 }
