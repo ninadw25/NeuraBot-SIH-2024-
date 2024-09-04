@@ -7,7 +7,7 @@ const routes = require('./routes');
 const app = express();
 const PORT = 7000;
 
-// MongoDB Connection setup
+// MongoDB Connection
 const uri = "mongodb+srv://Suhas:XK5z55hBUJqahszP@null-pointers.vdsmm.mongodb.net/?retryWrites=true&w=majority";
 
 const client = new MongoClient(uri, {
