@@ -12,7 +12,7 @@ function createUserChatBox(prompt) {
 async function createResponseChatBox(prompt) {
   let responseChatBox = document.createElement("div");
   try {
-    let response = await fetch('http://127.0.0.1:5000/chat', {
+    let response = await fetch('/chat', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -38,15 +38,8 @@ submitBtn.addEventListener("click", async (event) => {
   const question = promptInput.value;
   createUserChatBox(question);
 
-  // Fetch the context from the server
-  let contextResponse = await fetch('/context');
-  let contextData = await contextResponse.json();
-  const context = contextData.context;
-
-  const prompt = `Based on the following context, answer the question without providing information outside of it:\n${context}\n\nQuestion: ${question}`;
-  
-  if(prompt.trim() === "") {
+  if(question.trim() === "") {
     return;
   }
-  await createResponseChatBox(prompt);
+  await createResponseChatBox(question);
 });
