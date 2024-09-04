@@ -7,7 +7,7 @@ const routes = require('./routes');
 const app = express();
 const PORT = 7000;
 
-// MongoDB Connection setup (unchanged)
+// MongoDB Connection setup
 const uri = "mongodb+srv://Suhas:XK5z55hBUJqahszP@null-pointers.vdsmm.mongodb.net/?retryWrites=true&w=majority";
 
 const client = new MongoClient(uri, {
@@ -39,7 +39,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(logReqRes("log.txt"));
 
-// Use the routes
 app.use('/', routes);
 
 app.listen(PORT, (error) => {
