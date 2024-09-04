@@ -38,7 +38,7 @@ run().catch(console.dir);
 app.set("view engine", "ejs");
 app.set("views", path.resolve('./views'));
 app.use(express.static('./assets'));
-app.use(express.static('./assets'));
+app.use(express.static('./scripts'));
 
 // Middlewares
 app.use(express.json());

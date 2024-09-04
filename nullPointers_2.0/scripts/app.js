@@ -1,26 +1,55 @@
-import Groq from "groq-sdk";
+const fs = require('fs');
+const submitBtn = document.querySelector(".submit-btn");
+const promptInput = document.querySelector(".prompt-input");
+const chatArea = document.querySelector(".chat-area");
 
-const GROQ_API_KEY = "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";
 
-const groq = new Groq({ apiKey: GROQ_API_KEY });
-
-const prompt = "Hello";
-
-export async function main() {
-  const chatCompletion = await getGroqChatCompletion();
-  // Print the completion returned by the LLM.
-  console.log(chatCompletion.choices[0]?.message?.content || "");
+function createUserChatBox(prompt) {
+  let userChat = document.createElement("div");
+  userChat.textContent = prompt;
+  userChat.classList.add("user-chat");
+  chatArea.appendChild(userChat);
 }
 
-export async function getGroqChatCompletion() {
-  return groq.chat.completions.create({
-    messages: [
-      {
-        role: "user",
-        content: `${prompt}`,
+async function createResponseChatBox(prompt) {
+  let responseChatBox = document.createElement("div");
+  try {
+    let response = await fetch('http://127.0.0.1:5000/chat', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
       },
-    ],
-    model: "llama3-8b-8192",
-  });
+      body: JSON.stringify({ prompt: prompt })
+    });
+
+    let result = await response.json();
+    if (response.ok) {
+      responseChatBox.textContent = result.response;
+    } else {
+      responseChatBox.textContent = result.error || "Sorry, something went wrong.";
+    }
+  } catch (error) {
+    console.error(error);
+    responseChatBox.textContent = "Sorry, something went wrong.";
+  }
+  responseChatBox.classList.add("response-chat");
+  chatArea.appendChild(responseChatBox);
 }
-main();
+
+submitBtn.addEventListener("click", async (event) => {
+  console.log("button clicked");
+  const question = promptInput.value;
+  fs.readFile('../assets/documents/document.txt', "utf-8", async (err, context) => {
+    if(err){
+      console.log("Error extracting data from pdf file: ", err);
+    }
+    else{
+      const prompt = `Based on the following context, answer the question without providing information outside of it:\n${context}\n\nQuestion: ${question}`;
+      if(prompt.trim() === "") {
+        return;
+      }
+      createUserChatBox(prompt);
+      await createResponseChatBox(prompt);
+    }
+  });
+});
