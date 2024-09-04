@@ -1,7 +1,7 @@
 const express = require('express');
 const path = require('path');
 const { MongoClient, ServerApiVersion } = require('mongodb');
-// const mongoose = require('mongoose');
+const fs = require('fs');
 
 const { logReqRes } = require('./middlewares/log');
 
@@ -22,7 +22,7 @@ const client = new MongoClient(uri, {
 
 async function run() {
   try {
-    // Connect the client to the server	(optional starting in v4.7)
+    // Connect the client to the server (optional starting in v4.7)
     await client.connect();
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
@@ -41,20 +41,25 @@ app.use(express.static('./scripts'));
 
 // Middlewares
 app.use(express.json());
-app.use(express.urlencoded({extended: false}));
+app.use(express.urlencoded({ extended: false }));
 
 app.use(logReqRes("log.txt"));
 
+// Serve the context from the document
+app.get('/context', (req, res) => {
+  const context = fs.readFileSync(path.resolve('./assets/documents/document.txt'), 'utf-8');
+  res.json({ context });
+});
+
 app.get('/', (req, res) => {
-    res.render('index')
-})
+  res.render('index');
+});
 
 app.listen(PORT, (error) => {
-    if(error){
-        console.log("Error connecting with server", error);
-    }
-    else{
-        console.log(`Server is listening on port -> ${PORT}`);
-        console.log(`http://localhost:${PORT}`);
-    }
-})
+  if (error) {
+    console.log("Error connecting with server", error);
+  } else {
+    console.log(`Server is listening on port -> ${PORT}`);
+    console.log(`http://localhost:${PORT}`);
+  }
+});

@@ -1,5 +1,3 @@
-import { readTxt } from "./file_reader.js";
-
 const submitBtn = document.querySelector(".submit-btn");
 const promptInput = document.querySelector(".prompt-input");
 const chatArea = document.querySelector(".chat-area");
@@ -39,8 +37,14 @@ async function createResponseChatBox(prompt) {
 submitBtn.addEventListener("click", async (event) => {
   const question = promptInput.value;
   createUserChatBox(question);
-  const context = readTxt();
+
+  // Fetch the context from the server
+  let contextResponse = await fetch('/context');
+  let contextData = await contextResponse.json();
+  const context = contextData.context;
+
   const prompt = `Based on the following context, answer the question without providing information outside of it:\n${context}\n\nQuestion: ${question}`;
+  
   if(prompt.trim() === "") {
     return;
   }
