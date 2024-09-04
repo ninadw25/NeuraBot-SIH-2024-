@@ -1,19 +1,19 @@
 /* @import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"); */
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap');
+
+
 * {
-    font-family: "dm sans";
-    margin: 0;
-    padding: 0;
+    font-family: "DM Sans", sans-serif;
     box-sizing: border-box;
 }
 
 body {
     margin: 0;
-    background-color: #070734; 
+    background-color: #070734;
     color: #070734;
     display: flex;
     height: 100vh;
-    /* text-align: center; */
+    overflow: hidden;
 }
 
 .container {
@@ -25,7 +25,6 @@ body {
 .sidebar {
     width: 20%;
     background-color: #070734;
-    /* background-image: linear-gradient(to right top,#070734,#15157a); */
     color: #fff;
     display: flex;
     flex-direction: column;
@@ -73,54 +72,43 @@ body {
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     font-size: 18px;
-}
-
-.content header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-}
-
-.content header input {
-    padding: 10px;
-    border-radius: 5px;
-    border: 1px solid #ddd;
-    width: 200px;
+    position: relative;
 }
 
 .editor {
-    border-color: #a1a1af;
-    border-width: 2px;
     display: flex;
     flex-direction: column;
-    flex-grow: 1; 
+    flex-grow: 1;
     background-color: #f4f4f4;
-    border-style: solid; 
+    border: 2px solid #a1a1af;
     border-radius: 8px;
     padding: 20px;
-     /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); */
-    /* box-shadow: 2px 2px 2px 2px #8686f4; */
-    
+    position: relative;
+    overflow: hidden; 
 }
 
+
 .chatbot {
-    flex-grow: 1; /* Makes the chat area flexible to take available space */
-    /* background-color: #010f34e7;#180f3a */
-    /* background-image: linear-gradient(to right,#070734, ); */
+    flex-grow: 1;
     color: #FFF;
     padding: 10px;
     border-radius: 8px;
-    overflow-y: auto;
-    height: 100%; 
+    /* background-color: #180f3a; */
+    overflow-y: auto; 
+    max-height: calc(100% - 60px); 
+}
 
+.chat-area {
+    padding-bottom: 20px; 
 }
 
 .input-box {
-    padding: auto;
-    margin-top: 20px;
     display: flex;
     align-items: center;
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    right: 20px;
 }
 
 .input-box input {
@@ -133,42 +121,38 @@ body {
 
 .input-box button {
     padding: 10px 20px;
+    background-color: #212f5b;
     color: #fff;
     border: none;
     border-radius: 5px;
     cursor: pointer;
     font-size: 18px;
-    background-color: #212f5b;
 }
 
-.NeuraBot{
-    text-align: center;
+.user-chat, .response-chat {
+    padding: 10px;
+    border-radius: 14px; 
+    border-radius: 14px; 
+    max-width: 50%;
+    border-radius: 14px;
+    max-width: 50%;
+    word-wrap: break-word;
+    margin: 5px 0;
+    font-size: 15px;
 }
 
 .user-chat {
-    box-shadow: 0px 0px 1px 1px #000000 ;
-    /* display: inline-block; */
-    padding: 10px;
-    background-color: #010a26; 
-    border-radius: 14px; 
-    max-width: 50%;
-    word-wrap: break-word; 
-    margin: 5px 0; 
-    float: right; 
+    background-color: #010a26;
+    float: right;
     clear: both;
-    font-size: 15px;
+    max-width: 50%;
+    box-shadow: 0px 0px 1px 1px #000000;
 }
 
-.response-chat{
-    box-shadow: 0px 0px 1px 1px #222121 ;
-    /* display: inline-block; */
-    padding: 10px;
-    background-color: #434855 ; /*#30343d*/
-    border-radius: 14px; 
-    max-width: 70%;
-    word-wrap: break-word; 
-    margin: 5px 0; 
-    float: left; 
+.response-chat {
+    background-color: #434855;
+    float: left;
     clear: both;
-    font-size: 15px;
+    max-width: 70%;
+    box-shadow: 0px 0px 1px 1px #222121;
 }
