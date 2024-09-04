@@ -1,8 +1,8 @@
-const fs = require('fs');
+import { readTxt } from "./file_reader.js";
+
 const submitBtn = document.querySelector(".submit-btn");
 const promptInput = document.querySelector(".prompt-input");
 const chatArea = document.querySelector(".chat-area");
-
 
 function createUserChatBox(prompt) {
   let userChat = document.createElement("div");
@@ -37,19 +37,12 @@ async function createResponseChatBox(prompt) {
 }
 
 submitBtn.addEventListener("click", async (event) => {
-  console.log("button clicked");
   const question = promptInput.value;
-  fs.readFile('../assets/documents/document.txt', "utf-8", async (err, context) => {
-    if(err){
-      console.log("Error extracting data from pdf file: ", err);
-    }
-    else{
-      const prompt = `Based on the following context, answer the question without providing information outside of it:\n${context}\n\nQuestion: ${question}`;
-      if(prompt.trim() === "") {
-        return;
-      }
-      createUserChatBox(prompt);
-      await createResponseChatBox(prompt);
-    }
-  });
+  createUserChatBox(question);
+  const context = readTxt();
+  const prompt = `Based on the following context, answer the question without providing information outside of it:\n${context}\n\nQuestion: ${question}`;
+  if(prompt.trim() === "") {
+    return;
+  }
+  await createResponseChatBox(prompt);
 });
