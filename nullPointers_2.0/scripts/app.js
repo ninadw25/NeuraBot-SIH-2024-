@@ -12,7 +12,7 @@ function createUserChatBox(prompt) {
 async function createResponseChatBox(prompt) {
   let responseChatBox = document.createElement("div");
   try {
-    let response = await fetch('http://127.0.0.1:5000/chat', {
+    let response = await fetch('/chat', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -34,11 +34,21 @@ async function createResponseChatBox(prompt) {
   chatArea.appendChild(responseChatBox);
 }
 
-submitBtn.addEventListener("click", async (event) => {
-  const prompt = promptInput.value;
-  if (prompt.trim() === "") {
+async function submitPrompt(){
+  const question = promptInput.value;
+  promptInput.value = "";
+  createUserChatBox(question);
+
+  if(question.trim() === "") {
     return;
   }
-  createUserChatBox(prompt);
-  await createResponseChatBox(prompt);
+  await createResponseChatBox(question);
+}
+
+submitBtn.addEventListener("click", submitPrompt);
+
+promptInput.addEventListener("keypress", (event) => {
+  if(event.key === "Enter"){
+    submitPrompt();
+  }
 });

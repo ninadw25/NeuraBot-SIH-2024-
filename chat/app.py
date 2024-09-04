@@ -1,11 +1,7 @@
 import os
-import re
 import streamlit as st
-import pdfplumber
 import speech_recognition as sr
 from groq import Groq
-from transformers import AutoTokenizer, AutoModelForSeq2SeqLM, pipeline
-from streamlit_router import StreamlitRouter
 
 # Define the API key directly in the script
 GROQ_API_KEY = "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"
@@ -15,15 +11,6 @@ groq_client = Groq(api_key=GROQ_API_KEY)
 
 # Set the page config to change the favicon and title
 st.set_page_config(page_title="nullPointers", page_icon="🧠", layout="wide")
-
-# Cache the summarization model and tokenizer for efficiency
-@st.cache_resource(show_spinner=False)
-def load_summarization_model():
-    model_name = "sshleifer/distilbart-cnn-12-6"
-    tokenizer = AutoTokenizer.from_pretrained(model_name)
-    model = AutoModelForSeq2SeqLM.from_pretrained(model_name)
-    summarizer = pipeline("summarization", model=model, tokenizer=tokenizer)
-    return summarizer
 
 def get_groq_response(prompt, model):
     """Use Groq API to get a response based on the prompt and selected model."""
@@ -90,75 +77,6 @@ def recognize_speech():
             st.error(f"Could not request results from Google Speech Recognition service; {e}")
             return ""
 
-def summarize_pdf(pdf_file):
-    """
-    Extracts text from a PDF, preprocesses it, and generates a summary using a pre-trained model.
-    
-    Args:
-    - pdf_file (UploadedFile): The uploaded PDF file.
-    
-    Returns:
-    - str: The summarized text of the PDF content.
-    """
-    # Step 1: Extract Text from PDF
-    def extract_text_from_pdf(pdf_bytes):
-        text = ""
-        try:
-            with pdfplumber.open(pdf_bytes) as pdf:
-                for page in pdf.pages:
-                    page_text = page.extract_text()
-                    if page_text:
-                        text += page_text + " "
-            return text
-        except Exception as e:
-            st.error(f"Error extracting text from PDF: {e}")
-            return None
-
-    # Step 2: Preprocess Text
-    def preprocess_text(text):
-        text = re.sub(r'\s+', ' ', text)  # Replace multiple whitespaces with a single space
-        text = re.sub(r'\n', ' ', text)   # Remove newlines
-        text = re.sub(r'[^\x00-\x7F]+', ' ', text)  # Remove non-UTF-8 characters
-        text = text.strip()
-        return text
-
-    # Extract and preprocess text
-    raw_text = extract_text_from_pdf(pdf_file)
-    if not raw_text:
-        return None
-
-    preprocessed_text = preprocess_text(raw_text)
-
-    if len(preprocessed_text) == 0:
-        st.warning("The uploaded PDF does not contain extractable text.")
-        return None
-
-    # Step 3: Load the Summarization Model
-    summarizer = load_summarization_model()
-
-    # Step 4: Chunk Text if Too Long
-    max_chunk_length = 1024
-    text_chunks = [preprocessed_text[i:i+max_chunk_length] for i in range(0, len(preprocessed_text), max_chunk_length)]
-
-    # Step 5: Generate Summaries for Each Chunk and Combine
-    summaries = []
-    for chunk in text_chunks:
-        try:
-            summary = summarizer(
-                chunk, 
-                max_length=150, 
-                min_length=60, 
-                do_sample=False
-            )[0]["summary_text"]
-            summaries.append(summary)
-        except Exception as e:
-            st.error(f"Error during summarization: {e}")
-            return None
-
-    # Combine all summaries into one
-    full_summary = ' '.join(summaries)
-    return full_summary
-
 def chatbot_ui(model_choice):
     """Chatbot interface."""
     st.markdown(f"<h2 style='text-align: center; color:#007BFF;'>nullPointers Chatbot</h2>", unsafe_allow_html=True)
@@ -212,44 +130,13 @@ def chatbot_ui(model_choice):
                     st.session_state["past"].append(question)
                     st.session_state["generated"].append(answer)
 
-def summarizer_ui():
-    """Text Summarizer interface."""
-    st.markdown(f"<h2 style='text-align: center; color:#007BFF;'>PDF Text Summarizer</h2>", unsafe_allow_html=True)
-    
-    st.write("Upload a PDF document to generate a concise summary.")
-
-    uploaded_file = st.file_uploader("Choose a PDF file", type="pdf")
-
-    if uploaded_file is not None:
-        file_size = uploaded_file.size
-        if file_size > 10 * 1024 * 1024:
-            st.error("File size exceeds 10MB limit. Please upload a smaller file.")
-            return
-
-        with st.spinner("Processing and summarizing the PDF..."):
-            summary = summarize_pdf(uploaded_file)
-
-        if summary:
-            st.markdown("<h4>Summary:</h4>", unsafe_allow_html=True)
-            with st.expander("Click to view summary"):
-                st.write(summary)
-            
-            # Download summary as text file
-            summary_bytes = summary.encode('utf-8')
-            st.download_button(
-                label="Download Summary",
-                data=summary_bytes,
-                file_name="summary.txt",
-                mime="text/plain"
-            )
-
 def main():
     """Main function to run the Streamlit app."""
     st.sidebar.image("https://i.imgur.com/6Iej2cL.png", use_column_width=True)
     st.sidebar.markdown("<h2 style='color: #007BFF;'>Navigation</h2>", unsafe_allow_html=True)
     
     # Navigation options
-    option = st.sidebar.radio("", ["Chatbot", "Summarizer"])
+    option = st.sidebar.radio("", ["Chatbot"])
 
     st.sidebar.markdown("<h2 style='color: #007BFF;'>Settings</h2>", unsafe_allow_html=True)
     
@@ -259,8 +146,8 @@ def main():
         [
             "llama3-8b-8192",
             "gemma2-9b-it",
-            "llama3.1-70b-versatile",
-            "llama3.1-8b-instant",
+            "llama-3.1-70b-versatile",
+            "llama-3.1-8b-instant",
             "llama-guard-3-8b",
             "llama3-70b-8192",
             "llama3-groq-70b-8192-tool-use-preview",
@@ -269,50 +156,9 @@ def main():
         ]
     )
     
-    # Theme selection (for demonstration purposes)
-    theme_choice = st.sidebar.selectbox("Choose a theme:", ["Default", "Light", "Dark"])
-
-    # Apply theme styles (this requires additional CSS or Streamlit theming configuration)
-    if theme_choice == "Light":
-        st.markdown(
-            """
-            <style>
-            .main {
-                background-color: #FFFFFF;
-                color: #000000;
-            }
-            </style>
-            """,
-            unsafe_allow_html=True
-        )
-    elif theme_choice == "Dark":
-        st.markdown(
-            """
-            <style>
-            .main {
-                background-color: #2E2E2E;
-                color: #FFFFFF;
-            }
-            </style>
-            """,
-            unsafe_allow_html=True
-        )
-
     # Render the selected page
     if option == "Chatbot":
         chatbot_ui(model_choice)
-    elif option == "Summarizer":
-        summarizer_ui()
-    
-main()
-# def test():
-#     st.success("Test Successfull")
 
-# # List of objects
-# pages = [
-#     st.Page(name="Home", path="/", func=home),
-#     st.Page(name="Test", path="test", func=test)
-# ]
-
-# router = StreamlitRouter(pages)
-# router.route()
+if __name__ == "__main__":
+    main()

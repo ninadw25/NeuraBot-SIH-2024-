@@ -4,7 +4,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon index.js"
+    "start": "cross-env NODE_DEBUG=tls MONGODB_DEBUG=true nodemon index.js"
   },
   "author": "nullPointers",
   "license": "ISC",
@@ -12,10 +12,13 @@
   "dependencies": {
     "ejs": "^3.1.10",
     "express": "^4.19.2",
-    "groq": "^3.57.0",
-    "groq-sdk": "^0.6.1",
+    "groq-sdk": "^0.7.0",
     "mongodb": "^6.8.0",
     "mongoose": "^8.5.4",
-    "nodemon": "^3.1.4"
+    "nodemon": "^3.1.4",
+    "pdf-parse": "^1.1.1"
+  },
+  "devDependencies": {
+    "cross-env": "^7.0.3"
   }
 }
