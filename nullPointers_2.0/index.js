@@ -3,6 +3,7 @@ const path = require('path');
 const { MongoClient, ServerApiVersion } = require('mongodb');
 const { logReqRes } = require('./middlewares/log');
 const routes = require('./routes');
+const mongoose = require('mongoose');
 
 const app = express();
 const PORT = 7000;
