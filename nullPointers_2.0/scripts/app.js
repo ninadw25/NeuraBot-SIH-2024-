@@ -22,7 +22,7 @@ async function createResponseChatBox(prompt) {
 
     let result = await response.json();
     if (response.ok) {
-      responseChatBox.textContent = result.response;
+      responseChatBox.innerHTML = result.response;
     } else {
       responseChatBox.textContent = result.error || "Sorry, something went wrong.";
     }
@@ -34,12 +34,12 @@ async function createResponseChatBox(prompt) {
   chatArea.appendChild(responseChatBox);
 }
 
-async function submitPrompt(){
+async function submitPrompt() {
   const question = promptInput.value;
   promptInput.value = "";
   createUserChatBox(question);
 
-  if(question.trim() === "") {
+  if (question.trim() === "") {
     return;
   }
   await createResponseChatBox(question);
@@ -48,7 +48,7 @@ async function submitPrompt(){
 submitBtn.addEventListener("click", submitPrompt);
 
 promptInput.addEventListener("keypress", (event) => {
-  if(event.key === "Enter"){
+  if (event.key === "Enter") {
     submitPrompt();
   }
 });
