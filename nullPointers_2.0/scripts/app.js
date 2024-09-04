@@ -34,12 +34,21 @@ async function createResponseChatBox(prompt) {
   chatArea.appendChild(responseChatBox);
 }
 
-submitBtn.addEventListener("click", async (event) => {
+async function submitPrompt(){
   const question = promptInput.value;
+  promptInput.value = "";
   createUserChatBox(question);
 
   if(question.trim() === "") {
     return;
   }
   await createResponseChatBox(question);
+}
+
+submitBtn.addEventListener("click", submitPrompt);
+
+promptInput.addEventListener("keypress", (event) => {
+  if(event.key === "Enter"){
+    submitPrompt();
+  }
 });
