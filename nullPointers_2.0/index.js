@@ -10,7 +10,7 @@ const staticRouter = require('./routes/index');
 const userRouter = require('./routes/users')
 
 const app = express();
-const PORT = 3000;
+const PORT = 7000;
 
 // MongoDB Connection
 const uri = "mongodb+srv://Suhas:XK5z55hBUJqahszP@null-pointers.vdsmm.mongodb.net/?retryWrites=true&w=majority";
@@ -54,22 +54,8 @@ const upload = multer({ storage: storage });
 
 // Route to handle PDF upload and summarization
 app.post('/summarize', upload.single('file'), async (req, res) => {
-  const filePath = req.file.path;
-
-  try {
-    // Call your Python summarization script here (or another function)
-    const result = await runPythonSummarizer(filePath);
-
-    res.json({ summary: result });
-  } catch (error) {
-    console.error('Error summarizing PDF:', error);
-    res.status(500).json({ error: 'Failed to summarize the PDF.' });
-  }
+  
 });
-
-app.get('/summarize',(req,res) =>{
-  res.render('summarizer.ejs')
-})
 
 // Function to run Python summarization script
 async function runPythonSummarizer(filePath) {
@@ -94,7 +80,6 @@ async function runPythonSummarizer(filePath) {
   });
 }
 
-app.use('/', routes);
 // Routes
 app.use('/', staticRouter);
 app.use('/user', userRouter);
