@@ -4,6 +4,10 @@ const { MongoClient, ServerApiVersion } = require('mongodb');
 const multer = require('multer'); // For handling file uploads
 const { logReqRes } = require('./middlewares/log');
 const routes = require('./routes'); // Assuming you have additional routes
+const mongoose = require('mongoose');
+
+const staticRouter = require('./routes/index');
+const userRouter = require('./routes/users')
 
 const app = express();
 const PORT = 3000;
@@ -11,24 +15,20 @@ const PORT = 3000;
 // MongoDB Connection
 const uri = "mongodb+srv://Suhas:XK5z55hBUJqahszP@null-pointers.vdsmm.mongodb.net/?retryWrites=true&w=majority";
 
-const client = new MongoClient(uri, {
-  serverApi: {
-    version: ServerApiVersion.v1,
-    strict: true,
-    deprecationErrors: true,
-  }
-});
-
 async function run() {
   try {
-    await client.connect();
-    await client.db("admin").command({ ping: 1 });
-    console.log("Pinged your deployment. You successfully connected to MongoDB!");
+    await mongoose.connect(uri, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+
+    console.log("Mongoose connected to MongoDB Atlas!");
   } catch (error) {
-    console.error("MongoDB connection error:", error);
+    console.error("Error connecting to MongoDB Atlas:", error);
   }
 }
-run().catch(console.dir);
+
+run();
 
 app.set("view engine", "ejs");
 app.set("views", path.resolve('./views'));
@@ -95,6 +95,9 @@ async function runPythonSummarizer(filePath) {
 }
 
 app.use('/', routes);
+// Routes
+app.use('/', staticRouter);
+app.use('/user', userRouter);
 
 app.listen(PORT, (error) => {
   if (error) {
