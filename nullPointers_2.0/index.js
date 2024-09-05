@@ -2,8 +2,10 @@ const express = require('express');
 const path = require('path');
 const { MongoClient, ServerApiVersion } = require('mongodb');
 const { logReqRes } = require('./middlewares/log');
-const routes = require('./routes');
 const mongoose = require('mongoose');
+
+const staticRouter = require('./routes/index');
+const userRouter = require('./routes/users')
 
 const app = express();
 const PORT = 7000;
@@ -36,7 +38,9 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(logReqRes("log.txt"));
 
-app.use('/', routes);
+// Routes
+app.use('/', staticRouter);
+app.use('/user', userRouter);
 
 app.listen(PORT, (error) => {
   if (error) {

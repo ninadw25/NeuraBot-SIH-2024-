@@ -16,6 +16,11 @@ body {
     color: #070734;
 }
 
+.login-title{
+    color: #212f5b;
+    font-weight: 900;
+}
+
 h1 {
     font-weight: bold;
     margin: 0;
