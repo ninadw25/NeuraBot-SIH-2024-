@@ -1,19 +1,77 @@
-import os
 import streamlit as st
-import speech_recognition as sr
+import PyPDF2
+import torch
+from transformers import pipeline
+from langchain.text_splitter import RecursiveCharacterTextSplitter
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.metrics.pairwise import cosine_similarity
 from groq import Groq
+import os
+from streamlit_lottie import st_lottie
+import requests
 
-# Define the API key directly in the script
+# Groq API key
 GROQ_API_KEY = "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"
-
-# Initialize Groq client with the direct API key
 groq_client = Groq(api_key=GROQ_API_KEY)
 
-# Set the page config to change the favicon and title
-st.set_page_config(page_title="nullPointers", page_icon="🧠", layout="wide")
+# Color Palette
+PRIMARY_COLOR = "#1A2634"
+SECONDARY_COLOR = "#2C3E50"
+ACCENT_COLOR = "#3498DB"
+TEXT_COLOR = "#34495E"
 
-def get_groq_response(prompt, model):
-    """Use Groq API to get a response based on the prompt and selected model."""
+# Function to load and display Lottie animations
+def load_lottieurl(url: str):
+    try:
+        r = requests.get(url)
+        if r.status_code != 200:
+            return None
+        return r.json()
+    except Exception as e:
+        st.error(f"Error loading Lottie animation: {e}")
+        return None
+
+# PDF Summarizer Functions
+@st.cache_resource
+def load_summarizer_pipeline():
+    device = 0 if torch.cuda.is_available() else -1
+    return pipeline("summarization", model="slauw87/bart_summarisation", device=device)
+
+def extract_text_from_pdf(file):
+    pdf_reader = PyPDF2.PdfReader(file)
+    text = ""
+    for page in pdf_reader.pages:
+        text += page.extract_text() + "\n"
+    return text
+
+def split_text_with_langchain(text, chunk_size, chunk_overlap):
+    text_splitter = RecursiveCharacterTextSplitter(
+        chunk_size=chunk_size,
+        chunk_overlap=chunk_overlap
+    )
+    return text_splitter.split_text(text)
+
+def combine_relevant_chunks(chunks):
+    vectorizer = TfidfVectorizer()
+    X = vectorizer.fit_transform(chunks)
+    similarity_matrix = cosine_similarity(X)
+    
+    combined_chunks = []
+    already_combined = [False] * len(chunks)
+    
+    for i in range(len(chunks)):
+        if not already_combined[i]:
+            combined_chunk = chunks[i]
+            for j in range(len(chunks)):
+                if i != j and similarity_matrix[i, j] > 0.5:
+                    combined_chunk += "\n\n" + chunks[j]
+                    already_combined[j] = True
+            combined_chunks.append(combined_chunk)
+    
+    return combined_chunks
+
+# Chatbot Functions
+def get_groq_response(prompt):
     try:
         chat_completion = groq_client.chat.completions.create(
             messages=[
@@ -22,143 +80,229 @@ def get_groq_response(prompt, model):
                     "content": prompt,
                 }
             ],
-            model=model,
+            model="llama3-8b-8192",
         )
         return chat_completion.choices[0].message.content
     except Exception as e:
         st.error(f"Error getting response from Groq API: {e}")
         return "Error getting response from Groq API."
 
-def process_answer(instruction, model):
-    """Process the user query and return an answer."""
-    
-    # Load all the text chunks from the documents.txt file
-    documents_file = os.path.join(os.path.dirname(__file__), 'documents.txt')
+def process_answer(instruction):
+    documents_file = os.path.join(os.path.dirname(__file__), '.', 'documents.txt')
     try:
         with open(documents_file, 'r', encoding='utf-8') as f:
             texts = f.readlines()
     except UnicodeDecodeError:
         with open(documents_file, 'r', encoding='windows-1252', errors='ignore') as f:
             texts = f.readlines()
-    except FileNotFoundError:
-        st.error("The 'documents.txt' file was not found.")
-        return "Error: 'documents.txt' file not found.", []
 
-    # Combine all texts into one large context
     full_context = " ".join([text.strip() for text in texts])
-    
-    # Create a prompt for the LLM with the full context
-    prompt = f"Based on the following context, answer the question without providing information outside of it:\n{full_context}\n\nQuestion: {instruction['query']}"
-    
-    # Get a response from Groq API using the selected model
-    response = get_groq_response(prompt, model)
-    
-    # Generate related questions (this is a simple example)
-    related_questions = [
-        f"What else can you tell me about {instruction['query']}?",
-        f"How does {instruction['query']} relate to the broader topic?",
-        f"Are there any examples of {instruction['query']}?"
-    ]
-    
-    return response, related_questions
+    prompt = f"Based on the following context, answer the question:\n{full_context}\n\nQuestion: {instruction['query']}"
+    return get_groq_response(prompt)
 
-def recognize_speech():
-    """Recognize speech from the microphone and return the text."""
-    recognizer = sr.Recognizer()
-    with sr.Microphone() as source:
-        st.info("Listening...")
-        audio = recognizer.listen(source)
-        try:
-            return recognizer.recognize_google(audio)
-        except sr.UnknownValueError:
-            st.error("Could not understand the audio.")
-            return ""
-        except sr.RequestError as e:
-            st.error(f"Could not request results from Google Speech Recognition service; {e}")
-            return ""
+def generate_recommended_questions(context):
+    prompt = f"Based on the following conversation context, generate 3 follow-up questions that the user might ask:\n\n{context}\n\nRecommended questions:"
+    response = get_groq_response(prompt)
+    questions = response.split('\n')
+    return [q.strip() for q in questions if q.strip()]
 
-def chatbot_ui(model_choice):
-    """Chatbot interface."""
-    st.markdown(f"<h2 style='text-align: center; color:#007BFF;'>nullPointers Chatbot</h2>", unsafe_allow_html=True)
-    
-    st.write("Interact with the chatbot using text input or voice commands.")
+# Streamlit App
+def main():
+    st.set_page_config(page_title="AI Assistant", page_icon="🤖", layout="wide")
 
-    # Initialize session state variables if not present
-    if "generated" not in st.session_state:
-        st.session_state["generated"] = []
-    if "past" not in st.session_state:
-        st.session_state["past"] = []
-    if "related_questions" not in st.session_state:
-        st.session_state["related_questions"] = []
+    # Custom CSS
+    st.markdown(f"""
+    <style>
+    .reportview-container .main .block-container{{
+        max-width: 1000px;
+        padding-top: 2rem;
+        padding-bottom: 2rem;
+    }}
+    .stApp {{
+        color: {TEXT_COLOR};
+    }}
+    .stButton>button {{
+        color: white;
+        background-color: {ACCENT_COLOR};
+        border-radius: 20px;
+        border: none;
+        padding: 0.5rem 1rem;
+        font-weight: bold;
+    }}
+    .stTextInput>div>div>input {{
+        border-radius: 20px;
+        border: 2px solid {ACCENT_COLOR};
+        padding: 0.5rem 1rem;
+        background-color: white;
+        color: {TEXT_COLOR};
+    }}
+    .stLottie {{
+        margin: 0 auto;
+        display: block;
+    }}
+    .chat-message {{
+        padding: 1.5rem;
+        border-radius: 0.5rem;
+        margin-bottom: 1rem;
+        display: flex;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }}
+    .chat-message.user {{
+        background-color: {PRIMARY_COLOR};
+        color: white;
+    }}
+    .chat-message.bot {{
+        background-color: {SECONDARY_COLOR};
+        color: white;
+    }}
+    .chat-message .avatar {{
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        object-fit: cover;
+        margin-right: 1rem;
+    }}
+    .chat-message .message {{
+        flex-grow: 1;
+    }}
+    .recommended-questions {{
+        display: flex;
+        justify-content: space-between;
+        gap: 0.5rem;
+        margin-top: 1rem;
+    }}
+    .recommended-question {{
+        flex: 1;
+        background-color: {ACCENT_COLOR};
+        color: white;
+        border: none;
+        border-radius: 20px;
+        padding: 0.5rem 1rem;
+        font-size: 0.9rem;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        text-align: center;
+    }}
+    .recommended-question:hover {{
+        background-color: {PRIMARY_COLOR};
+    }}
+    </style>
+    """, unsafe_allow_html=True)
 
-    # Input method selection
-    input_method = st.radio("Choose input method:", ("Text", "Voice"))
+    st.title("🚀 AI Assistant: PDF Summarizer & Chatbot")
 
-    # Handle input
-    if input_method == "Text":
-        user_input = st.text_input("You:", key="input", placeholder="Type your question here...")
-    else:
-        if st.button("🎤 Start Recording"):
-            user_input = recognize_speech()
-            if user_input:
-                st.write(f"**You:** {user_input}")
+    # Sidebar
+    st.sidebar.title("Navigation")
+    app_mode = st.sidebar.selectbox("Choose the app mode",
+        ["PDF Summarizer", "Chatbot"])
+
+    if app_mode == "PDF Summarizer":
+        st.header("📄 PDF Summarization")
+        
+        # Load Lottie animation
+        lottie_url = "https://assets5.lottiefiles.com/packages/lf20_fcfjwiyb.json"
+        lottie_json = load_lottieurl(lottie_url)
+        st_lottie(lottie_json, speed=1, height=200, key="initial")
+
+        summarizer = load_summarizer_pipeline()
+
+        uploaded_file = st.file_uploader("Upload a PDF file", type="pdf")
+
+        if uploaded_file is not None:
+            pdf_text = extract_text_from_pdf(uploaded_file)
+            st.write("PDF content preview (first 500 characters):")
+            st.text_area("", pdf_text[:500] + "...", height=150)
+
+            chunk_size = 1250
+            chunk_overlap = 100
+
+            if st.button("Summarize", key="summarize_button"):
+                chunks = split_text_with_langchain(pdf_text, chunk_size, chunk_overlap)
+                combined_chunks = combine_relevant_chunks(chunks)
+                progress_bar = st.progress(0)
+                full_summary = []
+                
+                for i, combined_chunk in enumerate(combined_chunks):
+                    with st.spinner(f"Summarizing {i+1} of {len(combined_chunks)}..."):
+                        summary = summarizer(combined_chunk, max_length=150, min_length=50, do_sample=False)
+                        summary_text = summary[0]['summary_text']
+                        full_summary.append(summary_text + "\n\n")
+                        progress_bar.progress((i + 1) / len(combined_chunks))
+
+                st.success("Summarization complete!")
+                st.markdown("### 📝 Full Summary:")
+                st.markdown("".join(full_summary))
+
+                summary_text = "# Full Summary\n\n" + "".join(full_summary)
+                st.download_button(
+                    label="📥 Download Summary",
+                    data=summary_text,
+                    file_name="summary.md",
+                    mime="text/markdown"
+                )
+
+    elif app_mode == "Chatbot":
+        st.header("💬 AI Chatbot")
+        
+        # Load new Lottie animation for chatbot with error handling
+        lottie_url_chat = "https://assets5.lottiefiles.com/packages/lf20_M9p23l.json"
+        lottie_json_chat = load_lottieurl(lottie_url_chat)
+        
+        if lottie_json_chat:
+            st_lottie(lottie_json_chat, speed=1, height=200, key="chat")
         else:
-            user_input = None
+            st.warning("Failed to load chat animation. Continuing without animation.")
 
-    # Process user input
-    if user_input:
-        with st.spinner("Generating response..."):
-            answer, related_questions = process_answer({'query': user_input}, model_choice)
+        # Initialize session state
+        if "generated" not in st.session_state:
+            st.session_state["generated"] = ["I'm your AI assistant. How can I help you today?"]
+        if "past" not in st.session_state:
+            st.session_state["past"] = ["Hello!"]
+        if "recommended_questions" not in st.session_state:
+            st.session_state["recommended_questions"] = []
+
+        # Function to handle user input
+        def handle_user_input(user_input):
+            answer = process_answer({'query': user_input})
             st.session_state["past"].append(user_input)
             st.session_state["generated"].append(answer)
-            st.session_state["related_questions"] = related_questions
+            
+            # Generate recommended questions
+            context = "\n".join(st.session_state["past"] + st.session_state["generated"])
+            st.session_state["recommended_questions"] = generate_recommended_questions(context)
 
-    # Display conversation history
-    if st.session_state["generated"]:
-        for i in range(len(st.session_state["generated"])-1, -1, -1):
-            st.markdown(f"<div style='background-color: #F1F1F1; padding: 10px; border-radius: 10px;'><strong>User:</strong> {st.session_state['past'][i]}</div>", unsafe_allow_html=True)
-            st.markdown(f"<div style='background-color: #007BFF; color: white; padding: 10px; border-radius: 10px; margin-top: 5px;'><strong>Bot:</strong> {st.session_state['generated'][i]}</div>", unsafe_allow_html=True)
+        # Text input for user
+        user_input = st.text_input("Ask me anything:", key="input")
 
-    # Display related questions
-    if st.session_state.get("related_questions"):
-        st.markdown("<h4>Related Questions:</h4>", unsafe_allow_html=True)
-        cols = st.columns(3)
-        for idx, question in enumerate(st.session_state["related_questions"]):
-            if cols[idx % 3].button(question):
-                with st.spinner("Generating response..."):
-                    answer, _ = process_answer({'query': question}, model_choice)
-                    st.session_state["past"].append(question)
-                    st.session_state["generated"].append(answer)
+        # Handle user input
+        if user_input:
+            handle_user_input(user_input)
 
-def main():
-    """Main function to run the Streamlit app."""
-    st.sidebar.image("https://i.imgur.com/6Iej2cL.png", use_column_width=True)
-    st.sidebar.markdown("<h2 style='color: #007BFF;'>Navigation</h2>", unsafe_allow_html=True)
+        # Display chat messages
+        for i in range(len(st.session_state["generated"])):
+            message(st.session_state["past"][i], is_user=True, key=str(i) + '_user')
+            message(st.session_state["generated"][i], key=str(i))
+
+        # Display recommended questions as clickable buttons in one line
+        if st.session_state["recommended_questions"]:
+            st.markdown("<div class='recommended-questions'>", unsafe_allow_html=True)
+            cols = st.columns(3)
+            for i, question in enumerate(st.session_state["recommended_questions"][:3]):
+                if cols[i].button(question, key=f"rec_q_{i}"):
+                    handle_user_input(question)
+                    st.experimental_rerun()  # Rerun the app to update the chat immediately
+            st.markdown("</div>", unsafe_allow_html=True)
+
+def message(text, is_user=False, key=None):
+    avatar = "👤" if is_user else "🤖"
+    message_type = "user" if is_user else "bot"
     
-    # Navigation options
-    option = st.sidebar.radio("", ["Chatbot"])
-
-    st.sidebar.markdown("<h2 style='color: #007BFF;'>Settings</h2>", unsafe_allow_html=True)
-    
-    # Add the model list to the sidebar
-    model_choice = st.sidebar.selectbox(
-        "Choose the model:", 
-        [
-            "llama3-8b-8192",
-            "gemma2-9b-it",
-            "llama-3.1-70b-versatile",
-            "llama-3.1-8b-instant",
-            "llama-guard-3-8b",
-            "llama3-70b-8192",
-            "llama3-groq-70b-8192-tool-use-preview",
-            "llama3-groq-8b-8192-tool-use-preview",
-            "mixtral-8x7b-32768"
-        ]
-    )
-    
-    # Render the selected page
-    if option == "Chatbot":
-        chatbot_ui(model_choice)
+    st.markdown(f"""
+    <div class="chat-message {message_type}">
+        <div class="avatar">{avatar}</div>
+        <div class="message">{text}</div>
+    </div>
+    """, unsafe_allow_html=True)
 
 if __name__ == "__main__":
     main()
