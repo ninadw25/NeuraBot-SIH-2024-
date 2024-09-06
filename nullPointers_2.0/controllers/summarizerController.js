@@ -15,7 +15,7 @@ summarizer = (req, res) => {
 
     const pdfFilePath = req.file.path;
 
-    const pythonProcess = spawn('python3', ['./apps/summarizer.py', pdfFilePath]);
+    const pythonProcess = spawn('python', ['./apps/summarizer.py', pdfFilePath]);
 
     let summary = '';
     let errorOutput = '';
