@@ -45,7 +45,7 @@ summarizer = (req, res) => {
             res.status(500).send('Error parsing summary');
         }
 
-        fs.unlinkSync(pdfFilePath);  // Delete the PDF file after processing
+        fs.unlinkSync(pdfFilePath);
     });
 };
 

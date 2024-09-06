@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 const session = require('express-session');
 const passport = require('passport');
 const { logReqRes } = require('./middlewares/log');
-const authMiddleware = require('./middlewares/authentication'); // Import the authentication middleware
+const authMiddleware = require('./middlewares/authentication');
 
 const staticRouter = require('./routes/index');
 const userRouter = require('./routes/users');
@@ -45,6 +45,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 // Middlewares
+app.use(authMiddleware);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(logReqRes("log.txt"));
