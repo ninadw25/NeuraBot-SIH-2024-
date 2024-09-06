@@ -7,7 +7,7 @@ const { logReqRes } = require('./middlewares/log');
 
 const staticRouter = require('./routes/index');
 const userRouter = require('./routes/users')
-const { passport } = require('./scripts/Oauth'); // Import passport strategies from oauth.js
+const { passport } = require('./scripts/Oauth');
 const session = require('express-session');
 
 const app = express();
@@ -37,21 +37,22 @@ app.use(express.static('./assets'));
 app.use(express.static('./scripts'));
 app.use(express.static('./apps'));
 
+app.use(session({
+  secret: 'e33b92145a61635ff2992e8a4fc6a33711d4365bd7f6000276855498196aed93',
+  resave: false,
+  saveUninitialized: true,
+  cookie: { secure: false }
+}));
+app.use(passport.initialize());
+app.use(passport.session());
+
 // Middlewares
 // const checkLogin = require('./middlewares/authentication');
 
 // app.use(checkLogin);
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: true }));
 app.use(logReqRes("log.txt"));
-
-app.use(session({
-  secret: 'e33b92145a61635ff2992e8a4fc6a33711d4365bd7f6000276855498196aed93',  // Replace with a secure key
-  resave: false,
-  saveUninitialized: true
-}));
-app.use(passport.initialize());
-app.use(passport.session());
 
 // Routes
 app.use('/', staticRouter);
