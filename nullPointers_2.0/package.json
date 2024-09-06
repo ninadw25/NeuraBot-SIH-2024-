@@ -4,7 +4,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "cross-env NODE_DEBUG=tls nodemon index.js"
+    "start": "nodemon index.js"
   },
   "author": "nullPointers",
   "license": "ISC",
@@ -13,11 +13,8 @@
     "cors": "^2.8.5",
     "ejs": "^3.1.10",
     "express": "^4.19.2",
-<<<<<<< HEAD
     "formidable": "^3.5.1",
-=======
     "express-session": "^1.18.0",
->>>>>>> f846422dd81b3ecef72b6d360036360089236176
     "groq-sdk": "^0.7.0",
     "mongodb": "^6.8.0",
     "mongoose": "^8.6.1",
