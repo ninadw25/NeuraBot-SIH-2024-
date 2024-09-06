@@ -3,22 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PDF Summarizer</title>
-    <link rel="stylesheet" href="styles/s1.css">
+    <title>Drag and Drop PDF</title>
+    <link rel="stylesheet" href="styles/summarizer.css">
 </head>
 <body>
     <div class="container">
-        <h1>PDF Summarizer</h1>
-        <div class="upload-section">
-            <input type="file" class="file-input" accept=".pdf">
-            <button class="submit-btn">Summarize PDF</button>
-            <div class="loading-spinner" style="display: none;"></div>
+        <h2>Drag and Drop PDF</h2>
+        <div id="drop-area">
+            <form class="upload-form">
+                <p>Drag & Drop your PDF file here</p>
+                <input type="file" id="fileElem" accept="application/pdf" onchange="handleFiles(this.files)">
+                <label class="button" for="fileElem">Select PDF</label>
+            </form>
         </div>
-        <div class="summary-section">
-            <div class="chat-area"></div>
-            <button class="load-more">Load More</button>
-        </div>
+        <div id="file-info"></div>
     </div>
+
     <script src="summarizer.js"></script>
 </body>
 </html>
