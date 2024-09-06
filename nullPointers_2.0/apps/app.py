@@ -35,21 +35,11 @@ def summarize_with_huggingface_api(text):
     
     response = requests.post(API_URL, headers=headers, json=payload)
 
-    # Check for a successful response
     if response.status_code != 200:
-        print(f"Error: API request failed with status code {response.status_code}")
-        print(f"Response: {response.text}")
         return None
     
     response_json = response.json()
-
-    # Check if the response contains the expected data
-    if isinstance(response_json, list) and len(response_json) > 0:
-        return response_json
-    else:
-        print("Warning: No summary returned or unexpected response format.")
-        print(f"Response: {response_json}")
-        return None
+    return response_json
 
 # Function to split text using langchain
 def split_text_with_langchain(text, chunk_size, chunk_overlap):
@@ -65,7 +55,6 @@ def combine_relevant_chunks(chunks):
     X = vectorizer.fit_transform(chunks)
     similarity_matrix = cosine_similarity(X)
 
-    # Combine chunks that are highly similar
     combined_chunks = []
     already_combined = [False] * len(chunks)
 
@@ -73,7 +62,7 @@ def combine_relevant_chunks(chunks):
         if not already_combined[i]:
             combined_chunk = chunks[i]
             for j in range(len(chunks)):
-                if i != j and similarity_matrix[i, j] > 0.5:  # Adjust threshold as needed
+                if i != j and similarity_matrix[i, j] > 0.5:
                     combined_chunk += "\n\n" + chunks[j]
                     already_combined[j] = True
             combined_chunks.append(combined_chunk)
@@ -91,7 +80,7 @@ def summarize_pdf(file_path):
     combined_chunks = combine_relevant_chunks(chunks)
 
     full_summary = []
-    for i, combined_chunk in enumerate(combined_chunks):
+    for combined_chunk in combined_chunks:
         summary_response = summarize_with_huggingface_api(combined_chunk)
         
         if summary_response and 'summary_text' in summary_response[0]:
@@ -101,7 +90,7 @@ def summarize_pdf(file_path):
             full_summary.append("[No summary available]\n\n")
     
     if full_summary:
-        summary_text = "# Full Summary\n\n" + "".join(full_summary)
+        summary_text = "".join(full_summary)
         return summary_text
     return None
 
@@ -109,7 +98,6 @@ if __name__ == "__main__":
     file_path = sys.argv[1]
     summary = summarize_pdf(file_path)
     
-    # Ensure only the summary is output in JSON format
     if summary:
         print(json.dumps({"summary": summary}))
     else:

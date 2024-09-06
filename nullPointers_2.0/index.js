@@ -1,10 +1,9 @@
 const express = require('express');
 const path = require('path');
 const { MongoClient, ServerApiVersion } = require('mongodb');
-const multer = require('multer'); // For handling file uploads
-const { logReqRes } = require('./middlewares/log');
-const routes = require('./routes'); // Assuming you have additional routes
 const mongoose = require('mongoose');
+
+const { logReqRes } = require('./middlewares/log');
 
 const staticRouter = require('./routes/index');
 const userRouter = require('./routes/users')
@@ -27,68 +26,30 @@ async function run() {
     console.error("Error connecting to MongoDB Atlas:", error);
   }
 }
-
 run();
 
+// Setting paths and view engine
 app.set("view engine", "ejs");
 app.set("views", path.resolve('./views'));
 app.use(express.static('./assets'));
 app.use(express.static('./scripts'));
+app.use(express.static('./apps'));
 
 // Middlewares
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(logReqRes("log.txt"));
 
-// Multer configuration for file uploads
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, './uploads'); // Destination folder for uploads
-  },
-  filename: function (req, file, cb) {
-    cb(null, Date.now() + path.extname(file.originalname)); // Generate unique file name
-  }
-});
-
-const upload = multer({ storage: storage });
-
-// Route to handle PDF upload and summarization
-app.post('/summarize', upload.single('file'), async (req, res) => {
-  
-});
-
-// Function to run Python summarization script
-async function runPythonSummarizer(filePath) {
-  const { exec } = require('child_process');
-  const command = `python -u ./apps/app.py ${filePath}`;
-
-  return new Promise((resolve, reject) => {
-    exec(command, (error, stdout, stderr) => {
-      if (error) {
-        console.error(`exec error: ${error}`);
-        reject(stderr);
-      } else {
-        try {
-          const result = JSON.parse(stdout);
-          resolve(result.summary);
-        } catch (parseError) {
-          console.error('Error parsing Python script output:', parseError);
-          reject('Failed to parse summarization result.');
-        }
-      }
-    });
-  });
-}
-
 // Routes
 app.use('/', staticRouter);
 app.use('/user', userRouter);
 
+// Running server
 app.listen(PORT, (error) => {
   if (error) {
     console.log("Error connecting with server", error);
   } else {
     console.log(`Server is listening on port -> ${PORT}`);
-    console.log(`http://localhost:${PORT}`);
+    console.log(`\n\nhttp://localhost:${PORT}\n\n`);
   }
 });
