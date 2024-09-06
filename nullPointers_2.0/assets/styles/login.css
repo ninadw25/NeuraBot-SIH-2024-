@@ -235,27 +235,7 @@ input {
     width: 40px;
 }
 
-footer {
-    background-color: #070734;
-    color: #fff;
-    font-size: 14px;
-    bottom: 0;
-    position: fixed;
-    left: 0;
-    right: 0;
-    text-align: center;
-    z-index: 999;
-}
-
-footer p {
-    margin: 10px 0;
-}
-
-footer i {
-    color: red;
-}
-
-footer a {
-    color: #3c97bf;
-    text-decoration: none;
+.social-container a i {
+    font-size: 20px; /* Add font size to ensure visibility */
+    color: #212f5b;  /* Icon color */
 }
