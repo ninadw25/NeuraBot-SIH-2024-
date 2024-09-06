@@ -5,9 +5,10 @@ const multer = require('multer'); // For handling file uploads
 const { logReqRes } = require('./middlewares/log');
 const routes = require('./routes'); // Assuming you have additional routes
 const mongoose = require('mongoose');
-
 const staticRouter = require('./routes/index');
 const userRouter = require('./routes/users')
+const { passport } = require('./scripts/Oauth'); // Import passport strategies from oauth.js
+const session = require('express-session');
 
 const app = express();
 const PORT = 7000;
@@ -39,6 +40,14 @@ app.use(express.static('./scripts'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(logReqRes("log.txt"));
+
+app.use(session({
+  secret: 'your-secret-key',  // Replace with a secure key
+  resave: false,
+  saveUninitialized: true
+}));
+app.use(passport.initialize());
+app.use(passport.session());
 
 // Multer configuration for file uploads
 const storage = multer.diskStorage({

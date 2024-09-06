@@ -1,5 +1,5 @@
 const express = require('express');
-
+const passport = require('passport')
 const router = express.Router();
 
 const chatbotController = require('../controllers/chatbotController');
@@ -15,5 +15,12 @@ router.get('/chatbot', chatbotController.index);
 router.post('/chat', chatController.handleChat);
 router.get('/summarize', summarizerRender);
 router.post('/summarize', summarizer);
+router.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
+router.get('/auth/google/callback',
+    passport.authenticate('google', { failureRedirect: '/login' }),
+    (req, res) => {
+        res.redirect('/');
+    }
+);
 router.get('/admin',adminController.admin)
 module.exports = router;
