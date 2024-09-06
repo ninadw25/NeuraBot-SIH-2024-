@@ -1,20 +1,8 @@
-const express = require('express');
+// oauth.js
 const passport = require('passport');
-const session = require('express-session');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const FacebookStrategy = require('passport-facebook').Strategy;
 const LinkedInStrategy = require('passport-linkedin-oauth2').Strategy;
-
-const app = express();
-
-// Session middleware
-app.use(session({
-    secret: 'your-secret-key',
-    resave: false,
-    saveUninitialized: true
-}));
-app.use(passport.initialize());
-app.use(passport.session());
 
 // Serialize and deserialize user
 passport.serializeUser((user, done) => {
@@ -53,33 +41,6 @@ passport.use(new LinkedInStrategy({
     return done(null, profile);
 }));
 
-// Google OAuth Routes
-app.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
-app.get('/auth/google/callback',
-    passport.authenticate('google', { failureRedirect: '/login' }),
-    (req, res) => {
-        res.redirect('/home');
-    }
-);
-
-// Facebook OAuth Routes
-app.get('/auth/facebook', passport.authenticate('facebook', { scope: ['email'] }));
-app.get('/auth/facebook/callback',
-    passport.authenticate('facebook', { failureRedirect: '/login' }),
-    (req, res) => {
-        res.redirect('/home');
-    }
-);
-
-// LinkedIn OAuth Routes
-app.get('/auth/linkedin', passport.authenticate('linkedin'));
-app.get('/auth/linkedin/callback',
-    passport.authenticate('linkedin', { failureRedirect: '/' }),
-    (req, res) => {
-        res.redirect('/home');
-    }
-);
-
 // Middleware to protect routes
 function ensureAuthenticated(req, res, next) {
     if (req.isAuthenticated()) {
@@ -88,16 +49,8 @@ function ensureAuthenticated(req, res, next) {
     res.redirect('/login');
 }
 
-// Protect dashboard route
-app.get('/home', ensureAuthenticated, (req, res) => {
-    res.send(`Hello ${req.user.displayName}, welcome to your dashboard!`);
-});
-
-// Logout route
-app.get('/logout', (req, res, next) => {
-    req.logout((err) => {
-        if (err) return next(err);
-        res.redirect('/login');
-    });
-});
-
+// Export routes and strategies
+module.exports = {
+    passport,
+    ensureAuthenticated
+};

@@ -7,6 +7,8 @@ const { logReqRes } = require('./middlewares/log');
 
 const staticRouter = require('./routes/index');
 const userRouter = require('./routes/users')
+const { passport } = require('./scripts/Oauth'); // Import passport strategies from oauth.js
+const session = require('express-session');
 
 const app = express();
 const PORT = 7000;
@@ -39,6 +41,14 @@ app.use(express.static('./apps'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(logReqRes("log.txt"));
+
+app.use(session({
+  secret: 'your-secret-key',  // Replace with a secure key
+  resave: false,
+  saveUninitialized: true
+}));
+app.use(passport.initialize());
+app.use(passport.session());
 
 // Routes
 app.use('/', staticRouter);
