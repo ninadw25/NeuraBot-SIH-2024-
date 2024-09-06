@@ -9,11 +9,19 @@
 
 body {
     margin: 0;
+<<<<<<< Updated upstream
     background-color: #070734;
     color: #070734;
     display: flex;
     height: 100vh;
     overflow: hidden;
+=======
+    background-color: #070734; 
+    color: #070734;
+    display: flex;
+    height: 100vh;
+    /* text-align: center; */
+>>>>>>> Stashed changes
 }
 
 .container {
@@ -25,6 +33,7 @@ body {
 .sidebar {
     width: 20%;
     background-color: #070734;
+    /* background-image: linear-gradient(to right top,#070734,#15157a); */
     color: #fff;
     display: flex;
     flex-direction: column;
@@ -76,8 +85,11 @@ body {
 }
 
 .editor {
+    border-color: #a1a1af;
+    border-width: 2px;
     display: flex;
     flex-direction: column;
+<<<<<<< Updated upstream
     flex-grow: 1;
     background-color: #f4f4f4;
     border: 2px solid #a1a1af;
@@ -85,10 +97,21 @@ body {
     padding: 20px;
     position: relative;
     overflow: hidden; 
+=======
+    flex-grow: 1; 
+    background-color: #f4f4f4;
+    border-style: solid; 
+    border-radius: 8px;
+    padding: 20px;
+    /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); */
+    /* box-shadow: 2px 2px 2px 2px #8686f4; */
+    
+>>>>>>> Stashed changes
 }
 
 
 .chatbot {
+<<<<<<< Updated upstream
     flex-grow: 1;
     color: #FFF;
     padding: 10px;
@@ -100,6 +123,17 @@ body {
 
 .chat-area {
     padding-bottom: 20px; 
+=======
+    flex-grow: 1; /* Makes the chat area flexible to take available space */
+    /* background-color: #010f34e7;#180f3a */
+    /* background-image: linear-gradient(to right,#070734, ); */
+    color: #FFF;
+    padding: 10px;
+    border-radius: 8px;
+    overflow-y: auto;
+    height: 100%; 
+
+>>>>>>> Stashed changes
 }
 
 .input-box {
@@ -129,6 +163,7 @@ body {
     font-size: 18px;
 }
 
+<<<<<<< Updated upstream
 .user-chat, .response-chat {
     padding: 10px;
     border-radius: 14px; 
@@ -156,3 +191,37 @@ body {
     max-width: 70%;
     box-shadow: 0px 0px 1px 1px #222121;
 }
+=======
+.NeuraBot{
+    text-align: center;
+}
+
+.user-chat {
+    box-shadow: 0px 0px 1px 1px #000000 ;
+    /* display: inline-block; */
+    padding: 10px;
+    background-color: #010a26; 
+    border-radius: 14px; 
+    max-width: 50%;
+    word-wrap: break-word; 
+    margin: 5px 0; 
+    float: right; 
+    clear: both;
+    font-size: 15px;
+}
+
+.response-chat{
+    box-shadow: 0px 0px 1px 1px #222121 ;
+    /* display: inline-block; */
+    padding: 10px;
+    background-color: #434855 ; /*#30343d*/
+    border-radius: 14px; 
+    max-width: 70%;
+    word-wrap: break-word; 
+    margin: 5px 0; 
+    float: left; 
+    clear: both;
+    font-size: 15px;
+}
+
+>>>>>>> Stashed changes
