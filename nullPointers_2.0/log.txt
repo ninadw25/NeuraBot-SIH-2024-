@@ -324,3 +324,11 @@
 1725556533096 : ::1 : POST : /chat
 1725619694379 : ::1 : POST : /chat
 >>>>>>> Stashed changes
+1725621068628 : ::1 : GET : /
+1725621077952 : ::1 : GET : /login
+1725621082463 : ::1 : GET : /auth/facebook
+1725621084527 : ::1 : GET : /auth/google
+1725621087128 : ::1 : GET : /auth/google
+1725621099429 : ::1 : GET : /auth/google
+1725621137992 : ::1 : GET : /auth/linkedin
+1725621137997 : ::1 : GET : /auth/facebook
