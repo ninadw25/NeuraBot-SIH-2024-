@@ -14,10 +14,8 @@ router.get('/login', loginController.login);
 router.get('/chatbot', chatbotController.index);
 router.post('/chat', chatController.handleChat);
 router.get('/summarize', summarizerRender);
-<<<<<<< HEAD
 router.post('/upload', upload.single('pdf'), summarizer);
 
-=======
 router.post('/summarize', summarizer);
 router.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
 router.get('/auth/google/callback',
@@ -27,5 +25,4 @@ router.get('/auth/google/callback',
     }
 );
 router.get('/admin',adminController.admin)
->>>>>>> f846422dd81b3ecef72b6d360036360089236176
 module.exports = router;
