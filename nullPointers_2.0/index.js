@@ -12,7 +12,7 @@ const app = express();
 const PORT = 7000;
 
 // MongoDB Connection
-const uri = "mongodb+srv://Suhas:XK5z55hBUJqahszP@null-pointers.vdsmm.mongodb.net/?retryWrites=true&w=majority";
+const uri = "mongodb+srv://saksham:qgNJBitFGTK7JLrb@null-pointers.jj4nx.mongodb.net/?retryWrites=true&w=majority&appName=Null-Pointers";
 
 async function run() {
   try {
