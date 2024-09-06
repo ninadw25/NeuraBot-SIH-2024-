@@ -289,3 +289,17 @@
 1725556250391 : ::1 : GET : /
 1725556743769 : ::1 : GET : /
 1725557558660 : ::1 : GET : /
+1725633461392 : ::1 : GET : /
+1725633474969 : ::1 : GET : /login
+1725633490827 : ::1 : POST : /user/register
+1725633545085 : ::1 : GET : /login
+1725633555504 : ::ffff:127.0.0.1 : GET : /login
+1725633564610 : ::1 : POST : /user/createUser
+1725633564695 : ::1 : GET : /user/styles/login.css
+1725633564697 : ::1 : GET : /user/login.js
+1725633637178 : ::1 : POST : /user/createUser
+1725633642128 : ::1 : GET : /login
+1725633650290 : ::1 : POST : /user/createUser
+1725633764575 : ::1 : POST : /user/createUser
+1725633764624 : ::1 : GET : /login
+1725633782705 : ::1 : POST : /user/login
