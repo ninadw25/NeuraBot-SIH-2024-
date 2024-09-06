@@ -11,7 +11,6 @@ const userValidate = async (req, res) => {
     try {
         const user = await User.findOne({ email });
         if (!user) {
-
             return res.status(404).redirect('/login');
         }
 

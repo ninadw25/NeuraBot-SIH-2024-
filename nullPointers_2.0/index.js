@@ -1,14 +1,13 @@
 const express = require('express');
 const path = require('path');
-const { MongoClient, ServerApiVersion } = require('mongodb');
 const mongoose = require('mongoose');
-
+const session = require('express-session');
+const passport = require('passport');
 const { logReqRes } = require('./middlewares/log');
+const authMiddleware = require('./middlewares/authentication'); // Import the authentication middleware
 
 const staticRouter = require('./routes/index');
-const userRouter = require('./routes/users')
-const { passport } = require('./scripts/Oauth');
-const session = require('express-session');
+const userRouter = require('./routes/users');
 
 const app = express();
 const PORT = 7000;
@@ -22,7 +21,6 @@ async function run() {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });
-
     console.log("Mongoose connected to MongoDB Atlas!");
   } catch (error) {
     console.error("Error connecting to MongoDB Atlas:", error);
@@ -47,9 +45,6 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 // Middlewares
-// const checkLogin = require('./middlewares/authentication');
-
-// app.use(checkLogin);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(logReqRes("log.txt"));

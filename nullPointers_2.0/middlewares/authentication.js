@@ -1,8 +1,9 @@
-function checkLogin(req, res, next) {
+const authMiddleware = (req, res, next) => {
     if (req.session.isAuthenticated) {
-        return next();
+        next();
+    } else {
+        res.redirect('/login');
     }
-    return res.redirect('/login');
-}
+};
 
-module.exports = checkLogin;
+module.exports = authMiddleware;
