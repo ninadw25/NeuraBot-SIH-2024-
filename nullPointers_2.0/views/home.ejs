@@ -12,16 +12,15 @@
         <div class="header">
             <header class="header-content">
                 <a href="#logo" id="logo">
-                    <img src="/images/favicon.svg" alt="Logo" id="logo-icon">
+                    <img src="/images/Neutral BOT.png" alt="Logo" id="logo-icon">
                     <span id="logo-text">NeuraBot</span>
                 </a>
 
                 <nav class="nav">
                     <a href="#home" class="nav_link">Home</a>
                     <a href="/chatbot" class="nav_link">Chatbot</a>
-                    <a href="#pricing" class="nav_link">Pricing</a>
-                    <a href="#blog" class="nav_link">Blog</a>
-                    <a href="#about" class="nav_link">About</a>
+                    <a href="/summarize" class="nav_link">Summariser</a>
+                    <a href="#blog" class="nav_link">Document Decoder</a>
                 </nav>
 
                 <a href="#contact" id="contact-button">Contact Us</a>
@@ -35,22 +34,37 @@
         <div class="content">
             <section class="main-section">
                 <div class="content-left">
-                    <p class="section-label">Very proud to introduce</p>
+                    <p class="section-label">Welcome to</p>
                     <h1 class="section-title">NeuraBot</h1>
                     <p class="section-description">
                         Welcome to our cutting-edge organizational platform! Our chatbot offers instant answers in just 3 seconds, handling HR, IT support, and event queries effortlessly. With a document summarizer that works in 18 seconds, responsive design, and 2FA security, the platform is built to streamline workplace operations and enhance productivity.
                     </p>
                     <div class="button-group">
-                        <a href="#start" id="start-button">Start Now</a>
-                        <a href="#tour" id="tour-button">Take Tour</a>
+                        <a href="/chatbot" id="start-button">ChatBot</a>
+                        <a href="/summarize" id="tour-button">Text Summariser</a>
                     </div>
                 </div>
 
                 <div class="content-right">
                     <div class="image-container">
-                        <img src="/images/hero-section.png" alt="Hero Section Image" id="hero-section-image">
+                        <!-- Replace img tag with this div for Lottie animation -->
+                        <div id="lottie-animation"></div>
                     </div>
                 </div>
+                
+                <!-- Add Lottie script source -->
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.7.5/lottie.min.js"></script>
+                
+                <!-- Lottie animation script -->
+                <script>
+                    var animation = lottie.loadAnimation({
+                        container: document.getElementById('lottie-animation'), // targeting the new div
+                        renderer: 'svg',
+                        loop: true,
+                        autoplay: true,
+                        path: 'https://lottie.host/f184d3ea-1720-4702-af9f-732043eeb742/LoTGbchbcz.json' // Lottie animation path
+                    });
+                </script>
             </section>
         </div>
 
@@ -161,7 +175,7 @@
                 <div class="footer-top">
                     <div class="comp-logo">
                         <a href="#StudySync" class="logo-link">
-                            <img src="/images/favicon.svg" alt="StudySync logo" class="logo-svg">
+                            <img src="/images/Neutral BOT.png" alt="StudySync logo" class="logo-svg">
                             NeuraBot
                         </a>
                         <!-- <p class="filler-text">Seamless Learning for Brighter Futures.</p> -->
