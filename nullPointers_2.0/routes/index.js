@@ -8,7 +8,6 @@ const { summarizerRender, summarizer, upload } = require('../controllers/summari
 const homeController = require('../controllers/homeController');
 const loginController = require('../controllers/loginController');
 const { admin, adminHome } = require('../controllers/adminController');
-const { generateOTP, sendOTPEmail, otpHandler, verifyOTP } = require('../controllers/otpController');
 
 router.get('/', homeController.home);
 router.get('/login', loginController.login);
@@ -16,8 +15,6 @@ router.get('/chatbot', chatbotController.index);
 router.post('/chat', chatController.handleChat);
 router.get('/summarize', summarizerRender);
 router.post('/upload', upload.single('pdf'), summarizer);
-router.get('/otp', otpHandler);  // OTP route to render form and send OTP
-router.post('/verifyOtp', verifyOTP);  // OTP verification route
 
 router.post('/summarize', summarizer);
 router.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'email'] }));

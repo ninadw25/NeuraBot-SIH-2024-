@@ -3,13 +3,13 @@ const path = require('path');
 const mongoose = require('mongoose');
 const session = require('express-session');
 const { logReqRes } = require('./middlewares/log');
-const { authMiddleware, otpAuthenticate } = require('./middlewares/authentication');
+const { authMiddleware } = require('./middlewares/authentication');
 const { passport } = require('./scripts/Oauth.js');
 const staticRouter = require('./routes/index');
 const userRouter = require('./routes/users');
 
 const app = express();
-const PORT = 7000;
+const PORT = 7001;
 
 // MongoDB Connection
 const uri = "mongodb+srv://saksham:qgNJBitFGTK7JLrb@null-pointers.jj4nx.mongodb.net/?retryWrites=true&w=majority&appName=Null-Pointers";
@@ -45,7 +45,7 @@ app.use(passport.session());
 
 // Middlewares
 app.use(authMiddleware);
-app.use(otpAuthenticate);
+// app.use(otpAuthenticate);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(logReqRes("log.txt"));
