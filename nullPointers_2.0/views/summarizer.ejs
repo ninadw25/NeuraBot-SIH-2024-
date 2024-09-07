@@ -6,9 +6,9 @@
     <title>Document Decoder</title>
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="summarizer.css">
+    <link rel="stylesheet" href="styles/summarizer.css">
 </head>
-<body>
+<body> 
     <div class="container">
         <div class="sidebar">
             <h2>Settings</h2>
@@ -31,7 +31,7 @@
                     <div id="initial-state">
                         <i class="fas fa-file-pdf"></i>
                         <p>Drag & Drop <br> or <a id="browse-link">browse</a></p>
-                        <small>Supports: PDF</small>
+                        <small>Supports: PDF</small> 
                         <input type="file" id="fileElem" accept="application/pdf">
                     </div>
                     <div class="success-message hidden" id="success-message">
@@ -47,6 +47,7 @@
                 <div class="summary-area" id="summary-area">
                     <h2>PDF Summary</h2>
                     <p id="summary-text"></p>
+                    <!-- Delete button will be added here dynamically -->
                 </div>
                 <div class="chat-box" id="chat-box">
                     <div class="chat-messages" id="chat-messages"></div>

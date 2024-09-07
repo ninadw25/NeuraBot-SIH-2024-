@@ -8,7 +8,7 @@ const { passport } = require('./scripts/Oauth.js');
 const staticRouter = require('./routes/index');
 const userRouter = require('./routes/users');
 const adminRouter = require('./routes/admin.js')
-
+const summarizerRoutes = require('./routes/summarizer.js')
 const app = express();
 const PORT = 7001;
 
@@ -45,7 +45,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 // Middlewares
-// app.use(authMiddleware);
+app.use(authMiddleware);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(logReqRes("log.txt"));
@@ -53,6 +53,7 @@ app.use(logReqRes("log.txt"));
 app.use('/', staticRouter);
 app.use('/user', userRouter);
 app.use('/admin', adminRouter);
+app.use('/summarize', summarizerRoutes);  // Make sure this line is correct
 
 // Running server
 app.listen(PORT, (error) => {

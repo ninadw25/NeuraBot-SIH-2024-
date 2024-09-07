@@ -42,15 +42,15 @@ function handleFiles(files) {
         initialState.style.display = 'none';
         popup.style.display = 'block';
 
-        // Fetch the `/upload` endpoint to send the file for summarization
+        // Fetch the /upload endpoint to send the file for summarization
         fetch('/upload', {
             method: 'POST',
             body: formData
         })
         .then(response => response.json())
         .then(data => {
-            // Store the summary for later use
             window.pdfSummary = data.summary;
+            window.pdfFilename = data.filename;
         })
         .catch(error => {
             console.error('Error summarizing the PDF:', error);
@@ -65,13 +65,11 @@ function showSummarizer() {
     uploadContainer.style.display = 'none';
     summaryArea.style.display = 'block';
     
-    // Display the summary or a loading message
     const summaryText = document.getElementById('summary-text');
     if (window.pdfSummary) {
         summaryText.textContent = window.pdfSummary;
     } else {
         summaryText.textContent = 'Summary is being generated. Please wait...';
-        // Check for summary every second
         const summaryChecker = setInterval(() => {
             if (window.pdfSummary) {
                 summaryText.textContent = window.pdfSummary;
@@ -89,14 +87,95 @@ function showChat() {
 }
 
 // Send message in chat
-function sendMessage() {
+async function sendMessage() { 
     const input = document.getElementById('chat-input');
-    const message = input.value;
-    if (message.trim() !== '') {
+    const message = input.value.trim();
+    if (message !== '') {
         const chatMessages = document.getElementById('chat-messages');
-        const messageElement = document.createElement('div');
-        messageElement.textContent = message;
-        chatMessages.appendChild(messageElement);
+        
+        // Display user message
+        const userMessageElement = document.createElement('div');
+        userMessageElement.textContent = `You: ${message}`;
+        userMessageElement.classList.add('user-message');
+        chatMessages.appendChild(userMessageElement);
+        
+        // Clear input
         input.value = '';
+        
+        // Display "Assistant is typing..." message
+        const typingElement = document.createElement('div');
+        typingElement.textContent = 'Assistant is typing...';
+        typingElement.classList.add('assistant-typing');
+        chatMessages.appendChild(typingElement);
+        
+        try {
+            const response = await fetch('/summarize/chatApi', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ message }),
+            });
+            
+            if (!response.ok) {
+                const errorText = await response.text();
+                console.error('Server response:', errorText);
+                throw new Error(`Failed to get response from server: ${response.status} ${response.statusText}`);
+            }
+            
+            const data = await response.json();
+            
+            // Remove "Assistant is typing..." message
+            chatMessages.removeChild(typingElement);
+            
+            // Display assistant's response
+            const assistantMessageElement = document.createElement('div');
+            assistantMessageElement.textContent = `Assistant: ${data.response}`;
+            assistantMessageElement.classList.add('assistant-message');
+            chatMessages.appendChild(assistantMessageElement);
+        } catch (error) {
+            console.error('Error in chat:', error);
+            
+            // Remove "Assistant is typing..." message
+            chatMessages.removeChild(typingElement);
+            
+            // Display error message
+            const errorElement = document.createElement('div');
+            errorElement.textContent = `Error: ${error.message}`;
+            errorElement.classList.add('error-message');
+            chatMessages.appendChild(errorElement);
+        }
+        
+        // Scroll to bottom of chat
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+}
+// Delete PDF function
+function deletePDF() {
+    if (window.pdfFilename) {
+        fetch(`/delete/${window.pdfFilename}`, {
+            method: 'DELETE'
+        })
+        .then(response => {
+            if (response.ok) {
+                alert('PDF deleted successfully');
+                // Reset the UI
+                summaryArea.style.display = 'none';
+                chatBox.style.display = 'none';
+                uploadContainer.style.display = 'block';
+                initialState.style.display = 'block';
+                successMessage.classList.add('hidden');
+                window.pdfSummary = null;
+                window.pdfFilename = null;
+                // Clear chat messages
+                document.getElementById('chat-messages').innerHTML = '';
+            } else {
+                throw new Error('Failed to delete PDF');
+            }
+        })
+        .catch(error => {
+            console.error('Error deleting PDF:', error);
+            alert('Error deleting PDF');
+        });
     }
 }

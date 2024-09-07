@@ -7,7 +7,7 @@ exports.handleChat = async (req, res) => {
     const { prompt } = req.body;
     const context = fs.readFileSync(path.resolve('./assets/documents/document.txt'), 'utf-8');
     
-    const fullPrompt = `Based on the following context, answer the question without providing information outside of it:\n${context}\n\nQuestion: ${prompt}`;
+    const fullPrompt = `Based on the following context, answer the question without providing information outside of it:\n${context}\n\nQuestion: ${prompt} and if it contains any cuss words simply say that cuss words are not allowed`;
     
     const chatCompletion = await getGroqChatCompletion(fullPrompt);
     const response = chatCompletion.choices[0]?.message?.content || "Sorry, I couldn't generate a response.";

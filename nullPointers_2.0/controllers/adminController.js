@@ -1,7 +1,7 @@
 const path = require('path');
 const multer = require('multer');
 const pdf = require('pdf-parse');
-
+const fs = require('fs')
 // Admin login controller
 const adminLogin = (req, res) => {
     const { username, password } = req.body;
@@ -47,9 +47,9 @@ const pdfUploader = (req, res) => {
     const textFilePath = path.join(__dirname, '../assets/documents/document.txt');
 
     // Delete previous document.txt file if it exists
-    // if (fs.existsSync(textFilePath)) {
-    //     fs.unlinkSync(textFilePath);
-    // }
+    if (fs.existsSync(textFilePath)) {
+        fs.unlinkSync(textFilePath);
+    }
 
     // Read and parse the uploaded PDF
     fs.readFile(pdfFilePath, (err, dataBuffer) => {
