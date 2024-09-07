@@ -5,7 +5,6 @@ const session = require('express-session');
 const passport = require('passport');
 const { logReqRes } = require('./middlewares/log');
 const authMiddleware = require('./middlewares/authentication');
-require('dotenv').config();
 
 const staticRouter = require('./routes/index');
 const userRouter = require('./routes/users');
