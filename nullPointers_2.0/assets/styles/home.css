@@ -40,8 +40,8 @@ body{
     gap: 0.625rem;
 }
 #logo-icon{
-    height: 5.875rem;
-    width: 1.938rem;
+    height: 3.875rem;
+    width: 3.875rem;
 }
 #logo-text{
     font-size: 2rem;
@@ -127,7 +127,6 @@ body{
     }
 }
 .section-label{
-    font-size: 1.15rem;
     font-weight: 600;
     color: var(--primary-color);
 }
@@ -176,9 +175,9 @@ body{
 }
 .image-container{
     border: none;
-    border-radius: 1.225rem;
+    /* border-radius: 1.225rem; */
     overflow: hidden;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    /* box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); */
     height: 50vh;
 }
 #hero-section-image{
@@ -201,7 +200,7 @@ body{
         padding-left: 0;
     }
     .section-label{
-        font-size: 1.3rem;
+        font-size: 2.0rem;
     }
     .section-title{
         font-size: 3.8rem;
@@ -538,8 +537,8 @@ body{
     gap: 1.65rem;
 }
 .logo-svg{
-    width: 2rem;
-    height: 4.9rem;
+    height: 3.875rem;
+    width: 3.875rem;
 }
 .comp-logo{
     display: flex;
