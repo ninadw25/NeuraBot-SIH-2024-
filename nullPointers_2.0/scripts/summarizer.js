@@ -109,7 +109,6 @@ async function sendMessage() {
         chatMessages.appendChild(typingElement);
         
         try {
-            console.log('Sending request to server...');
             const response = await fetch('/summarize/chatApi', {
                 method: 'POST',
                 headers: {
@@ -118,9 +117,6 @@ async function sendMessage() {
                 body: JSON.stringify({ message }),
             });
             
-            console.log('Response status:', response.status);
-            console.log('Response OK:', response.ok);
-            
             if (!response.ok) {
                 const errorText = await response.text();
                 console.error('Server response:', errorText);
@@ -128,7 +124,6 @@ async function sendMessage() {
             }
             
             const data = await response.json();
-            console.log('Received data:', data);
             
             // Remove "Assistant is typing..." message
             chatMessages.removeChild(typingElement);

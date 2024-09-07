@@ -24,8 +24,8 @@ router.get('/auth/google/callback',
     }
 );
 
-router.get('/send-otp', otpController.sendOTP); // Sends OTP after login (only once)
-router.post('/verify-otp', otpController.verifyOTP); // Verifies OTP entered by the user
+router.get('/send-otp', otpController.sendOTP);
+router.post('/verify-otp', otpController.verifyOTP);
 module.exports = router;
 const adminRouter = require('./admin');
 app.use('/admin', adminRouter);

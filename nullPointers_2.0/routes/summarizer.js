@@ -5,6 +5,6 @@ const { chatHandler } = require('../controllers/QnAcontroller');
 
 router.get('/', summarizerRender);
 router.post('/upload', upload.single('pdf'), summarizer);
-router.post('/chatApi', chatHandler);  // Add this line
+router.post('/chatApi', chatHandler);
 
 module.exports = router;
