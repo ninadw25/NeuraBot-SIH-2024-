@@ -5,7 +5,9 @@ const authMiddleware = (req, res, next) => {
         '/user/login', 
         '/auth/google/callback', 
         '/auth/google', 
-        '/admin', 
+        '/admin',
+        '/admin/home',
+        '/admin/login',
         '/send-otp', 
         '/verify-otp'
     ];
