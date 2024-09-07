@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="/styles/otp.css">
 </head>
 <body>
-    <div class="form-container">
+    <div class="container">
         <form action="/verify-otp" method="POST" id="otpForm">
             <h1>Verify OTP</h1>
             <p>Enter the 4-digit code sent to your email: <strong><%= email %></strong></p>
@@ -20,7 +20,7 @@
             </div>
             <button type="submit">Verify</button>
             <% if (errorMessage) { %>
-                <p style="color:red"><%= errorMessage %></p>
+                <p class="error-message"><%= errorMessage %></p>
             <% } %>
             <a href="#" class="resend-link">Resend OTP</a>
         </form>
