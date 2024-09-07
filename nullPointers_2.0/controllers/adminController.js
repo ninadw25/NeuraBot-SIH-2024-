@@ -1,6 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const multer = require('multer');
+const pdf = require('pdf-parse');
 
 // Admin login controller
 const adminLogin = (req, res) => {
@@ -41,8 +42,9 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
-// PDF upload handler
+// PDF upload and ingestion handler
 const pdfUploader = (req, res) => {
+    const pdfFilePath = path.join(__dirname, '../assets/documents/policy.pdf');
     const textFilePath = path.join(__dirname, '../assets/documents/document.txt');
 
     // Delete previous document.txt file if it exists
@@ -50,8 +52,28 @@ const pdfUploader = (req, res) => {
         fs.unlinkSync(textFilePath);
     }
 
-    // Send response back to client after upload
-    res.status(200).send('PDF uploaded successfully!');
+    // Read and parse the uploaded PDF
+    fs.readFile(pdfFilePath, (err, dataBuffer) => {
+        if (err) {
+            console.error('Error reading the PDF file:', err);
+            return res.status(500).send('Error processing the PDF');
+        }
+
+        pdf(dataBuffer)
+            .then((data) => {
+                fs.writeFile(textFilePath, data.text, (error) => {
+                    if (error) {
+                        console.error("Error writing document.txt: ", error);
+                        return res.status(500).send('Error processing the PDF');
+                    }
+                    res.status(200).send('PDF uploaded and processed successfully!');
+                });
+            })
+            .catch((error) => {
+                console.error('Error parsing the PDF:', error);
+                res.status(500).send('Error processing the PDF');
+            });
+    });
 };
 
 module.exports = {

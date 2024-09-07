@@ -7,4 +7,4 @@ router.post('/login', adminLogin);
 router.get('/home', adminHome);
 router.post('/upload-pdf', upload.single('pdf'), pdfUploader);
 
-module.exports = router;
+module.exports=router;
