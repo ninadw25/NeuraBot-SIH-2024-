@@ -1,4 +1,3 @@
-const fs = require('fs');
 const path = require('path');
 const { exec } = require('child_process');
 const multer = require('multer');
@@ -50,19 +49,19 @@ const upload = multer({
 });
 
 const pdfUploader = (req, res) => {
-    if (!req.file) {
+    if (!req.file) {7
         return res.status(400).send('No file uploaded or invalid file type.');
     }
 
-    const textFilePath = path.join(__dirname, '../assets/documents/document.txt');
+    // const textFilePath = path.join(__dirname, '../assets/documents/document.txt');
 
     // Delete previous document.txt file if it exists
-    if (fs.existsSync(textFilePath)) {
-        fs.unlinkSync(textFilePath);
-    }
+    // if (fs.existsSync(textFilePath)) {
+    //     fs.unlinkSync(textFilePath);
+    // }
 
     // Trigger the ingest.js script to process the uploaded PDF
-    exec('node ./ingest.js', (err, stdout, stderr) => {
+    exec('node scripts/ingest.js', (err, stdout, stderr) => {
         if (err) {
             console.error(`Error executing ingest.js: ${err}`);
             return res.status(500).send('Error processing the PDF.');

@@ -3,20 +3,60 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Drag and Drop PDF</title>
-    <link rel="stylesheet" href="styles/summarizer.css">
+    <title>Document Decoder</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="summarizer.css">
 </head>
 <body>
     <div class="container">
-        <h2>Drag and Drop PDF</h2>
-        <div id="drop-area">
-            <form class="upload-form">
-                <p>Drag & Drop your PDF file here</p>
-                <input type="file" id="fileElem" accept="application/pdf" onchange="handleFiles(this.files)">
-                <label class="button" for="fileElem">Select PDF</label>
-            </form>
+        <div class="sidebar">
+            <h2>Settings</h2>
+            <ul>
+                <li>Modules</li>
+                <li>Options</li>
+                <li>More options</li>
+                <li>hehehe</li>
+                <li>Wassup</li>
+            </ul>
         </div>
-        <div id="file-info"></div> <!-- Display file information and summary here -->
+        <div class="main-content">
+            <header>
+                <div class="logo">
+                    <h1>Document Decoder</h1>
+                </div>
+            </header>
+            <div class="content-area">
+                <div class="upload-container" id="upload-container">
+                    <div id="initial-state">
+                        <i class="fas fa-file-pdf"></i>
+                        <p>Drag & Drop <br> or <a id="browse-link">browse</a></p>
+                        <small>Supports: PDF</small>
+                        <input type="file" id="fileElem" accept="application/pdf">
+                    </div>
+                    <div class="success-message hidden" id="success-message">
+                        <span>PDF successfully attached!</span>
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <div class="popup" id="popup">
+                        <h3>Select an Option</h3>
+                        <button onclick="showSummarizer()">Summarizer</button>
+                        <button onclick="showChat()">QnA</button>
+                    </div>
+                </div>
+                <div class="summary-area" id="summary-area">
+                    <h2>PDF Summary</h2>
+                    <p id="summary-text"></p>
+                </div>
+                <div class="chat-box" id="chat-box">
+                    <div class="chat-messages" id="chat-messages"></div>
+                    <div class="chat-input">
+                        <input type="text" id="chat-input" placeholder="Type your message...">
+                        <button onclick="sendMessage()">Send</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script src="summarizer.js"></script>
