@@ -25,7 +25,7 @@ uploadContainer.addEventListener('drop', (e) => {
     uploadContainer.classList.remove('dragover');
     const files = e.dataTransfer.files;
     handleFiles(files);
-});
+}); 
 
 fileInput.addEventListener('change', (e) => {
     handleFiles(e.target.files);
@@ -42,15 +42,15 @@ function handleFiles(files) {
         initialState.style.display = 'none';
         popup.style.display = 'block';
 
-        // Fetch the `/upload` endpoint to send the file for summarization
+        // Fetch the /upload endpoint to send the file for summarization
         fetch('/upload', {
             method: 'POST',
             body: formData
         })
         .then(response => response.json())
         .then(data => {
-            // Store the summary for later use
             window.pdfSummary = data.summary;
+            window.pdfFilename = data.filename;
         })
         .catch(error => {
             console.error('Error summarizing the PDF:', error);
@@ -65,13 +65,11 @@ function showSummarizer() {
     uploadContainer.style.display = 'none';
     summaryArea.style.display = 'block';
     
-    // Display the summary or a loading message
     const summaryText = document.getElementById('summary-text');
     if (window.pdfSummary) {
         summaryText.textContent = window.pdfSummary;
     } else {
         summaryText.textContent = 'Summary is being generated. Please wait...';
-        // Check for summary every second
         const summaryChecker = setInterval(() => {
             if (window.pdfSummary) {
                 summaryText.textContent = window.pdfSummary;
@@ -98,5 +96,32 @@ function sendMessage() {
         messageElement.textContent = message;
         chatMessages.appendChild(messageElement);
         input.value = '';
+    }
+}
+
+// Delete PDF function
+function deletePDF() {
+    if (window.pdfFilename) {
+        fetch(`/delete/${window.pdfFilename}`, {
+            method: 'DELETE'
+        })
+        .then(response => {
+            if (response.ok) {
+                alert('PDF deleted successfully');
+                // Reset the UI
+                summaryArea.style.display = 'none';
+                uploadContainer.style.display = 'block';
+                initialState.style.display = 'block';
+                successMessage.classList.add('hidden');
+                window.pdfSummary = null;
+                window.pdfFilename = null;
+            } else {
+                throw new Error('Failed to delete PDF');
+            }
+        })
+        .catch(error => {
+            console.error('Error deleting PDF:', error);
+            alert('Error deleting PDF');
+    });
     }
 }

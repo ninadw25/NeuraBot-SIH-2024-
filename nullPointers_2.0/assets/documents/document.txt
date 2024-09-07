@@ -1,67 +1,55 @@
 
 
-Shreya Khandelwal
-H(+91) 98181 66684
-Bshreyakhandelwal7717@gmail.com
-Education
-2023–2027BML Munjal University,
-Computer Science and Engineering, B.Tech, CGPA – 9.78 (current).
-2022Ryan International School,
-Class XII, Aggregate – 94 %.
-2020Ryan International School,
-Class X, Aggregate – 91.2 %.
-Skills
-Languages  C++, JavaScript, Python, HTML, CSS, Dart
-Application
-Frameworks
-Flutter
-Data Analysis
-(Python)
-Numpy, Pandas, Matplotlib, Seaborn
-Databases  MongoDB, MySql
-AI/ML
-Framework
-scikit-Learn(Algorithmic Applications)
-Work Experience
-June 2024PalmBook.
-{Developing PalmBook, an in-house application to digitize BML Munjal University, catering to university-related
-mobile application needs.
-{Revolutionized student engagement by integrating essential features such as shuttle booking, mess menu, gate
-pass, discussion forum, and lost and found.
-{Planned updates which will add a variety of features to further improve functionality and user experience.
-Projects
-April 2024Super Mart Inventory Management System, .
-{Developed a C++ console application for managing product inventory, including adding and searching items.
-{Implemented file handling for data persistence using ofstream and ifstream to store and retrieve product details.
-{Designed the Mart class to encapsulate product attributes and provide getter and setter methods.
-{
-Created a user-friendly interface with clear prompts and feedback, utilizing system commands and sleep
-functions for enhanced usability.
-March 2024Postfix Expression Evaluation using Binary Expression Tree, .
-{
-Developed a C++ console application to construct and evaluate a binary expression tree from a postfix
-expression.
-{Implemented tree construction using a stack to manage nodes and form the expression tree.
-{
-Created an evaluation function to recursively calculate the result of the expression by traversing the binary tree.
-{Supported basic arithmetic operations (+, -, *, /) for evaluating postfix expressions.
-January 2024Minor C++ games, .
-{
-Rock Paper Scissors Game: Developed a C++ console application for playing Rock Paper Scissors, allowing
-a user to play against the computer with randomized moves. Implemented game logic to determine the winner
-and display results, providing an interactive and engaging experience.
-{Tic Tac Toe Game: Created a C++ console application for a two-player Tic Tac Toe game, including a
-game board display and input validation. Implemented game mechanics to check for win conditions and handle
-player turns, ensuring a seamless gameplay experience.
-GitHubRepo
-1/2
+  
+Contact
+pratusirsa@gmail.com
+www.linkedin.com/in/pratyaksh-
+saluja-ps (LinkedIn)
+Top Skills
+Data Structures
+Python (Programming Language)
+C++
+Pratyaksh Saluja
+CSE' 27 @BMU | SIH 2023 Finalist [Team Leader] | C++ 17, Python
+Sirsa, Haryana, India
+Summary
+‍ Aspiring Computer Scientist | BML Munjal University, Class of 2023 |
+Future CSE Graduate (2027) ‍
+Hello! I'm Pratyaksh Saluja, a dedicated student pursuing Computer
+Science and Engineering at BML Munjal University, with an
+anticipated graduation year of 2027.
+Academic Journey:
+My academic journey is centered on cultivating a deep
+understanding of computer science. I'm well-versed in C++ and data
+structures, and I'm currently exploring modern C++ (C++17-20) to
+enhance my coding practices.
+Technical Proficiency:
+Alongside my academic pursuits, I've developed practical skills
+in Python, utilizing libraries like NumPy, Pandas, SymPy, and
+Matplotlib. These tools have enriched my toolkit for data analysis and
+visualization.
+SIH Finals Achievement:
+In an exciting venture, I had the privilege of leading a team that
+advanced to the finals of the Smart India Hackathon (SIH) in my very
+first semester. It was an incredible experience, and the journey as a
+team leader added a valuable layer to my learning curve.
+️ Self-Learning Enthusiast:
+While I haven't undertaken specific DSA projects, I've actively delved
+into the world of data structures and algorithms by studying and
+understanding ready-made projects. This self-learning approach has
+deepened my comprehension of these fundamental concepts.
+Experience
+ 
+Page 1 of 2
 
-Academics and Extra Curriculars
-Achieved 9-grade in Object-Oriented Programming (Sem-I) and 10-grade in Data Structure and Algorithm (Sem-II)
-I have been part of various organizing committee in my university
-{Model United Nation - Design Team
-{HACK-BMU 6.O - Social Media Team
-{Pitchfest - Entry Management Team
-{Hult Prize - Operation Team
-I am also the Campus Ambassador of my university
-2/2
+  
+Smart India Hackathon 
+Team Leader
+December 2023 - December 2023 (1 month)
+Hyderabad, Telangana, India
+Finalists | Top 5 out of 250+ Teams
+Education
+BML Munjal University
+ · (2023 - 2027)
+ 
+Page 2 of 2
