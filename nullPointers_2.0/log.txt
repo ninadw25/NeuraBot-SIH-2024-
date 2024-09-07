@@ -974,3 +974,8 @@
 1725699598542 : ::1 : POST : /chat
 1725699603091 : ::1 : POST : /chat
 >>>>>>> Stashed changes
+1725701190187 : ::1 : GET : /login
+1725701191163 : ::1 : GET : /login
+1725701205647 : ::1 : POST : /user/login
+1725701205781 : ::1 : GET : /otp
+1725701210068 : ::1 : GET : /admin

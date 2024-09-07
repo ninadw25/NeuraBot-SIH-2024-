@@ -7,7 +7,7 @@ const chatController = require('../controllers/chatController');
 const { summarizerRender, summarizer, upload } = require('../controllers/summarizerController');
 const homeController = require('../controllers/homeController');
 const loginController = require('../controllers/loginController');
-const adminController = require('../controllers/adminController')
+const { admin, adminHome } = require('../controllers/adminController')
 const otpController = require('../controllers/otpController');
 
 router.get('/', homeController.home);
@@ -26,5 +26,6 @@ router.get('/auth/google/callback',
         res.redirect('/');
     }
 );
-router.get('/admin',adminController.admin)
+router.get('/admin', admin);
+router.get('/admin/home', adminHome);
 module.exports = router;

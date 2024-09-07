@@ -3,12 +3,8 @@ const path = require('path');
 const mongoose = require('mongoose');
 const session = require('express-session');
 const { logReqRes } = require('./middlewares/log');
-<<<<<<< Updated upstream
 const { authMiddleware, otpAuthenticate } = require('./middlewares/authentication');
-=======
-const authMiddleware = require('./middlewares/authentication');
 const { passport } = require('./scripts/Oauth.js');
->>>>>>> Stashed changes
 
 const staticRouter = require('./routes/index');
 const userRouter = require('./routes/users');
