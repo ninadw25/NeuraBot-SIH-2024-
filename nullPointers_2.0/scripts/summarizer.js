@@ -86,10 +86,18 @@ function showChat() {
     chatBox.style.display = 'flex';
 }
 
+// Detect Enter key in chat input
+const chatInput = document.getElementById('chat-input');
+chatInput.addEventListener('keydown', function(event) {
+    if (event.key === 'Enter') {
+        event.preventDefault(); // Prevents a newline from being added
+        sendMessage();
+    }
+});
+
 // Send message in chat
 async function sendMessage() { 
-    const input = document.getElementById('chat-input');
-    const message = input.value.trim();
+    const message = chatInput.value.trim();
     if (message !== '') {
         const chatMessages = document.getElementById('chat-messages');
         
@@ -100,7 +108,7 @@ async function sendMessage() {
         chatMessages.appendChild(userMessageElement);
         
         // Clear input
-        input.value = '';
+        chatInput.value = '';
         
         // Display "Assistant is typing..." message
         const typingElement = document.createElement('div');
@@ -150,6 +158,7 @@ async function sendMessage() {
         chatMessages.scrollTop = chatMessages.scrollHeight;
     }
 }
+
 // Delete PDF function
 function deletePDF() {
     if (window.pdfFilename) {

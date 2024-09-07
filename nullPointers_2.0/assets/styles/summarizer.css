@@ -21,12 +21,14 @@ body {
 }
 
 .sidebar {
-    width: 330px;
+    width: 330px; /* Fixed width for sidebar */
+    min-width: 330px; /* Prevents sidebar from shrinking */
     background-color: #070734;
     color: white;
     padding: 20px;
     box-sizing: border-box;
     font-size: 19px;
+    flex-shrink: 0; /* Prevent sidebar from shrinking */
 }
 
 .sidebar h2 {
@@ -181,20 +183,28 @@ input[type="file"] {
 .chat-box {
     display: none;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: flex-end; /* Keeps input at the bottom */
     border-radius: 8px;
     padding: 10px;
     height: 100%;
+    position: relative;
+    overflow: hidden;
 }
 
 .chat-messages {
     flex-grow: 1;
-    overflow-y: auto;
+    overflow-y: auto; /* Makes chat messages scrollable */
     padding: 10px;
+    max-height: 70%; /* Limits chat messages height to allow space for input */
+    margin-bottom: 10px;
 }
 
 .chat-input {
     display: flex;
+    position: sticky;
+    bottom: 0;
+    background-color: white;
+    padding: 10px;
 }
 
 .chat-input input {
@@ -223,4 +233,96 @@ input[type="file"] {
     padding: 20px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     min-height: 100%;
+}
+
+/* Chat prompt styles */
+.user-message, .assistant-message {
+    padding: 10px;
+    border-radius: 14px;
+    max-width: 50%;
+    word-wrap: break-word;
+    margin: 5px 0;
+    font-size: 15px;
+    line-height: 1.4;
+}
+
+.user-message {
+    background-color: #010a26;
+    float: right;
+    clear: both;
+    max-width: 50%;
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
+    color: #fff;
+    border: 1px solid #1a2433;
+    margin-right: 10px;
+}
+
+.assistant-message {
+    background-color: #434855;
+    float: left;
+    clear: both;
+    max-width: 70%;
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
+    color: #fff;
+    border: 1px solid #333840;
+    margin-left: 10px;
+}
+.content-area {
+    border-color: #a1a1af;
+    border-radius: 8px;
+    padding: 10px; /* Reduce padding from 20px to 10px */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    border-width: 2px;
+    border-style: solid;
+}
+
+.chat-box {
+    display: none;
+    flex-direction: column;
+    justify-content: flex-end;
+    border-radius: 8px;
+    padding: 5px; /* Reduce padding at the top and bottom */
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+}
+.content-area {
+    border-color: #a1a1af;
+    border-radius: 8px;
+    padding: 10px; /* Reduced padding to minimize top space */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    border-width: 2px;
+    border-style: solid;
+}
+
+.chat-box {
+    display: none;
+    flex-direction: column;
+    border-radius: 8px;
+    padding: 10px; /* Small padding for the entire chat box */
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+    flex-grow: 1; /* Ensures the chat box grows with content */
+}
+
+.chat-messages {
+    flex-grow: 1;
+    overflow-y: auto; /* Makes chat messages scrollable when they overflow */
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.chat-input {
+    display: flex;
+    position: sticky;
+    bottom: 0;
+    background-color: white;
+    padding: 10px;
 }
