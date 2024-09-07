@@ -1,5 +1,6 @@
+// authentication.js (middleware)
 const authMiddleware = (req, res, next) => {
-    if (req.path === '/login' || req.path === '/user/createUser' || req.path === '/user/login' || req.path === '/auth/google/callback' || req.path === '/auth/google' || req.path === '/admin') {
+    if (['/login', '/user/createUser', '/user/login', '/auth/google/callback', '/auth/google', '/admin'].includes(req.path)) {
         return next();
     }
     if (req.session.isAuthenticated) {
@@ -11,10 +12,10 @@ const authMiddleware = (req, res, next) => {
 };
 
 const otpAuthenticate = (req, res, next) => {
-    if (req.path === '/login' || req.path === '/user/createUser' || req.path === '/user/login' || req.path === '/otp' || req.path === '/admin') {
+    if (['/login', '/user/createUser', '/user/login', '/otp', '/admin', '/verifyOtp'].includes(req.path)) {
         return next();
     }
-    if (req.session.optAuthenticated){
+    if (req.session.otpAuthenticated) {
         next();
     }
     else {

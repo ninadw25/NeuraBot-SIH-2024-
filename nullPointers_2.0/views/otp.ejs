@@ -17,10 +17,10 @@
                 <h1>Verify OTP</h1>
                 <p>Enter the 4-digit code sent to your device</p>
                 <div class="otp-container">
-                    <input type="text" class="otp-input" maxlength="1" name="otp1" autofocus>
-                    <input type="text" class="otp-input" maxlength="1" name="otp2">
-                    <input type="text" class="otp-input" maxlength="1" name="otp3">
-                    <input type="text" class="otp-input" maxlength="1" name="otp4">
+                    <input type="text" class="otp-input" maxlength="1" name="otp1" autofocus pattern="\d*">
+                    <input type="text" class="otp-input" maxlength="1" name="otp2" pattern="\d*">
+                    <input type="text" class="otp-input" maxlength="1" name="otp3" pattern="\d*">
+                    <input type="text" class="otp-input" maxlength="1" name="otp4" pattern="\d*">
                 </div>
                 <button type="submit">Verify</button>
                 <a href="#" class="resend-link">Resend OTP</a>

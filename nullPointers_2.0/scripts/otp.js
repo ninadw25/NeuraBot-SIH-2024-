@@ -1,19 +1,26 @@
-console.log("Script loaded");
+document.querySelectorAll('.otp-input').forEach((input, index) => {
+    input.addEventListener('input', (e) => {
+        // Ensure only digits are entered
+        e.target.value = e.target.value.replace(/\D/, '');
+
+        // Move focus to next input if a digit is entered
+        if (e.target.value && index < 3) {
+            document.querySelectorAll('.otp-input')[index + 1].focus();
+        }
+    });
+});
 
 document.getElementById('otpForm').addEventListener('submit', function(e) {
     e.preventDefault();  // Prevent default form submission
 
     // Collect the OTP entered by the user
     let otp = '';
-    otp += document.querySelector('input[name="otp1"]').value;
-    otp += document.querySelector('input[name="otp2"]').value;
-    otp += document.querySelector('input[name="otp3"]').value;
-    otp += document.querySelector('input[name="otp4"]').value;
+    document.querySelectorAll('.otp-input').forEach(input => otp += input.value);
 
     console.log('Collected OTP:', otp);  // Debugging
 
     // Send the OTP to the server for verification
-    fetch('/verify-otp', {
+    fetch('/verifyOtp', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -28,7 +35,7 @@ document.getElementById('otpForm').addEventListener('submit', function(e) {
     })
     .then(data => {
         if (data.success) {
-            window.location.href = '/dashboard';  // Redirect on success
+            window.location.href = '/';
         } else {
             alert('Invalid OTP. Please try again.');
         }

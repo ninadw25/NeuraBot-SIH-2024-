@@ -9,7 +9,7 @@ const transporter = nodemailer.createTransport({
 });
 
 const generateOTP = () => {
-    return Math.floor(Math.random() * 1000) + 1000;
+    return Math.floor(1000 + Math.random() * 9000);
 };
 
 const sendOTPEmail = async (email, otp) => {
@@ -32,7 +32,7 @@ const sendOTPEmail = async (email, otp) => {
 
 const verifyOTP = (req, res) => {
   const enteredOtp = req.body.otp;
-  const sessionOtp = req.session.otp;
+  const sessionOtp = req.session.generatedOtp;
 
   if (enteredOtp === sessionOtp) {
       req.session.otpAuthenticated = true;
@@ -44,6 +44,13 @@ const verifyOTP = (req, res) => {
 
 const otpHandler = (req, res) => {
     res.render('otp');
+
+    const otp = generateOTP();
+    req.session.generatedOtp = otp;
+    const recipientEmail = req.session.userEmail;
+    sendOTPEmail(recipientEmail, otp)
+      .then(() => console.log('OTP sent successfully!'))
+      .catch((err) => console.error('Failed to send OTP:', err));
 };
 
 module.exports = {
