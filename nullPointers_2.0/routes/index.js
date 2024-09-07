@@ -7,6 +7,7 @@ const chatController = require('../controllers/chatController');
 const { summarizerRender, summarizer, upload } = require('../controllers/summarizerController');
 const homeController = require('../controllers/homeController');
 const loginController = require('../controllers/loginController');
+const otpController = require('../controllers/otpController');
 
 router.get('/', homeController.home);
 router.get('/login', loginController.login);
@@ -22,5 +23,8 @@ router.get('/auth/google/callback',
         res.redirect('/');
     }
 );
+
+router.get('/send-otp', otpController.sendOTP); // Sends OTP after login (only once)
+router.post('/verify-otp', otpController.verifyOTP); // Verifies OTP entered by the user
 
 module.exports = router;
