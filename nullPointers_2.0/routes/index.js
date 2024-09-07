@@ -1,7 +1,7 @@
 const express = require('express');
 const passport = require('passport');
 const router = express.Router();
-
+const app = express();
 const chatbotController = require('../controllers/chatbotController');
 const chatController = require('../controllers/chatController');
 const { summarizerRender, summarizer, upload } = require('../controllers/summarizerController');
@@ -26,5 +26,6 @@ router.get('/auth/google/callback',
 
 router.get('/send-otp', otpController.sendOTP); // Sends OTP after login (only once)
 router.post('/verify-otp', otpController.verifyOTP); // Verifies OTP entered by the user
-
 module.exports = router;
+const adminRouter = require('./admin');
+app.use('/admin', adminRouter);

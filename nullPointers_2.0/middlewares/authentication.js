@@ -9,7 +9,11 @@ const authMiddleware = (req, res, next) => {
         '/admin/home',
         '/admin/login',
         '/send-otp', 
-        '/verify-otp'
+        '/verify-otp',
+        '/admin/login',
+        '/admin/home',
+        '/upload-pdf',
+        '/admin/upload-pdf'
     ];
 
     // Allow access to open routes
