@@ -5,7 +5,6 @@ const session = require('express-session');
 const { logReqRes } = require('./middlewares/log');
 const { authMiddleware, otpAuthenticate } = require('./middlewares/authentication');
 const { passport } = require('./scripts/Oauth.js');
-
 const staticRouter = require('./routes/index');
 const userRouter = require('./routes/users');
 
