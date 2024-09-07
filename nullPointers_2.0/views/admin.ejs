@@ -23,11 +23,6 @@
             width: 100%;
             max-width: 400px;
         }
-        .logo {
-            display: block;
-            margin: 0 auto 2rem;
-            max-width: 150px;
-        }
         h1 {
             text-align: center;
             color: #333;
@@ -66,7 +61,7 @@
 <body>
     <div class="container">
         <h1>Admin Login</h1>
-        <form id="loginForm">
+        <form id="loginForm" action="/admin/login" method="POST">
             <label for="username">Username</label>
             <input type="text" id="username" name="username" required>
             
@@ -76,17 +71,5 @@
             <button type="submit">Sign In</button>
         </form>
     </div>
-
-    <script>
-        document.getElementById('loginForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
-            // Here you would typically send a request to your server to authenticate
-            console.log('Login attempted with:', username, password);
-            // After successful authentication, redirect to the admin dashboard
-            // window.location.href = '/admin/dashboard';
-        });
-    </script>
 </body>
 </html>

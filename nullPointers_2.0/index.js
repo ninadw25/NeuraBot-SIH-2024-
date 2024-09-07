@@ -7,6 +7,7 @@ const { authMiddleware } = require('./middlewares/authentication');
 const { passport } = require('./scripts/Oauth.js');
 const staticRouter = require('./routes/index');
 const userRouter = require('./routes/users');
+const adminRouter = require('./routes/admin.js')
 
 const app = express();
 const PORT = 7001;
@@ -52,6 +53,7 @@ app.use(logReqRes("log.txt"));
 // Routes
 app.use('/', staticRouter);
 app.use('/user', userRouter);
+app.use('/admin', adminRouter);
 
 // Running server
 app.listen(PORT, (error) => {
