@@ -1,7 +1,9 @@
-@import url('https://fonts.googleapis.com/css?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;700&display=swap');
 
 * {
     box-sizing: border-box;
+    margin: 0;
+    padding: 0;
     font-family: "DM Sans", sans-serif;
 }
 
@@ -27,8 +29,8 @@ body {
 
 h1 {
     color: #212f5b;
-    font-weight: 900;
-    margin-bottom: 10px;
+    font-weight: 700;
+    margin-bottom: 20px;
 }
 
 p {
@@ -51,6 +53,7 @@ p {
     border: 1px solid #ddd;
     border-radius: 5px;
     margin: 0 5px;
+    transition: border-color 0.3s ease;
 }
 
 .otp-input:focus {
@@ -67,12 +70,22 @@ button {
     font-size: 16px;
     padding: 12px 45px;
     letter-spacing: 1px;
-    transition: transform 80ms ease-in;
+    transition: background-color 0.3s ease, transform 80ms ease-in;
+    margin-top: 20px;
     margin-right: 1rem;
+}
+
+button:hover {
+    background-color: #1b2a67;
 }
 
 button:active {
     transform: scale(0.95);
+}
+
+.error-message {
+    color: red;
+    margin-top: 10px;
 }
 
 .resend-link {
