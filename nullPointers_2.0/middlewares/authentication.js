@@ -1,5 +1,5 @@
 const authMiddleware = (req, res, next) => {
-    if (req.path === '/login' || req.path === '/user/createUser' || req.path === '/user/login') {
+    if (req.path === '/login' || req.path === '/user/createUser' || req.path === '/user/login' || req.path === '/auth/google/callback' || req.path === '/auth/google') {
         return next();
     }
     if (req.session.isAuthenticated) {
