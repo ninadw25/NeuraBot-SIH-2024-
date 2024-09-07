@@ -17,6 +17,7 @@ router.post('/chat', chatController.handleChat);
 router.get('/summarize', summarizerRender);
 router.post('/upload', upload.single('pdf'), summarizer);
 router.get('/otp', otpController.otpHandler);
+router.post('/verify-otp', otpController.verifyOTP);
 
 router.post('/summarize', summarizer);
 router.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
