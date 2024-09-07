@@ -87,7 +87,7 @@ function showChat() {
 }
 
 // Send message in chat
-async function sendMessage() {
+async function sendMessage() { 
     const input = document.getElementById('chat-input');
     const message = input.value.trim();
     if (message !== '') {
@@ -109,8 +109,8 @@ async function sendMessage() {
         chatMessages.appendChild(typingElement);
         
         try {
-            // Send message to server for processing
-            const response = await fetch('/api/chat', {
+            console.log('Sending request to server...');
+            const response = await fetch('/summarize/chatApi', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -118,11 +118,17 @@ async function sendMessage() {
                 body: JSON.stringify({ message }),
             });
             
+            console.log('Response status:', response.status);
+            console.log('Response OK:', response.ok);
+            
             if (!response.ok) {
-                throw new Error('Failed to get response from server');
+                const errorText = await response.text();
+                console.error('Server response:', errorText);
+                throw new Error(`Failed to get response from server: ${response.status} ${response.statusText}`);
             }
             
             const data = await response.json();
+            console.log('Received data:', data);
             
             // Remove "Assistant is typing..." message
             chatMessages.removeChild(typingElement);
@@ -140,7 +146,7 @@ async function sendMessage() {
             
             // Display error message
             const errorElement = document.createElement('div');
-            errorElement.textContent = 'Error: Failed to get response from assistant.';
+            errorElement.textContent = `Error: ${error.message}`;
             errorElement.classList.add('error-message');
             chatMessages.appendChild(errorElement);
         }
@@ -149,7 +155,6 @@ async function sendMessage() {
         chatMessages.scrollTop = chatMessages.scrollHeight;
     }
 }
-
 // Delete PDF function
 function deletePDF() {
     if (window.pdfFilename) {
