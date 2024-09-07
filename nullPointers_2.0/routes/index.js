@@ -8,8 +8,6 @@ const { summarizerRender, summarizer, upload } = require('../controllers/summari
 const homeController = require('../controllers/homeController');
 const loginController = require('../controllers/loginController');
 const otpController = require('../controllers/otpController');
-const uploadAdmin = require('../utils/adminMulter');
-const { adminLogin, adminHome, renderAdmin, pdfUploader, uploadAd } = require('../controllers/adminController');
 
 router.get('/', homeController.home);
 router.get('/login', loginController.login);
@@ -26,10 +24,8 @@ router.get('/auth/google/callback',
     }
 );
 
-router.post('/uploadPdf', uploadAdmin.single('pdf'), pdfUploader);
-
 router.get('/send-otp', otpController.sendOTP); // Sends OTP after login (only once)
 router.post('/verify-otp', otpController.verifyOTP); // Verifies OTP entered by the user
+module.exports = router;
 const adminRouter = require('./admin');
 app.use('/admin', adminRouter);
-module.exports = router;
