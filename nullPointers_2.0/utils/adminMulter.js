@@ -5,7 +5,7 @@ const path = require('path');
 const storage = multer.diskStorage({
     // Set the destination folder for uploaded files
     destination: (req, file, cb) => {
-        cb(null, './uploads');
+        cb(null, './assets/documents/');
     },
     // Set the filename for the uploaded files
     filename: (req, file, cb) => {
@@ -25,7 +25,7 @@ const fileFilter = (req, file, cb) => {
 };
 
 // Set up multer with the defined storage and file filter
-const upload = multer({
+const uploadAdmin = multer({
     storage: storage,
     fileFilter: fileFilter,
     limits: {
@@ -33,4 +33,4 @@ const upload = multer({
     }
 });
 
-module.exports = upload;
+module.exports = uploadAdmin;
