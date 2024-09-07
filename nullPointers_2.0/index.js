@@ -14,10 +14,6 @@ const app = express();
 const PORT = 7000;
 
 // MongoDB Connection
-// const uri = "mongodb+srv://saksham:qgNJBitFGTK7JLrb@null-pointers.jj4nx.mongodb.net/?retryWrites=true&w=majority&appName=Null-Pointers";
-
-
-// Access the environment variable
 const uri = process.env.MONGO_URI;
 
 async function run() {
