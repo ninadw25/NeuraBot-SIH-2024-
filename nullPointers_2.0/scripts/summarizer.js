@@ -25,7 +25,7 @@ uploadContainer.addEventListener('drop', (e) => {
     uploadContainer.classList.remove('dragover');
     const files = e.dataTransfer.files;
     handleFiles(files);
-}); 
+});
 
 fileInput.addEventListener('change', (e) => {
     handleFiles(e.target.files);
@@ -87,15 +87,66 @@ function showChat() {
 }
 
 // Send message in chat
-function sendMessage() {
+async function sendMessage() {
     const input = document.getElementById('chat-input');
-    const message = input.value;
-    if (message.trim() !== '') {
+    const message = input.value.trim();
+    if (message !== '') {
         const chatMessages = document.getElementById('chat-messages');
-        const messageElement = document.createElement('div');
-        messageElement.textContent = message;
-        chatMessages.appendChild(messageElement);
+        
+        // Display user message
+        const userMessageElement = document.createElement('div');
+        userMessageElement.textContent = `You: ${message}`;
+        userMessageElement.classList.add('user-message');
+        chatMessages.appendChild(userMessageElement);
+        
+        // Clear input
         input.value = '';
+        
+        // Display "Assistant is typing..." message
+        const typingElement = document.createElement('div');
+        typingElement.textContent = 'Assistant is typing...';
+        typingElement.classList.add('assistant-typing');
+        chatMessages.appendChild(typingElement);
+        
+        try {
+            // Send message to server for processing
+            const response = await fetch('/api/chat', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ message }),
+            });
+            
+            if (!response.ok) {
+                throw new Error('Failed to get response from server');
+            }
+            
+            const data = await response.json();
+            
+            // Remove "Assistant is typing..." message
+            chatMessages.removeChild(typingElement);
+            
+            // Display assistant's response
+            const assistantMessageElement = document.createElement('div');
+            assistantMessageElement.textContent = `Assistant: ${data.response}`;
+            assistantMessageElement.classList.add('assistant-message');
+            chatMessages.appendChild(assistantMessageElement);
+        } catch (error) {
+            console.error('Error in chat:', error);
+            
+            // Remove "Assistant is typing..." message
+            chatMessages.removeChild(typingElement);
+            
+            // Display error message
+            const errorElement = document.createElement('div');
+            errorElement.textContent = 'Error: Failed to get response from assistant.';
+            errorElement.classList.add('error-message');
+            chatMessages.appendChild(errorElement);
+        }
+        
+        // Scroll to bottom of chat
+        chatMessages.scrollTop = chatMessages.scrollHeight;
     }
 }
 
@@ -110,11 +161,14 @@ function deletePDF() {
                 alert('PDF deleted successfully');
                 // Reset the UI
                 summaryArea.style.display = 'none';
+                chatBox.style.display = 'none';
                 uploadContainer.style.display = 'block';
                 initialState.style.display = 'block';
                 successMessage.classList.add('hidden');
                 window.pdfSummary = null;
                 window.pdfFilename = null;
+                // Clear chat messages
+                document.getElementById('chat-messages').innerHTML = '';
             } else {
                 throw new Error('Failed to delete PDF');
             }
@@ -122,6 +176,6 @@ function deletePDF() {
         .catch(error => {
             console.error('Error deleting PDF:', error);
             alert('Error deleting PDF');
-    });
+        });
     }
 }
