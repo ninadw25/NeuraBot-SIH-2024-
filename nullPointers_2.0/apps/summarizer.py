@@ -1,10 +1,16 @@
+import sys
+import os
+
+lib_path = os.path.abspath(os.path.join(os.path.dirname(__file__), 'env'))
+sys.path.append(lib_path)
+
 import PyPDF2
 import requests
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 import json
-import sys
+
 
 # Hugging Face API details
 API_URL = "https://api-inference.huggingface.co/models/slauw87/bart_summarisation"
