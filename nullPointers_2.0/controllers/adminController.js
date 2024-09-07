@@ -1,11 +1,10 @@
-const fs = require('fs');
 const path = require('path');
-const { exec } = require('child_process');
 const multer = require('multer');
+const pdf = require('pdf-parse');
 
+// Admin login controller
 const adminLogin = (req, res) => {
     const { username, password } = req.body;
-
     if (username === "nullPointers" && password === "123456") {
         req.session.adminUsername = username;
         req.session.adminPassword = password;
@@ -15,6 +14,7 @@ const adminLogin = (req, res) => {
     }
 };
 
+// Admin home page controller
 const adminHome = (req, res) => {
     if (req.session.adminUsername && req.session.adminPassword) {
         res.render('adminHome');
@@ -23,11 +23,12 @@ const adminHome = (req, res) => {
     }
 };
 
+// Render admin login page
 const renderAdmin = (req, res) => {
     res.render('admin');
 };
 
-// Multer Setup
+// Multer setup for file storage
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
         const dirPath = path.join(__dirname, '../assets/documents/');
@@ -38,38 +39,39 @@ const storage = multer.diskStorage({
     }
 });
 
-const upload = multer({
-    storage: storage,
-    fileFilter: (req, file, cb) => {
-        if (file.mimetype === 'application/pdf') {
-            cb(null, true);
-        } else {
-            cb(new Error('Only PDF files are allowed'), false);
-        }
-    }
-});
+const upload = multer({ storage: storage });
 
+// PDF upload and ingestion handler
 const pdfUploader = (req, res) => {
-    if (!req.file) {
-        return res.status(400).send('No file uploaded or invalid file type.');
-    }
-
+    const pdfFilePath = path.join(__dirname, '../assets/documents/policy.pdf');
     const textFilePath = path.join(__dirname, '../assets/documents/document.txt');
 
     // Delete previous document.txt file if it exists
-    if (fs.existsSync(textFilePath)) {
-        fs.unlinkSync(textFilePath);
-    }
+    // if (fs.existsSync(textFilePath)) {
+    //     fs.unlinkSync(textFilePath);
+    // }
 
-    // Trigger the ingest.js script to process the uploaded PDF
-    exec('node ./ingest.js', (err, stdout, stderr) => {
+    // Read and parse the uploaded PDF
+    fs.readFile(pdfFilePath, (err, dataBuffer) => {
         if (err) {
-            console.error(`Error executing ingest.js: ${err}`);
-            return res.status(500).send('Error processing the PDF.');
+            console.error('Error reading the PDF file:', err);
+            return res.status(500).send('Error processing the PDF');
         }
 
-        console.log('Ingest script output:', stdout);
-        res.send('PDF uploaded and processed successfully.');
+        pdf(dataBuffer)
+            .then((data) => {
+                fs.writeFile(textFilePath, data.text, (error) => {
+                    if (error) {
+                        console.error("Error writing document.txt: ", error);
+                        return res.status(500).send('Error processing the PDF');
+                    }
+                    res.status(200).send('PDF uploaded and processed successfully!');
+                });
+            })
+            .catch((error) => {
+                console.error('Error parsing the PDF:', error);
+                res.status(500).send('Error processing the PDF');
+            });
     });
 };
 
