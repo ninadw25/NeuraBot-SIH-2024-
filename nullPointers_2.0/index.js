@@ -5,6 +5,7 @@ const session = require('express-session');
 const passport = require('passport');
 const { logReqRes } = require('./middlewares/log');
 const authMiddleware = require('./middlewares/authentication');
+require('dotenv').config();
 
 const staticRouter = require('./routes/index');
 const userRouter = require('./routes/users');
@@ -13,7 +14,11 @@ const app = express();
 const PORT = 7000;
 
 // MongoDB Connection
-const uri = "mongodb+srv://saksham:qgNJBitFGTK7JLrb@null-pointers.jj4nx.mongodb.net/?retryWrites=true&w=majority&appName=Null-Pointers";
+// const uri = "mongodb+srv://saksham:qgNJBitFGTK7JLrb@null-pointers.jj4nx.mongodb.net/?retryWrites=true&w=majority&appName=Null-Pointers";
+
+
+// Access the environment variable
+const uri = process.env.MONGO_URI;
 
 async function run() {
   try {
