@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="author" content="nullPointers">
+        <meta name="keywords" content="cahtbot, chat, AI, nullPointers">
+        <meta name="Description" content="Intelligent Enterprise Assistant: Enhancing Organizational Efficiency through AI-driven Chatbot Integration">
+        <title>nullPointers</title>
+        <link rel="stylesheet" href="styles/adminHome.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.7.14/lottie.min.js"></script>
+</head>
+<body>
+    <header class="header">
+        <h1>Neurabot Admin Dashboard</h1>
+    </header>
+    <div class="main-container">
+        <div class="animation-container" id="animation-container">
+            <div class="cloud">Hi! Admin,Upload the required PDF here</div>
+        </div>
+        <div class="form-container">
+            <div class="drop-area" id="drop-area">
+                <form class="my-form">
+                    <p>Drag and drop a PDF file here or click to select a file</p>
+                    <input type="file" id="fileElem" accept="application/pdf" multiple>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.getElementById('drop-area').ondragover = function() {
+            this.className = 'drop-area over';
+            return false;
+        };
+
+        document.getElementById('drop-area').ondragleave = function() {
+            this.className = 'drop-area';
+            return false;
+        };
+
+        document.getElementById('drop-area').ondrop = function(e) {
+            e.preventDefault();
+            this.className = 'drop-area';
+            let files = e.dataTransfer.files;
+            console.log(files);
+        };
+
+        lottie.loadAnimation({
+          container: document.getElementById('animation-container'),
+          renderer: 'svg',
+          loop: true,
+          autoplay: true,
+          path: 'https://lottie.host/f184d3ea-1720-4702-af9f-732043eeb742/LoTGbchbcz.json' 
+
+        });
+    </script>
+</body>
+</html>

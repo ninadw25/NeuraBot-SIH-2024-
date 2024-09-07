@@ -2,10 +2,9 @@ const express = require('express');
 const path = require('path');
 const mongoose = require('mongoose');
 const session = require('express-session');
-const passport = require('passport');
 const { logReqRes } = require('./middlewares/log');
-const authMiddleware = require('./middlewares/authentication'); // Import the authentication middleware
-
+const { authMiddleware, otpAuthenticate } = require('./middlewares/authentication');
+const { passport } = require('./scripts/Oauth.js');
 const staticRouter = require('./routes/index');
 const userRouter = require('./routes/users');
 
@@ -45,10 +44,11 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 // Middlewares
+app.use(authMiddleware);
+app.use(otpAuthenticate);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(logReqRes("log.txt"));
-
 // Routes
 app.use('/', staticRouter);
 app.use('/user', userRouter);

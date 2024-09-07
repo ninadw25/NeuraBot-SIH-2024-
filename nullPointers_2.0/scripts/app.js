@@ -22,7 +22,8 @@ async function createResponseChatBox(prompt) {
 
     let result = await response.json();
     if (response.ok) {
-      responseChatBox.innerHTML = result.response;
+      // Use marked to render Markdown
+      responseChatBox.innerHTML = marked.parse(result.response);
     } else {
       responseChatBox.textContent = result.error || "Sorry, something went wrong.";
     }
@@ -51,4 +52,10 @@ promptInput.addEventListener("keypress", (event) => {
   if (event.key === "Enter") {
     submitPrompt();
   }
+});
+
+// Configure marked options for better rendering
+marked.setOptions({
+  breaks: true, // Adds <br> on single line breaks
+  gfm: true,    // GitHub Flavored Markdown
 });
