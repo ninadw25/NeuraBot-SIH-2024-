@@ -1,0 +1,87 @@
+@import url('https://fonts.googleapis.com/css?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap');
+
+* {
+    box-sizing: border-box;
+    font-family: "DM Sans", sans-serif;
+}
+
+body {
+    background: #070734;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.container {
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 
+                0 10px 10px rgba(0, 0, 0, 0.22);
+    padding: 30px;
+    width: 400px;
+    max-width: 100%;
+    text-align: center;
+}
+
+h1 {
+    color: #212f5b;
+    font-weight: 900;
+    margin-bottom: 10px;
+}
+
+p {
+    color: #666;
+    font-size: 14px;
+    margin-bottom: 20px;
+}
+
+.otp-container {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.otp-input {
+    width: 50px;
+    height: 50px;
+    text-align: center;
+    font-size: 24px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin: 0 5px;
+}
+
+.otp-input:focus {
+    border-color: #212f5b;
+    outline: none;
+}
+
+button {
+    background-color: #212f5b;
+    border: none;
+    border-radius: 20px;
+    color: #fff;
+    cursor: pointer;
+    font-size: 16px;
+    padding: 12px 45px;
+    letter-spacing: 1px;
+    transition: transform 80ms ease-in;
+    margin-right: 1rem;
+}
+
+button:active {
+    transform: scale(0.95);
+}
+
+.resend-link {
+    color: #212f5b;
+    display: inline-block;
+    margin-top: 15px;
+    text-decoration: none;
+}
+
+.resend-link:hover {
+    text-decoration: underline;
+}

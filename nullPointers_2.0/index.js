@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 const session = require('express-session');
 const passport = require('passport');
 const { logReqRes } = require('./middlewares/log');
-const authMiddleware = require('./middlewares/authentication');
+const { authMiddleware, otpAuthenticate } = require('./middlewares/authentication');
 
 const staticRouter = require('./routes/index');
 const userRouter = require('./routes/users');
@@ -39,13 +39,14 @@ app.use(session({
   secret: 'e33b92145a61635ff2992e8a4fc6a33711d4365bd7f6000276855498196aed93',
   resave: false,
   saveUninitialized: true,
-  cookie: { secure: true }
+  cookie: { secure: false }
 }));
 app.use(passport.initialize());
 app.use(passport.session());
 
 // Middlewares
 app.use(authMiddleware);
+app.use(otpAuthenticate);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(logReqRes("log.txt"));
