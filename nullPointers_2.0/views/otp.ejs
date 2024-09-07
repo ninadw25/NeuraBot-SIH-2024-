@@ -4,29 +4,26 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="author" content="nullPointers">
-    <meta name="keywords" content="chatbot, chat, AI, nullPointers">
-    <meta name="Description" content="Intelligent Enterprise Assistant: Enhancing Organizational Efficiency through AI-driven Chatbot Integration">
-    <title>nullPointers</title>
-    <link rel="stylesheet" href="styles/otp.css">
+    <title>Verify OTP</title>
+    <link rel="stylesheet" href="/styles/otp.css">
 </head>
 <body>
-    <div class="container">
-        <div class="form-container">
-            <form id="otpForm">
-                <h1>Verify OTP</h1>
-                <p>Enter the 4-digit code sent to your device</p>
-                <div class="otp-container">
-                    <input type="text" class="otp-input" maxlength="1" name="otp1" autofocus pattern="\d*">
-                    <input type="text" class="otp-input" maxlength="1" name="otp2" pattern="\d*">
-                    <input type="text" class="otp-input" maxlength="1" name="otp3" pattern="\d*">
-                    <input type="text" class="otp-input" maxlength="1" name="otp4" pattern="\d*">
-                </div>
-                <button type="submit">Verify</button>
-                <a href="#" class="resend-link">Resend OTP</a>
-            </form>
-        </div>
+    <div class="form-container">
+        <form action="/verify-otp" method="POST" id="otpForm">
+            <h1>Verify OTP</h1>
+            <p>Enter the 4-digit code sent to your email: <strong><%= email %></strong></p>
+            <div class="otp-container">
+                <input type="text" class="otp-input" maxlength="1" name="otp1" autofocus required>
+                <input type="text" class="otp-input" maxlength="1" name="otp2" required>
+                <input type="text" class="otp-input" maxlength="1" name="otp3" required>
+                <input type="text" class="otp-input" maxlength="1" name="otp4" required>
+            </div>
+            <button type="submit">Verify</button>
+            <% if (errorMessage) { %>
+                <p style="color:red"><%= errorMessage %></p>
+            <% } %>
+            <a href="#" class="resend-link">Resend OTP</a>
+        </form>
     </div>
-    <script src="otp.js"></script>
 </body>
 </html>

@@ -8,6 +8,7 @@ const { summarizerRender, summarizer, upload } = require('../controllers/summari
 const homeController = require('../controllers/homeController');
 const loginController = require('../controllers/loginController');
 const { admin, adminHome } = require('../controllers/adminController');
+const otpController = require('../controllers/otpController');
 
 router.get('/', homeController.home);
 router.get('/login', loginController.login);
@@ -26,5 +27,8 @@ router.get('/auth/google/callback',
 );
 router.get('/admin', admin);
 router.get('/admin/home', adminHome);
+
+router.get('/send-otp', otpController.sendOTP); // Sends OTP after login (only once)
+router.post('/verify-otp', otpController.verifyOTP); // Verifies OTP entered by the user
 
 module.exports = router;
