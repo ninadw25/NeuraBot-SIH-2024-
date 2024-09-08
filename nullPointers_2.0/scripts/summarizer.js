@@ -6,7 +6,7 @@ const successMessage = document.getElementById('success-message');
 const popup = document.getElementById('popup');
 const initialState = document.getElementById('initial-state');
 const chatBox = document.getElementById('chat-box');
-const summaryArea = document.getElementById('summary-area');
+const summaryArea = document.getElementById('summary-area');  
 
 // Event listeners
 browseLink.addEventListener('click', () => fileInput.click());
@@ -59,6 +59,7 @@ function handleFiles(files) {
     }
 }
 
+// Show Summarizer
 function showSummarizer() {
     popup.style.display = 'none';
     uploadContainer.style.display = 'none';
@@ -66,24 +67,24 @@ function showSummarizer() {
     
     const summaryText = document.getElementById('summary-text');
     if (window.pdfSummary) {
-        // Convert markdown to HTML and inject into the summary area
-        summaryText.innerHTML = marked.parse(window.pdfSummary);
+        summaryText.textContent = window.pdfSummary;
     } else {
         summaryText.textContent = 'Summary is being generated. Please wait...';
         const summaryChecker = setInterval(() => {
             if (window.pdfSummary) {
-                summaryText.innerHTML = marked.parse(window.pdfSummary);
+                summaryText.textContent = window.pdfSummary;
                 clearInterval(summaryChecker);
             }
         }, 1000);
     }
 }
 
-
-// Show Chatbox
+// Show Chatbox when QnA is clicked
 function showChat() {
     popup.style.display = 'none';
     uploadContainer.style.display = 'none';
+    summaryArea.style.display = 'none'; // Hide summary if visible
+    chatBox.classList.remove('hidden');
     chatBox.style.display = 'flex';
 }
 
@@ -131,9 +132,9 @@ async function sendMessage() {
             
            
             
-            // Use marked.js to convert markdown response to HTML
+            // Display assistant's response
             const assistantMessageElement = document.createElement('div');
-            assistantMessageElement.innerHTML = marked.parse(data.response); // Convert markdown to HTML
+            assistantMessageElement.textContent = `Assistant: ${data.response}`;
             assistantMessageElement.classList.add('assistant-message');
             chatMessages.appendChild(assistantMessageElement);
         } catch (error) {
@@ -150,35 +151,5 @@ async function sendMessage() {
         
         // Scroll to bottom of chat
         chatMessages.scrollTop = chatMessages.scrollHeight;
-    }
-}
-
-// Delete PDF function
-function deletePDF() {
-    if (window.pdfFilename) {
-        fetch(`/delete/${window.pdfFilename}`, {
-            method: 'DELETE'
-        })
-        .then(response => {
-            if (response.ok) {
-                alert('PDF deleted successfully');
-                // Reset the UI
-                summaryArea.style.display = 'none';
-                chatBox.style.display = 'none';
-                uploadContainer.style.display = 'block';
-                initialState.style.display = 'block';
-                successMessage.classList.add('hidden');
-                window.pdfSummary = null;
-                window.pdfFilename = null;
-                // Clear chat messages
-                document.getElementById('chat-messages').innerHTML = '';
-            } else {
-                throw new Error('Failed to delete PDF');
-            }
-        })
-        .catch(error => {
-            console.error('Error deleting PDF:', error);
-            alert('Error deleting PDF');
-        });
     }
 }
