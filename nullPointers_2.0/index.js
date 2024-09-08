@@ -10,7 +10,7 @@ const userRouter = require('./routes/users');
 const adminRouter = require('./routes/admin.js')
 const summarizerRoutes = require('./routes/summarizer.js')
 const app = express();
-const PORT = 7002;
+const PORT = 7001;
 
 // MongoDB Connection
 const uri = "mongodb+srv://saksham:qgNJBitFGTK7JLrb@null-pointers.jj4nx.mongodb.net/?retryWrites=true&w=majority&appName=Null-Pointers";
@@ -45,7 +45,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 // Middlewares
-// app.use(authMiddleware);
+app.use(authMiddleware);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(logReqRes("log.txt"));

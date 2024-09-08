@@ -11,9 +11,10 @@ body {
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    height: 100vh;
+    min-height: 100vh;
     margin: 0;
     color: #070734;
+    padding: 20px;
 }
 
 .login-title {
@@ -25,6 +26,7 @@ h1 {
     font-weight: bold;
     margin: 0;
     color: #FFF;
+    font-size: 24px;
 }
 
 h2 {
@@ -64,6 +66,7 @@ button {
     letter-spacing: 1px;
     text-transform: uppercase;
     transition: transform 80ms ease-in;
+    cursor: pointer;
 }
 
 button:active {
@@ -92,11 +95,10 @@ form {
 
 input {
     background-color: #f4f4f4;
-    border: none;
+    border: 1px solid #a1a1af;
     padding: 12px 15px;
     margin: 8px 0;
     width: 100%;
-    border: 1px solid #a1a1af;
 }
 
 .container {
@@ -244,14 +246,13 @@ input {
 
 @media screen and (max-width: 768px) {
     .container {
-        width: 90%;
-        min-height: auto;
+        min-height: 650px;
     }
 
     .form-container {
         width: 100%;
-        height: auto;
-        position: relative;
+        height: 100%;
+        position: absolute;
     }
 
     .sign-in-container, .sign-up-container {
@@ -269,21 +270,42 @@ input {
     }
 
     button {
-        padding: 8px 25px;
-        font-size: 11px;
+        padding: 10px 30px;
+        font-size: 14px;
     }
 
     .social-container {
-        margin: 10px 0;
+        margin: 15px 0;
     }
 
     .social-container a {
-        height: 32px;
-        width: 32px;
+        height: 36px;
+        width: 36px;
     }
 
     .social-container a i {
-        font-size: 14px;
+        font-size: 18px;
+    }
+
+    .container.right-panel-active .sign-in-container,
+    .container.right-panel-active .sign-up-container {
+        transform: translateX(0);
+    }
+
+    .sign-up-container {
+        opacity: 0;
+        z-index: 1;
+    }
+
+    .container.right-panel-active .sign-up-container {
+        opacity: 1;
+        z-index: 5;
+        animation: show 0.6s;
+    }
+
+    .container.right-panel-active .sign-in-container {
+        opacity: 0;
+        z-index: 1;
     }
 }
 
@@ -294,8 +316,7 @@ input {
 
     .container {
         width: 95%;
-        max-height: 90vh;
-        overflow-y: auto;
+        min-height: 600px;
     }
 
     h1 {
@@ -303,76 +324,42 @@ input {
     }
 
     p {
-        font-size: 11px;
-        margin: 8px 0 16px;
-        line-height: 1.4;
+        font-size: 12px;
+        margin: 10px 0 20px;
+        line-height: 1.5;
     }
 
     input {
-        padding: 8px;
-        font-size: 12px;
-        margin: 6px 0;
-    }
-
-    button {
-        font-size: 10px;
-        padding: 6px 18px;
-    }
-
-    .social-container {
+        padding: 10px;
+        font-size: 14px;
         margin: 8px 0;
     }
 
+    button {
+        font-size: 12px;
+        padding: 8px 25px;
+    }
+
+    .social-container {
+        margin: 10px 0;
+    }
+
     .social-container a {
-        height: 28px;
-        width: 28px;
+        height: 32px;
+        width: 32px;
         margin: 0 3px;
     }
 
     .social-container a i {
-        font-size: 12px;
+        font-size: 16px;
     }
 
     span {
-        font-size: 10px;
+        font-size: 11px;
     }
 
     a {
-        font-size: 12px;
-        margin: 10px 0;
-    }
-}
-
-/* Additional adjustments for very small screens */
-@media screen and (max-width: 320px) {
-    .container {
-        width: 98%;
-    }
-
-    h1 {
-        font-size: 18px;
-    }
-
-    p {
-        font-size: 10px;
-    }
-
-    input {
-        padding: 6px;
-        font-size: 11px;
-    }
-
-    button {
-        font-size: 9px;
-        padding: 5px 15px;
-    }
-
-    .social-container a {
-        height: 24px;
-        width: 24px;
-    }
-
-    .social-container a i {
-        font-size: 11px;
+        font-size: 13px;
+        margin: 12px 0;
     }
 }
