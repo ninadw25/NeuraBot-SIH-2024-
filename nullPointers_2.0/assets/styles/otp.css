@@ -98,3 +98,24 @@ button:active {
 .resend-link:hover {
     text-decoration: underline;
 }
+
+/* Responsive styles */
+@media (max-width: 600px) {
+    .otp-input {
+        width: 40px;
+        height: 40px;
+        font-size: 20px;
+    }
+
+    h1 {
+        font-size: 20px;
+    }
+
+    p {
+        font-size: 14px;
+    }
+
+    button {
+        font-size: 14px;
+    }
+}

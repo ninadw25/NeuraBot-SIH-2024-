@@ -107,7 +107,7 @@ def summarize_pdf(file_path):
             full_summary.append("[No summary available]\n\n")
     
     if full_summary:
-        summary_text = "# Full Summary\n\n" + "".join(full_summary)
+        summary_text = "\n\n" + "".join(full_summary)
         return summary_text
     return None
 

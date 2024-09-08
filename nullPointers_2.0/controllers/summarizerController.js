@@ -92,7 +92,7 @@ function summarizePDF(pdfFilePath, res) {
             const parsedSummary = JSON.parse(summary);
             res.status(200).json({
                 summary: parsedSummary.summary,
-                filename: 'uploaded_pdf.pdf'
+                filename: 'uploaded_pdf.pdf' 
             });
         } catch (error) {
             console.error('Error parsing summary:', error);

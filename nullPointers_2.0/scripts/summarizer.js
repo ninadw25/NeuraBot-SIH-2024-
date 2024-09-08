@@ -59,7 +59,6 @@ function handleFiles(files) {
     }
 }
 
-// Show Summarizer
 function showSummarizer() {
     popup.style.display = 'none';
     uploadContainer.style.display = 'none';
@@ -67,17 +66,19 @@ function showSummarizer() {
     
     const summaryText = document.getElementById('summary-text');
     if (window.pdfSummary) {
-        summaryText.textContent = window.pdfSummary;
+        // Convert markdown to HTML and inject into the summary area
+        summaryText.innerHTML = marked.parse(window.pdfSummary);
     } else {
         summaryText.textContent = 'Summary is being generated. Please wait...';
         const summaryChecker = setInterval(() => {
             if (window.pdfSummary) {
-                summaryText.textContent = window.pdfSummary;
+                summaryText.innerHTML = marked.parse(window.pdfSummary);
                 clearInterval(summaryChecker);
             }
         }, 1000);
     }
 }
+
 
 // Show Chatbox
 function showChat() {
@@ -136,9 +137,9 @@ async function sendMessage() {
             // Remove "Assistant is typing..." message
             chatMessages.removeChild(typingElement);
             
-            // Display assistant's response
+            // Use marked.js to convert markdown response to HTML
             const assistantMessageElement = document.createElement('div');
-            assistantMessageElement.textContent = `Assistant: ${data.response}`;
+            assistantMessageElement.innerHTML = marked.parse(data.response); // Convert markdown to HTML
             assistantMessageElement.classList.add('assistant-message');
             chatMessages.appendChild(assistantMessageElement);
         } catch (error) {
