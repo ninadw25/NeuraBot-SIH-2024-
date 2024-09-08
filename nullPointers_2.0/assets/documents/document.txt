@@ -1,55 +1,68 @@
 
 
-  
-Contact
-pratusirsa@gmail.com
-www.linkedin.com/in/pratyaksh-
-saluja-ps (LinkedIn)
-Top Skills
-Data Structures
-Python (Programming Language)
-C++
-Pratyaksh Saluja
-CSE' 27 @BMU | SIH 2023 Finalist [Team Leader] | C++ 17, Python
-Sirsa, Haryana, India
+Aakarsh Goyal
++91 9212595798|aakarshgoyal23@gmail.com|LinkedIn|Portfolio|Github
 Summary
-‍ Aspiring Computer Scientist | BML Munjal University, Class of 2023 |
-Future CSE Graduate (2027) ‍
-Hello! I'm Pratyaksh Saluja, a dedicated student pursuing Computer
-Science and Engineering at BML Munjal University, with an
-anticipated graduation year of 2027.
-Academic Journey:
-My academic journey is centered on cultivating a deep
-understanding of computer science. I'm well-versed in C++ and data
-structures, and I'm currently exploring modern C++ (C++17-20) to
-enhance my coding practices.
-Technical Proficiency:
-Alongside my academic pursuits, I've developed practical skills
-in Python, utilizing libraries like NumPy, Pandas, SymPy, and
-Matplotlib. These tools have enriched my toolkit for data analysis and
-visualization.
-SIH Finals Achievement:
-In an exciting venture, I had the privilege of leading a team that
-advanced to the finals of the Smart India Hackathon (SIH) in my very
-first semester. It was an incredible experience, and the journey as a
-team leader added a valuable layer to my learning curve.
-️ Self-Learning Enthusiast:
-While I haven't undertaken specific DSA projects, I've actively delved
-into the world of data structures and algorithms by studying and
-understanding ready-made projects. This self-learning approach has
-deepened my comprehension of these fundamental concepts.
+Passionate B.Tech CSE student at BML Munjal University, developing skills in Full Stack Web Development with a focus
+on the MERN Stack.  Proficient in C++ and digital design using Figma and Canva, with an interest in exploring 3D art
+with Blender.  Embraces a balanced lifestyle, finding inspiration in poetry and maintaining fitness.  A collaborative team
+player with a knack for problem-solving, driven by authenticity and purpose.  Eager for meaningful collaborations and
+knowledge-sharing opportunities.
 Experience
- 
-Page 1 of 2
-
-  
-Smart India Hackathon 
-Team Leader
-December 2023 - December 2023 (1 month)
-Hyderabad, Telangana, India
-Finalists | Top 5 out of 250+ Teams
+Design InternMay 2024 - Present
+ACIC - BMU Foundation
+•
+Produced digital and print creatives, including social media posts, banners, brochures, etc., showcasing versatile
+design skills.
+•
+Collaborated with marketing team to ensure adherence to branding guidelines and understand target audience
+preferences.
+•
+Utilized Figma and Canva to create impactful visual assets, contributing to the Foundation’s marketing efforts and
+brand identity.
+Projects
+ChatGPT Clone|MongoDB, Express.js, React.js, Node.js, RapidAPI
+•
+Developed a ChatGPT clone with the MERN stack, featuring a responsive interface and real-time messaging for an
+interactive user experience.
+•
+Integrated RapidAPI for scalable API connections, and implemented secure user authentication and session
+management.
+QuickBite|MongoDB, Express.js, React.js, Node.js
+•
+A modern food ordering platform, using the MERN stack, providing a responsive and intuitive user interface for a
+smooth user experience.
+•
+Enabled real-time cart updates and order placement, alongside a visually appealing design ensuring a delightful and
+user-friendly interface.
+TownTies|Javascript, Node.js, Express.js, MongoDB
+•
+Dynamic marketplace platform.
+•
+Implemented user authentication, forum creation, discussion board, and product listings with image uploads using
+Multer and Cloudinary services, delivering a comprehensive and interactive user experience.
+WanderLust|Javascript, Node.js, Express.js, MongoDB
+•
+Vacation rental platform inspired by Airbnb.
+•
+Users can create and manage vacation place listings with few information such as location, description, and price.
 Education
-BML Munjal University
- · (2023 - 2027)
- 
-Page 2 of 2
+BML Munjal UniversityGurgaon, Haryana
+B.Tech - Computer Science & EngineeringCGPA: 8.85, August 2023 - Present
+Aggarwal Public SchoolFaridabad, Haryana
+Class XIIPercentage: 85.6%, 2023
+Class XPercentage: 95%, 2021
+Skills
+Languages
+•
+Proficient:C++, Javascript, HTML, CSS
+•
+Experienced:C, Python
+•
+Familiar:Java
+Frameworks:Node.js, Express.js, React.js, Next.js
+Databases:MongoDB, MySQL
+Tools:Figma, Canva, Blender, Git
+Achievements
+•Lead Designer at BML Munjal Model United Nations
+•Core Member of Youth Red Cross BMU

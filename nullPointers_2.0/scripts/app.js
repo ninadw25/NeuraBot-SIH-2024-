@@ -8,7 +8,21 @@ function createUserChatBox(prompt) {
   userChat.classList.add("user-chat");
   chatArea.appendChild(userChat);
 }
+const hamburgerMenu = document.querySelector('.hamburger-menu');
+const sidebar = document.querySelector('.sidebar');
 
+hamburgerMenu.addEventListener('click', () => {
+    sidebar.classList.toggle('active');
+});
+
+document.addEventListener('click', (event) => {
+  const isClickInsideSidebar = sidebar.contains(event.target);
+  const isClickOnHamburger = hamburgerMenu.contains(event.target);
+
+  if (!isClickInsideSidebar && !isClickOnHamburger && sidebar.classList.contains('active')) {
+      sidebar.classList.remove('active');
+  }
+});
 async function createResponseChatBox(prompt) {
   let responseChatBox = document.createElement("div");
   try {
