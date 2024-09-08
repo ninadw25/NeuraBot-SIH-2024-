@@ -1657,3 +1657,8 @@
 1725775134647 : ::ffff:127.0.0.1 : POST : /upload
 1725775137528 : ::ffff:127.0.0.1 : POST : /summarize/chatApi
 1725776089302 : ::1 : GET : /
+1725779963502 : ::1 : GET : /login
+1725779964622 : ::1 : GET : /login
+1725780003057 : ::1 : POST : /user/createUser
+1725780003104 : ::1 : GET : /login
+1725780003383 : ::1 : GET : /login
