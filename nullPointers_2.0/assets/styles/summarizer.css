@@ -320,4 +320,65 @@ input[type="file"] {
     .popup {
         width: 90%;
     }
+}.toggle-form {
+    display: none;
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000;
+    background-color: #212f5b;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+@media screen and (max-width: 768px) {
+    .container {
+        min-height: 100vh;
+        margin-bottom: 80px; /* Make room for the toggle button */
+    }
+
+    .form-container {
+        position: absolute;
+        top: 0;
+        height: 100%;
+        transition: all 0.6s ease-in-out;
+    }
+
+    .sign-in-container {
+        left: 0;
+        width: 100%;
+        z-index: 2;
+    }
+
+    .sign-up-container {
+        left: 0;
+        width: 100%;
+        opacity: 0;
+        z-index: 1;
+    }
+
+    .container.right-panel-active .sign-in-container {
+        transform: translateX(100%);
+    }
+
+    .container.right-panel-active .sign-up-container {
+        transform: translateX(0);
+        opacity: 1;
+        z-index: 5;
+        animation: show 0.6s;
+    }
+
+    .overlay-container {
+        display: none;
+    }
+
+    .toggle-form {
+        display: block;
+    }
 }
