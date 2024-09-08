@@ -1745,3 +1745,10 @@
 1725775160551 : ::1 : POST : /upload
 1725775165916 : ::1 : POST : /summarize/chatApi
 1725775186759 : ::1 : POST : /summarize/chatApi
+1725775311883 : ::1 : GET : /summarize
+1725775316854 : ::1 : POST : /upload
+1725775342807 : ::1 : GET : /summarize
+1725775348123 : ::1 : POST : /upload
+///////////////////////
+1725775420461 : ::1 : GET : /summarize
+1725775428602 : ::1 : POST : /upload
