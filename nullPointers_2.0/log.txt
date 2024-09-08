@@ -1643,3 +1643,7 @@
 1725773967618 : ::1 : POST : /summarize/chatApi
 1725773970082 : ::1 : POST : /summarize/chatApi
 1725773987432 : ::1 : POST : /summarize/chatApi
+1725774836913 : ::1 : GET : /
+1725774839390 : ::1 : GET : /summarize
+1725774843938 : ::1 : POST : /upload
+1725774852323 : ::1 : POST : /summarize/chatApi
