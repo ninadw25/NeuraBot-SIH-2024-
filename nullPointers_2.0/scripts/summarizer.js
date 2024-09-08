@@ -111,11 +111,6 @@ async function sendMessage() {
         // Clear input
         chatInput.value = '';
         
-        // Display "Assistant is typing..." message
-        const typingElement = document.createElement('div');
-        typingElement.textContent = 'Assistant is typing...';
-        typingElement.classList.add('assistant-typing');
-        chatMessages.appendChild(typingElement);
         
         try {
             const response = await fetch('/summarize/chatApi', {
@@ -134,8 +129,7 @@ async function sendMessage() {
             
             const data = await response.json();
             
-            // Remove "Assistant is typing..." message
-            chatMessages.removeChild(typingElement);
+           
             
             // Use marked.js to convert markdown response to HTML
             const assistantMessageElement = document.createElement('div');
@@ -145,8 +139,7 @@ async function sendMessage() {
         } catch (error) {
             console.error('Error in chat:', error);
             
-            // Remove "Assistant is typing..." message
-            chatMessages.removeChild(typingElement);
+           
             
             // Display error message
             const errorElement = document.createElement('div');
