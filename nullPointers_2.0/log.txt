@@ -1656,3 +1656,4 @@
 1725775131428 : ::ffff:127.0.0.1 : GET : /summarize
 1725775134647 : ::ffff:127.0.0.1 : POST : /upload
 1725775137528 : ::ffff:127.0.0.1 : POST : /summarize/chatApi
+1725776089302 : ::1 : GET : /
