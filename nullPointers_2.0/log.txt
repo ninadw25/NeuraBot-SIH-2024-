@@ -1740,3 +1740,8 @@
 1725774555272 : ::1 : POST : /summarize/chatApi
 1725774562695 : ::ffff:127.0.0.1 : POST : /summarize/chatApi
 >>>>>>> parent of 5837c6c2 (Merge branch 'main' of https://github.com/ninadw25/SIH-2024)
+1725775151463 : ::1 : GET : /
+1725775156678 : ::1 : GET : /summarize
+1725775160551 : ::1 : POST : /upload
+1725775165916 : ::1 : POST : /summarize/chatApi
+1725775186759 : ::1 : POST : /summarize/chatApi
