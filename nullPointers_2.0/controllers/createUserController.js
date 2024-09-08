@@ -7,7 +7,7 @@ exports.handleCreateUser = async (req, res) => {
     try {
         const existingUser = await Users.findOne({ email });
         if (existingUser) {
-            return res.status(400).render('login', { errorMessage: "Email already in use" });
+            return res.status(400).redirect('/login');
         }
 
         const hashedPassword = await bcrypt.hash(password, 10);
