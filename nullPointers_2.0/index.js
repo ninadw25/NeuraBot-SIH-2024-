@@ -53,7 +53,7 @@ app.use(logReqRes("log.txt"));
 app.use('/', staticRouter);
 app.use('/user', userRouter);
 app.use('/admin', adminRouter);
-app.use('/summarize', summarizerRoutes);  // Make sure this line is correct
+app.use('/summarize', summarizerRoutes);
 
 // Running server
 app.listen(PORT, (error) => {
