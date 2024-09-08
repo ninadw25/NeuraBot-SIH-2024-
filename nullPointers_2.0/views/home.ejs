@@ -10,24 +10,33 @@
         <link rel="stylesheet" href="styles/home.css">
     <body>
         <div class="header">
-            <header class="header-content">
-                <a href="#logo" id="logo">
-                    <img src="/images/Neutral BOT.png" alt="Logo" id="logo-icon">
-                    <span id="logo-text">NeuraBot</span>
-                </a>
-
-                <nav class="nav">
+            <div class="header">
+                <header class="header-content">
+                    <a href="#logo" id="logo">
+                        <img src="/images/Neutral BOT.png" alt="Logo" id="logo-icon">
+                        <span id="logo-text">NeuraBot</span>
+                    </a>
+        
+                    <nav class="nav" id="main-nav">
+                        <a href="/" class="nav_link">Home</a>
+                        <a href="/chatbot" class="nav_link">Chatbot</a>
+                        <a href="/summarize" class="nav_link">Summariser</a>
+                    </nav>
+        
+                    <a href="mailto:null.pointer.SIH2024@gmail.com" id="contact-button">Contact Us</a>
+        
+                    <button type="button" id="menu-button" aria-label="Toggle menu">
+                        <img src="/images/menu-button.svg" alt="menu-button" id="menu-icon">
+                    </button>
+                </header>
+        
+                <div id="mobile-menu" class="mobile-menu">
                     <a href="/" class="nav_link">Home</a>
                     <a href="/chatbot" class="nav_link">Chatbot</a>
                     <a href="/summarize" class="nav_link">Summariser</a>
-                </nav>
-
-                <a href="mailto:null.pointer.SIH2024@gmail.com" id="contact-button">Contact Us</a>
-
-                <button type="menu" id="menu-button">
-                    <img src="/images/menu-button.svg" alt="menu-button" id="menu-icon">
-                </button>
-            </header>
+                    <a href="mailto:null.pointer.SIH2024@gmail.com" class="nav_link">Contact Us</a>
+                </div>
+            </div>
         </div>
 
         <div class="content">
