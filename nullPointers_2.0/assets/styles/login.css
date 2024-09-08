@@ -16,7 +16,7 @@ body {
     color: #070734;
 }
 
-.login-title{
+.login-title {
     color: #212f5b;
     font-weight: 900;
 }
@@ -236,6 +236,143 @@ input {
 }
 
 .social-container a i {
-    font-size: 20px; /* Add font size to ensure visibility */
-    color: #212f5b;  /* Icon color */
+    font-size: 20px;
+    color: #212f5b;
+}
+
+/* Media Queries for Responsiveness */
+
+@media screen and (max-width: 768px) {
+    .container {
+        width: 90%;
+        min-height: auto;
+    }
+
+    .form-container {
+        width: 100%;
+        height: auto;
+        position: relative;
+    }
+
+    .sign-in-container, .sign-up-container {
+        width: 100%;
+        left: 0;
+        top: 0;
+    }
+
+    .overlay-container {
+        display: none;
+    }
+
+    form {
+        padding: 20px;
+    }
+
+    button {
+        padding: 8px 25px;
+        font-size: 11px;
+    }
+
+    .social-container {
+        margin: 10px 0;
+    }
+
+    .social-container a {
+        height: 32px;
+        width: 32px;
+    }
+
+    .social-container a i {
+        font-size: 14px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    body {
+        font-size: 14px;
+    }
+
+    .container {
+        width: 95%;
+        max-height: 90vh;
+        overflow-y: auto;
+    }
+
+    h1 {
+        font-size: 20px;
+    }
+
+    p {
+        font-size: 11px;
+        margin: 8px 0 16px;
+        line-height: 1.4;
+    }
+
+    input {
+        padding: 8px;
+        font-size: 12px;
+        margin: 6px 0;
+    }
+
+    button {
+        font-size: 10px;
+        padding: 6px 18px;
+    }
+
+    .social-container {
+        margin: 8px 0;
+    }
+
+    .social-container a {
+        height: 28px;
+        width: 28px;
+        margin: 0 3px;
+    }
+
+    .social-container a i {
+        font-size: 12px;
+    }
+
+    span {
+        font-size: 10px;
+    }
+
+    a {
+        font-size: 12px;
+        margin: 10px 0;
+    }
+}
+
+/* Additional adjustments for very small screens */
+@media screen and (max-width: 320px) {
+    .container {
+        width: 98%;
+    }
+
+    h1 {
+        font-size: 18px;
+    }
+
+    p {
+        font-size: 10px;
+    }
+
+    input {
+        padding: 6px;
+        font-size: 11px;
+    }
+
+    button {
+        font-size: 9px;
+        padding: 5px 15px;
+    }
+
+    .social-container a {
+        height: 24px;
+        width: 24px;
+    }
+
+    .social-container a i {
+        font-size: 11px;
+    }
 }
