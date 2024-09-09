@@ -1600,7 +1600,7 @@
 1725772558157 : ::1 : GET : /summarize
 1725772580222 : ::1 : POST : /upload
 1725772613979 : ::1 : GET : /
-1725772620133 : ::1 : GET : /SUMMARIZE]
+1725772620133 : ::1 : GET : /SUMMARIZE
 1725772622587 : ::1 : GET : /summarize
 1725772627310 : ::1 : POST : /upload
 1725772758470 : ::1 : GET : /summarize
@@ -1662,3 +1662,17 @@
 1725780003057 : ::1 : POST : /user/createUser
 1725780003104 : ::1 : GET : /login
 1725780003383 : ::1 : GET : /login
+1725861054018 : ::1 : GET : /login
+1725861055927 : ::1 : GET : /login
+1725861088644 : ::1 : POST : /user/createUser
+1725861088922 : ::1 : GET : /login
+1725861089213 : ::1 : GET : /login
+1725861101280 : ::1 : POST : /user/login
+1725861101570 : ::1 : GET : /send-otp
+1725861102445 : ::1 : GET : /send-otp
+1725861129800 : ::1 : POST : /verify-otp
+1725861129812 : ::1 : GET : /
+1725861161713 : ::1 : GET : /summarize
+1725861165951 : ::1 : POST : /upload
+1725861190533 : ::1 : GET : /chatbot
+1725861206317 : ::1 : POST : /chat
