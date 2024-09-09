@@ -363,3 +363,15 @@ input {
         margin: 12px 0;
     }
 }
+@media screen and (max-width: 768px) {
+    #toggleForm {
+        position: relative;
+        margin-top: 5vh;
+        height: 3rem;
+        width: 15rem; 
+        display: block; 
+        text-align: center; 
+        background-color: #212f5b; 
+        color: white; 
+    }
+}

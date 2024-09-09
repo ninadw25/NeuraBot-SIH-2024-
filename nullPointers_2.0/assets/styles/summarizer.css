@@ -188,9 +188,9 @@ input[type="file"] {
 
 .chat-messages {
     /* flex-grow: 1; */
-    overflow-y:scroll;
+    overflow-y: scroll;
     padding: 10px;
-    max-height: 450px;
+    /* max-height: 450px; */
     margin-bottom: 10px;
     height: 100%;
 }
@@ -265,6 +265,7 @@ input[type="file"] {
     border: 1px solid #333840;
     margin-left: 10px;
 }
+
 
 /* Responsive Design */
 @media (max-width: 768px) {
