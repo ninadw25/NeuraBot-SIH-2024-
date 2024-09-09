@@ -32,7 +32,7 @@ fileInput.addEventListener('change', (e) => {
 });
 
 // File handling function
-function handleFiles(files) {
+async function handleFiles(files) {
     if (files.length > 0) {
         const file = files[0];
         const formData = new FormData();
@@ -42,20 +42,18 @@ function handleFiles(files) {
         initialState.style.display = 'none';
         popup.style.display = 'block';
 
-        // Fetch the /upload endpoint to send the file for summarization
-        fetch('/upload', {
-            method: 'POST',
-            body: formData
-        })
-        .then(response => response.json())
-        .then(data => {
+        try {
+            const response = await fetch('/summarize/upload', {
+                method: 'POST',
+                body: formData
+            });
+            const data = await response.json();
             window.pdfSummary = data.summary;
             window.pdfFilename = data.filename;
-        })
-        .catch(error => {
+        } catch (error) {
             console.error('Error summarizing the PDF:', error);
             window.pdfSummary = 'Error occurred while summarizing the PDF.';
-        });
+        }
     }
 }
 
@@ -66,7 +64,6 @@ function showSummarizer() {
     
     const summaryText = document.getElementById('summary-text');
     if (window.pdfSummary) {
-        // Convert markdown to HTML and inject into the summary area
         summaryText.innerHTML = marked.parse(window.pdfSummary);
     } else {
         summaryText.textContent = 'Summary is being generated. Please wait...';
@@ -79,38 +76,31 @@ function showSummarizer() {
     }
 }
 
-
-// Show Chatbox
 function showChat() {
     popup.style.display = 'none';
     uploadContainer.style.display = 'none';
     chatBox.style.display = 'flex';
 }
 
-// Detect Enter key in chat input
 const chatInput = document.getElementById('chat-input');
 chatInput.addEventListener('keydown', function(event) {
     if (event.key === 'Enter') {
-        event.preventDefault(); // Prevents a newline from being added
+        event.preventDefault();
         sendMessage();
     }
 });
 
-// Send message in chat
 async function sendMessage() { 
     const message = chatInput.value.trim();
     if (message !== '') {
         const chatMessages = document.getElementById('chat-messages');
         
-        // Display user message
         const userMessageElement = document.createElement('div');
         userMessageElement.textContent = `You: ${message}`;
         userMessageElement.classList.add('user-message');
         chatMessages.appendChild(userMessageElement);
         
-        // Clear input
         chatInput.value = '';
-        
         
         try {
             const response = await fetch('/summarize/chatApi', {
@@ -118,51 +108,40 @@ async function sendMessage() {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ message }),
+                body: JSON.stringify({ message, pdfSummary: window.pdfSummary }),
             });
             
             if (!response.ok) {
-                const errorText = await response.text();
-                console.error('Server response:', errorText);
                 throw new Error(`Failed to get response from server: ${response.status} ${response.statusText}`);
             }
             
             const data = await response.json();
             
-           
-            
-            // Use marked.js to convert markdown response to HTML
             const assistantMessageElement = document.createElement('div');
-            assistantMessageElement.innerHTML = marked.parse(data.response); // Convert markdown to HTML
+            assistantMessageElement.innerHTML = marked.parse(data.response);
             assistantMessageElement.classList.add('assistant-message');
             chatMessages.appendChild(assistantMessageElement);
         } catch (error) {
             console.error('Error in chat:', error);
             
-           
-            
-            // Display error message
             const errorElement = document.createElement('div');
             errorElement.textContent = `Error: ${error.message}`;
             errorElement.classList.add('error-message');
             chatMessages.appendChild(errorElement);
         }
         
-        // Scroll to bottom of chat
         chatMessages.scrollTop = chatMessages.scrollHeight;
     }
 }
 
-// Delete PDF function
 function deletePDF() {
     if (window.pdfFilename) {
-        fetch(`/delete/${window.pdfFilename}`, {
+        fetch(`/summarize/delete/${window.pdfFilename}`, {
             method: 'DELETE'
         })
         .then(response => {
             if (response.ok) {
                 alert('PDF deleted successfully');
-                // Reset the UI
                 summaryArea.style.display = 'none';
                 chatBox.style.display = 'none';
                 uploadContainer.style.display = 'block';
@@ -170,7 +149,6 @@ function deletePDF() {
                 successMessage.classList.add('hidden');
                 window.pdfSummary = null;
                 window.pdfFilename = null;
-                // Clear chat messages
                 document.getElementById('chat-messages').innerHTML = '';
             } else {
                 throw new Error('Failed to delete PDF');
