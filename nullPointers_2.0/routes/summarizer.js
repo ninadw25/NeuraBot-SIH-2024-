@@ -1,10 +1,10 @@
 const express = require('express');
 const router = express.Router();
-const { summarizerRender, summarizer, upload } = require('../controllers/summarizerController');
-const { chatHandler } = require('../controllers/QnAcontroller');
+const {renderSummarizer, uploadAndSummarize, handleChat, deleteFile, upload} = require('../controllers/summarizerController');
 
-router.get('/', summarizerRender);
-router.post('/upload', upload.single('pdf'), summarizer);
-router.post('/chatApi', chatHandler);
+router.get('/', renderSummarizer);
+router.post('/upload', upload.single('pdf'), uploadAndSummarize);
+router.post('/chatApi', handleChat);
+router.delete('/delete/:filename', deleteFile);
 
 module.exports = router;

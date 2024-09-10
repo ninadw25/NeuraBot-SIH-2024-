@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     if (menuButton && mobileMenu) {
         menuButton.addEventListener('click', function(event) {
-            event.stopPropagation(); // Prevent event from bubbling up
+            event.stopPropagation();
             mobileMenu.classList.toggle('active');
             menuButton.setAttribute('aria-expanded', mobileMenu.classList.contains('active'));
         });
