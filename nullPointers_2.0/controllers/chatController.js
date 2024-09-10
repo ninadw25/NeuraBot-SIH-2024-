@@ -1,12 +1,17 @@
 const fs = require('fs');
 const path = require('path');
 const { getGroqChatCompletion } = require('../utils/api.js');
+const chats = require('../models/chats.js');
 
 // Handle the chat with memory
 exports.handleChat = async (req, res) => {
   try {
     const { prompt } = req.body;
 
+    await chats.create({
+      prompt: prompt
+    });
+    
     // Check if conversation history exists in session; if not, initialize it
     if (!req.session.conversationHistory) {
       req.session.conversationHistory = [];
