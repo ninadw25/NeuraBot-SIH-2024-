@@ -68,8 +68,7 @@ promptInput.addEventListener("keypress", (event) => {
   }
 });
 
-// Configure marked options for better rendering
 marked.setOptions({
-  breaks: true, // Adds <br> on single line breaks
-  gfm: true,    // GitHub Flavored Markdown
+  breaks: true,
+  gfm: true,
 });
