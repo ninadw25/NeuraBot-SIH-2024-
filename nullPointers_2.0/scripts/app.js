@@ -1,6 +1,13 @@
+// app.js (Client-Side)
+
 const submitBtn = document.querySelector(".submit-btn");
 const promptInput = document.querySelector(".prompt-input");
 const chatArea = document.querySelector(".chat-area");
+// When the page loads, the bot asks the first question
+window.onload = async function() {
+  const defaultPrompt = "What policies are mentioned in this document. Give bullet points?";
+  await createResponseChatBox(defaultPrompt); // Get bot response
+};
 
 function createUserChatBox(prompt) {
   let userChat = document.createElement("div");
@@ -8,21 +15,7 @@ function createUserChatBox(prompt) {
   userChat.classList.add("user-chat");
   chatArea.appendChild(userChat);
 }
-const hamburgerMenu = document.querySelector('.hamburger-menu');
-const sidebar = document.querySelector('.sidebar');
 
-hamburgerMenu.addEventListener('click', () => {
-    sidebar.classList.toggle('active');
-});
-
-document.addEventListener('click', (event) => {
-  const isClickInsideSidebar = sidebar.contains(event.target);
-  const isClickOnHamburger = hamburgerMenu.contains(event.target);
-
-  if (!isClickInsideSidebar && !isClickOnHamburger && sidebar.classList.contains('active')) {
-      sidebar.classList.remove('active');
-  }
-});
 async function createResponseChatBox(prompt) {
   let responseChatBox = document.createElement("div");
   try {
@@ -36,7 +29,6 @@ async function createResponseChatBox(prompt) {
 
     let result = await response.json();
     if (response.ok) {
-      // Use marked to render Markdown
       responseChatBox.innerHTML = marked.parse(result.response);
     } else {
       responseChatBox.textContent = result.error || "Sorry, something went wrong.";
@@ -72,3 +64,10 @@ marked.setOptions({
   breaks: true,
   gfm: true,
 });
+
+// Send a request to clear the chat session when user exits the bot
+window.onbeforeunload = async function() {
+  await fetch('/chat/clear-session', {
+    method: 'POST',
+  });
+};

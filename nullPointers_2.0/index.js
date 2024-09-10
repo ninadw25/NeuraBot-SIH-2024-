@@ -10,7 +10,7 @@ const userRouter = require('./routes/users');
 const adminRouter = require('./routes/admin.js')
 const summarizerRoutes = require('./routes/summarizer.js')
 const app = express();
-const PORT = 7001;
+const PORT = 7002;
 
 
 // MongoDB Connection
@@ -46,7 +46,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 // Middlewares
-app.use(authMiddleware);
+// app.use(authMiddleware);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(logReqRes("log.txt"));

@@ -13,10 +13,10 @@ async function getGroqChatCompletion(prompt) {
           content: prompt,
         },
       ], 
-      model: "llama3-8b-8192",
+      model: "llama-3.1-8b-instant",
     });
     return completion;
-  } catch (error) {
+  } catch (error) {  
     console.error('Error calling Groq API:', error);
     throw error;
   }
