@@ -8,6 +8,7 @@ const { summarizerRender, summarizer, upload } = require('../controllers/summari
 const homeController = require('../controllers/homeController');
 const loginController = require('../controllers/loginController');
 const otpController = require('../controllers/otpController');
+router.post('/chat/clear-session', chatController.clearChatSession);
 
 router.get('/', homeController.home);
 router.get('/login', loginController.login);
