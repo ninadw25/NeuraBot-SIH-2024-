@@ -46,7 +46,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 // Middlewares
-// app.use(authMiddleware);
+app.use(authMiddleware);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(logReqRes("log.txt"));
