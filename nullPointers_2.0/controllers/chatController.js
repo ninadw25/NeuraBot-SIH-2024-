@@ -24,6 +24,7 @@ exports.handleChat = async (req, res) => {
       return `User: ${entry.prompt}\nAssistant: ${entry.response}`;
     }).join("\n");
 
+    // Full prompt that is supposed to be send to the model
     const fullPrompt = `
     ${context}
 

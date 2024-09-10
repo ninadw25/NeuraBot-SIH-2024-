@@ -2017,3 +2017,8 @@
 1725963468630 : ::1 : GET : /
 1725963472976 : ::1 : GET : /admin
 1725963488034 : ::1 : GET : /admin
+1725963581391 : ::1 : GET : /
+1725963596393 : ::1 : GET : /admin
+1725963607048 : ::1 : POST : /admin/login
+1725963607057 : ::1 : GET : /admin/home
+1725963607218 : ::1 : GET : /admin/path/to/your/lottie/animation.json
