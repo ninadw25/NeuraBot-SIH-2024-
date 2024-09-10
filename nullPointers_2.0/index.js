@@ -50,6 +50,7 @@ app.use(authMiddleware);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(logReqRes("log.txt"));
+
 // Routes
 app.use('/', staticRouter);
 app.use('/user', userRouter);
