@@ -17,35 +17,31 @@ const otpStore = {}; // A temporary store to keep the OTPs in memory
 const sendOTP = (req, res) => {
     const email = req.session.userEmail; // Get the email from session
 
-    // Check if OTP is already generated and stored
-    if (!otpStore[email]) {
-        const otp = generateOTP(); // Generate OTP only if it doesn't exist
-        otpStore[email] = otp; // Store the OTP associated with the user's email
+    // Generate a new OTP regardless of whether an OTP is already stored
+    const otp = generateOTP(); 
+    otpStore[email] = otp; // Store the new OTP associated with the user's email
 
-        // Email options
-        const mailOptions = {
-            from: 'null.pointers.SIH2024@gmail.com',
-            to: email,
-            subject: 'Your OTP Code',
-            text: `Your OTP code is ${otp}`
-        };
+    // Email options
+    const mailOptions = {
+        from: 'null.pointers.SIH2024@gmail.com',
+        to: email,
+        subject: 'Your OTP Code',
+        text: `Your OTP code is ${otp}`
+    };
 
-        // Send the email
-        transporter.sendMail(mailOptions, (error, info) => {
-            if (error) {
-                console.log('Error sending OTP: ', error); // Log the error
-                return res.status(500).json({ message: 'Failed to send OTP', error: error });
-            } else {
-                console.log('OTP sent: ' + info.response); // Log success
-            }
-        });
-    }
+    // Send the email
+    transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+            console.log('Error sending OTP: ', error); // Log the error
+            return res.status(500).json({ message: 'Failed to send OTP', error: error });
+        } else {
+            console.log('OTP sent: ' + info.response); // Log success
+        }
+    });
 
     // Render the OTP page
     res.render('otp', { email, errorMessage: '' });
 };
-
-
 
 const verifyOTP = (req, res) => {
     const { otp1, otp2, otp3, otp4 } = req.body;

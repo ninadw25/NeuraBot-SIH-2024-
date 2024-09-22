@@ -16,3 +16,9 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 });
+
+const resendBtn = document.querySelector("resend-link");
+
+resendBtn.addEventListener("click", () => {
+    fetch("/send-otp")
+})
