@@ -3,9 +3,12 @@ const signInButton = document.getElementById('signIn');
 const container = document.getElementById('container');
 const toggleFormButton = document.getElementById('toggleForm');
 
+let isPanelActive = false;
+
 function toggleForm() {
-    container.classList.toggle('right-panel-active');
-    if (container.classList.contains('right-panel-active')) {
+    isPanelActive = !isPanelActive;
+    container.classList.toggle('right-panel-active', isPanelActive);
+    if (isPanelActive) {
         toggleFormButton.textContent = 'Sign In';
     } else {
         toggleFormButton.textContent = 'Create Account';
@@ -22,7 +25,9 @@ function isMobile() {
 
 function updateFormVisibility() {
     if (isMobile()) {
-        container.classList.remove('right-panel-active');
+        if (!isPanelActive) {
+            container.classList.remove('right-panel-active');
+        }
         toggleFormButton.style.display = 'block';
         toggleFormButton.textContent = 'Create Account';
     } else {
