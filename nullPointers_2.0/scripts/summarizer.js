@@ -1,4 +1,3 @@
-// Get DOM elements
 const uploadContainer = document.getElementById('upload-container');
 const fileInput = document.getElementById('fileElem');
 const browseLink = document.getElementById('browse-link');
@@ -8,7 +7,6 @@ const initialState = document.getElementById('initial-state');
 const chatBox = document.getElementById('chat-box');
 const summaryArea = document.getElementById('summary-area');
 
-// Event listeners
 browseLink.addEventListener('click', () => fileInput.click());
 
 uploadContainer.addEventListener('dragover', (e) => {
@@ -31,7 +29,6 @@ fileInput.addEventListener('change', (e) => {
     handleFiles(e.target.files);
 });
 
-// File handling function
 async function handleFiles(files) {
     if (files.length > 0) {
         const file = files[0];
