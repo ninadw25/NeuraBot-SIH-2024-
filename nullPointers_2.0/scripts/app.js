@@ -5,7 +5,7 @@ const promptInput = document.querySelector(".prompt-input");
 const chatArea = document.querySelector(".chat-area");
 // When the page loads, the bot asks the first question
 window.onload = async function() {
-  const defaultPrompt = "What policies are mentioned in this document. Give bullet points?";
+  const defaultPrompt = "What policies are mentioned in this document? Give a rough brief.";
   await createResponseChatBox(defaultPrompt); // Get bot response
 };
 
