@@ -40,9 +40,7 @@ app.use(session({
   secret: 'e33b92145a61635ff2992e8a4fc6a33711d4365bd7f6000276855498196aed93',
   resave: false,
   saveUninitialized: true,
-  cookie: { secure: true },
-  secure: true,
-  maxAge: null
+  cookie: { secure: false }
 }));
 app.use(passport.initialize());
 app.use(passport.session());
